@@ -1,0 +1,49 @@
+﻿@model List<Project.AndroidIosApp.Dtos.ContactDtos.GetContactDto>
+
+@{
+    Layout = "_MemberLayout";
+}
+
+<style>
+    .textstyle, p
+    {
+       color: #F7E6DA;
+	   font-weight: 600;
+	   line-height: 21px;
+	   padding-left: 20px;
+	   position: relative;
+	   font-family: "Oswald", sans-serif;
+    }
+    .vr 
+    {
+       border-top: 5px solid #e67e22;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Take(1))
+            {
+            <div class="col-sm-8">
+                <h3 class="textstyle mb-4"> @item.Title </h3>
+                <p style="color:black;"> ​@item.Content </p>
+                <div class="container mb-5">
+                    <img src="~/img/contact.jpeg" />
+                </div>
+            </div>
+
+            <div class="col-sm-4 textstyle">
+                <h4 class="textstyle mb-4">Contact Us</h4>
+                <p class="vr"> </p>
+                <p>
+                    <i class="fa fa-map-marker"></i> @item.Adress
+                </p>
+                <p><i class="fa fa-phone"></i> @item.Phone </p>
+                <p><i class="fa fa-envelope"></i> @item.Mail </p>
+                <p><i class="fa-brands fa-skype"></i> @item.Skype</p>
+            </div>
+            }
+        </div>
+    </div>
+</body>

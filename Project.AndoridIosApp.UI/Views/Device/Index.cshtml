@@ -1,0 +1,49 @@
+﻿@model List<Project.AndroidIosApp.Dtos.DeviceDtos.GetDeviceDto>
+
+@{
+    Layout = "_MemberLayout";
+}
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="trending__product">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="section-title">
+                                <h4>All Devices</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            if (item.Status)
+                            {
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="@item.ImageUrl">
+                                            <div class="ep">@item.OS.Definition</div>
+                                            <div class="comment"><i class="fa-solid fa-calendar-days"></i> @item.CreateDate</div>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <ul>
+                                                <li>@item.DeviceType.Definition</li>
+                                            </ul>
+                                            <h5><a asp-controller="Device" asp-action="DeviceDetails" asp-route-id="@item.Id">@item.DeviceName</a></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            @*
+            <div class="col-lg-4 col-md-6 col-sm-8">
+            @await Component.InvokeAsync("SidebarComponent");
+            </div>*@
+        </div>
+    </div>
+</section>

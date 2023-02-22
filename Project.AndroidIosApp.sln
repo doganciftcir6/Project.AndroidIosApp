@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndroidIosApp.Core", "Project.AndroidIosApp.Core\Project.AndroidIosApp.Core.csproj", "{D7B43D17-B63B-48EE-922F-958F2F17490A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndroidIosApp.Dtos", "Project.AndroidIosApp.Dtos\Project.AndroidIosApp.Dtos.csproj", "{FFCD45A2-3F82-4A02-A671-13071719B9F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndroidIosApp.Entities", "Project.AndroidIosApp.Entities\Project.AndroidIosApp.Entities.csproj", "{05FCB156-D227-4199-885C-69161507E190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndroidIosApp.Business", "Project.AndroidIosApp.Business\Project.AndroidIosApp.Business.csproj", "{FA39A700-6BA6-4EE2-A673-5C083E30476C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndroidIosApp.DataAccess", "Project.AndroidIosApp.DataAccess\Project.AndroidIosApp.DataAccess.csproj", "{A3D76D75-81B1-4DF6-9A17-82C4C4FEFF82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.AndoridIosApp.UI", "Project.AndoridIosApp.UI\Project.AndoridIosApp.UI.csproj", "{569282D2-9B7F-4BEF-B784-F611FD7FD58F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7B43D17-B63B-48EE-922F-958F2F17490A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B43D17-B63B-48EE-922F-958F2F17490A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B43D17-B63B-48EE-922F-958F2F17490A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B43D17-B63B-48EE-922F-958F2F17490A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFCD45A2-3F82-4A02-A671-13071719B9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFCD45A2-3F82-4A02-A671-13071719B9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFCD45A2-3F82-4A02-A671-13071719B9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFCD45A2-3F82-4A02-A671-13071719B9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05FCB156-D227-4199-885C-69161507E190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05FCB156-D227-4199-885C-69161507E190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05FCB156-D227-4199-885C-69161507E190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05FCB156-D227-4199-885C-69161507E190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA39A700-6BA6-4EE2-A673-5C083E30476C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA39A700-6BA6-4EE2-A673-5C083E30476C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA39A700-6BA6-4EE2-A673-5C083E30476C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA39A700-6BA6-4EE2-A673-5C083E30476C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3D76D75-81B1-4DF6-9A17-82C4C4FEFF82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3D76D75-81B1-4DF6-9A17-82C4C4FEFF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3D76D75-81B1-4DF6-9A17-82C4C4FEFF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3D76D75-81B1-4DF6-9A17-82C4C4FEFF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{569282D2-9B7F-4BEF-B784-F611FD7FD58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{569282D2-9B7F-4BEF-B784-F611FD7FD58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{569282D2-9B7F-4BEF-B784-F611FD7FD58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{569282D2-9B7F-4BEF-B784-F611FD7FD58F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5D57174-7513-46DE-AB6A-B99C8C0B22D0}
+	EndGlobalSection
+EndGlobal

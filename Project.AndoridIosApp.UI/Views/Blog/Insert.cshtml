@@ -1,0 +1,56 @@
+﻿@model Project.AndroidIosApp.Dtos.BlogDtos.CreateBlogDto
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+
+@using (Html.BeginForm("Insert", "Blog", FormMethod.Post))
+{
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-description"> Hizmet Ekleme Paneli </p>
+                <form class="forms-sample" method="post">
+                    <div asp-validation-summary="All" class="text-danger">
+
+                    </div>
+                    <br />
+                    @Html.Label("Hizmet Başlığı")
+                    @Html.TextBoxFor(x=> x.Title, new { @class = "form-control"})
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <br />
+                    <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Subtitle, new { @class = "form-control"})
+                    <span asp-validation-for="Subtitle" class="text-danger"></span>
+                    <br />
+                         <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Description, new { @class = "form-control"})
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <br />
+                         <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Company, new { @class = "form-control"})
+                    <span asp-validation-for="Company" class="text-danger"></span>
+                    <br />
+                         <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Image1, new { @class = "form-control"})
+                    <span asp-validation-for="Image1" class="text-danger"></span>
+                    <br />
+                         <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Image2, new { @class = "form-control"})
+                    <span asp-validation-for="Image2" class="text-danger"></span>
+                    <br />
+                         <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Image3, new { @class = "form-control"})
+                    <span asp-validation-for="Image3" class="text-danger"></span>
+                    <br />
+                    <label>Resim Yolu</label>
+                    @Html.TextBoxFor(x=> x.Status, new { @class = "form-control"})
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                    <br />
+                    <button type="submit" class="btn btn-outline-info">Kaydet</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+}
+

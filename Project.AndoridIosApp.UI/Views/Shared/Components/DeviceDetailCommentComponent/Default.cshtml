@@ -1,0 +1,16 @@
+﻿@*@model List<Project.AndroidIosApp.Dtos.CommentDtos.GetCommentDto>
+
+@foreach (var item in Model)
+{
+    <div class="anime__review__item">
+        <div class="anime__review__item__pic">
+            <img src=@item.ProjectUser.ImageUrl alt="">
+        </div>
+        <div class="anime__review__item__text">
+            <h6>@item.ProjectUser.Firstname @item.ProjectUser.Lastname - <span>@item.CreateDate Hour ago</span></h6>
+            <p>
+                @item.Content
+            </p>
+        </div>
+    </div>
+}*@

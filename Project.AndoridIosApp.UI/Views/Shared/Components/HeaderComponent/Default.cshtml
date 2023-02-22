@@ -1,0 +1,39 @@
+﻿ <!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="header__logo" style="display:flex">
+                    <i style="color: #F7E6DA; margin-top:13px" class="fa-solid fa-microchip"></i>
+                    <h3 style="color: #F7E6DA;" class="mt-2">IosAndroid</h3>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="header__nav">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a asp-controller="Home" asp-action="Index">Homepage</a></li>
+                            <li><a asp-controller="Device" asp-action="Index">Devices</a></li>
+                            <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                            <li><a asp-controller="Contact" asp-action="Index">Contacts</a></li>
+                            <li><a asp-controller="Help" asp-action="Index">Help</a></li>
+                            <li><a asp-controller="SignUp" asp-action="Index">Sign Up</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="header__right">
+                    <a href="Login/Index"><span class="icon_profile"></span></a>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+    </div>
+</header>
+<!-- Header End -->

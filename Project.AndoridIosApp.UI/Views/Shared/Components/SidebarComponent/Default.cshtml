@@ -1,0 +1,28 @@
+﻿@model List<Project.AndroidIosApp.Dtos.BlogDtos.GetBlogDto>
+
+<div class="product__sidebar">
+    <div class="product__sidebar__comment">
+        <div class="section-title">
+            <h5>Recently Blogs</h5>
+        </div>
+        @foreach (var item in Model.Take(10))
+        {
+            if (item.Status)
+            {
+                <div class="product__sidebar__comment__item">
+                    <div class="product__sidebar__comment__item__pic">
+                        <img src="~/androidiostema/img/sidebar/comment-1.jpg" alt="">
+                    </div>
+                    <div class="product__sidebar__comment__item__text">
+                        <ul>
+                            <li><i class="fa-solid fa-blog"></i> Blog</li>
+                            <li>@item.Company</li>
+                        </ul>
+                        <h5><a href="#">@item.Title</a></h5>
+                        <span><i class="fa-solid fa-clock"></i>@item.CreateDate</span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

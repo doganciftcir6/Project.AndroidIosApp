@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "_MemberLayout";
+}
+
+@await Component.InvokeAsync("CarouselCompenent");
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                @await Component.InvokeAsync("RecentlyAddedComponent");
+
+                @await Component.InvokeAsync("HighestTotalScoreComponent");
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-8">
+                @await Component.InvokeAsync("SidebarComponent");
+            </div>
+        </div>
+    </div>
+</section>
+

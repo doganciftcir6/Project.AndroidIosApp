@@ -1,0 +1,29 @@
+﻿@model List<Project.AndroidIosApp.Dtos.SocialMediaDtos.GetSocialMediaDto>
+
+<footer class="footer text-center">
+    <div class="container" style="color:#F7E6DA">
+        <div class="my-3">
+            <div class="h4">Doğan Çiftçi</div>
+            <p style="color:#F7E6DA">Yönetim Bilişim Sistemleri & Yazılımcı</p>
+            <div class="social-nav">
+                <nav role="navigation">
+                    <ul class="nav justify-content-center" style="color:#F7E6DA">
+                        @foreach (var item in Model)
+                        {
+                            @if (item.Status)
+                            {
+                                <li class="nav-item"><a class="nav-link" href="@item.Url" title="@item.Name"><i class="@item.Icon"></i><span class="menu-title sr-only">@item.Name</span></a></li>
+                            }
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="text-small text-secondary">
+            <div class="mb-1">&copy; @DateTime.UtcNow.Year Tüm hakları saklıdır.</div>
+            <div>
+                <!-- Make sure to buy a license for the template before removing the line below. Buy license on https://templateflip.com/ -->Html5 Tema - <a href="https://www.linkedin.com/in/do%C4%9Fan-%C3%A7ift%C3%A7i-762186249/" target="_blank">IosAndoridProject</a>
+            </div>
+        </div>
+    </div>
+</footer>

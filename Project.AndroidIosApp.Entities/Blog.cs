@@ -11,6 +11,9 @@ namespace Project.AndroidIosApp.Entities
         public string Title { get; set; }
         public string Subtitle { get; set; }
         public string Description { get; set; }
+        public string Description2 { get; set; }
+        public string Description3 { get; set; }
+        public string Description4 { get; set; }
         public string Company { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }

@@ -67,6 +67,15 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             }
             return new DataResponse<List<GetBlogCommentDto>>(ResponseType.Success, dto);
         }
+
+        public async Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentWithUserAsync(int id)
+        {
+            var query = _uow.GetRepository<BlogComment>().GetQuery();
+            var data = await query.Where(x => x.BlogId == id).Include(x => x.ProjectUser).ThenInclude(x => x.Gender).ToListAsync();
+            var mappingData = _mapper.Map<List<GetBlogCommentDto>>(data);
+            return new DataResponse<List<GetBlogCommentDto>>(ResponseType.Success, mappingData);
+        }
+        
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
         {
             var data = await _uow.GetRepository<BlogComment>().GetByFilterAsync(x => x.Id == id);

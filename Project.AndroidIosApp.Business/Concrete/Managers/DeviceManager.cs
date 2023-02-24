@@ -214,7 +214,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             }
         }
 
-        public async Task<IDataResponse<GetDeviceDto>> GetByIdWithOSDeviceTypeAsync(int id)
+        public async Task<IDataResponse<GetDeviceDto>> GetByIdWithOSDeviceTypeCommentAsync(int id)
         {
             var query = _uow.GetRepository<Device>().GetQuery();
             var data = await query.Where(x => x.Id == id).Include(x=> x.OS).Include(x=> x.DeviceType).Include(x=> x.Comments).ThenInclude(x=> x.ProjectUser).FirstOrDefaultAsync();

@@ -36,16 +36,12 @@
                 <div class="card mb-2 shadow" style="background-color:#F7E6DA">
                 <div class="row">
                     <div class="col-4">
-                        <img src="~/img/contact.jpeg" alt="" class="img-fluid rounded-start">
+                        <img src="@item.Image1" alt="" class="img-fluid rounded-start">
                     </div>
                     <div class="col-8">
                         <div class="card-body">
-                            <a asp-controller="BlogComment" asp-action="BlogDetails" asp-route-id="@item.Id" class="card-title" style="color:black; text-transform:uppercase;">@item.Title</a>
+                            <a asp-controller="Blog" asp-action="BlogDetails" asp-route-id="@item.Id" class="card-title" style="color:black; text-transform:uppercase;">@item.Title</a>
                             <p class="card-text">@item.Subtitle</p>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
                             <p><span class="icon_calendar"></span> @item.CreateDate</p>
                         </div>
                     </div>
@@ -69,5 +65,4 @@
         </div>
     </div>
 </div>
-</section>
 <!-- Blog Section End -->

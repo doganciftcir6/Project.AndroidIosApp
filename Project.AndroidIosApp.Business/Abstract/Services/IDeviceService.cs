@@ -16,7 +16,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<UpdateDeviceDto>> UpdateAsync(UpdateDeviceDto updateDeviceDto);
         Task<IResponse> DeleteAsync(int id);
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
-        Task<IDataResponse<GetDeviceDto>> GetByIdWithOSDeviceTypeAsync(int id);
+        Task<IDataResponse<GetDeviceDto>> GetByIdWithOSDeviceTypeCommentAsync(int id);
         Task<IDataResponse<List<GetDeviceDto>>> GetAllAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToCreateDateWithOsDeviceTypeAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToTotalScoreWithOsDeviceTypeAsync();

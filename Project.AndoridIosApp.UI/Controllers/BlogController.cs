@@ -5,6 +5,7 @@ using Project.AndroidIosApp.Dtos.BlogDtos;
 using Project.AndroidIosApp.Dtos.Interfaces;
 using Project.AndroidIosApp.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Controllers
@@ -12,10 +13,12 @@ namespace Project.AndoridIosApp.UI.Controllers
     public class BlogController : Controller
     {
         private readonly IBlogService _blogService;
+        private readonly IBlogCommentService _blogCommentService;
 
-        public BlogController(IBlogService blogService)
+        public BlogController(IBlogService blogService, IBlogCommentService blogCommentService)
         {
             _blogService = blogService;
+            _blogCommentService = blogCommentService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -23,6 +26,21 @@ namespace Project.AndoridIosApp.UI.Controllers
             var response = await _blogService.GetAllAsync();
             return View(response.Data);
 
+        }
+        public async Task<IActionResult> BlogDetails(int id)
+        {
+            var result = await _blogService.GetByIdWithProjectUserCommentAsync(id);
+            var blogComment = await _blogCommentService.GetAllBlogCommentWithUserAsync(id);
+
+            ViewBag.Id = id;
+            ViewBag.BlogComment = blogComment.Data;
+            ViewBag.CommentCount = blogComment.Data.Count();
+
+            if (result.ResponseType == ResponseType.NotFound)
+            {
+                return NotFound();
+            }
+            return View(result.Data);
         }
         [HttpGet]
         public IActionResult Insert()

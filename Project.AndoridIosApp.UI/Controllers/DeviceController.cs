@@ -5,6 +5,7 @@ using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Dtos.CommentDtos;
 using Project.AndroidIosApp.Dtos.DeviceDtos;
 using Project.AndroidIosApp.Entities;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Controllers
@@ -27,12 +28,13 @@ namespace Project.AndoridIosApp.UI.Controllers
         }
         public async Task<IActionResult> DeviceDetails(int id)
         {
-            var result = await _deviceService.GetByIdWithOSDeviceTypeAsync(id);
+            var result = await _deviceService.GetByIdWithOSDeviceTypeCommentAsync(id);
             var comment = await _commentService.GetAllCommentAsyncWithUser(id);
             var addcomment = id;
 
             ViewBag.Comments = comment.Data;
             ViewBag.AddComment = addcomment;
+            ViewBag.CommentCount = comment.Data.Count();
 
             if (result.ResponseType == ResponseType.NotFound)
             {

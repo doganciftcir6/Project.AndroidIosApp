@@ -19,6 +19,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<List<GetBlogDto>>> GetAllAsync();
         Task<IDataResponse<List<GetBlogDto>>> GetAllBySortingToCreateDateAsync();
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
+        Task<IDataResponse<GetBlogDto>> GetByIdWithProjectUserCommentAsync(int id);
     }
 
 }

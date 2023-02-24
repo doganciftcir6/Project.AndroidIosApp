@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.TestHelper;
+using Microsoft.EntityFrameworkCore;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers.Constans;
 using Project.AndroidIosApp.Business.Extensions;
@@ -63,6 +64,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             //dto.Title = data.Title;
             //dto.Subtitle = data.Subtitle;
             //dto.Description = data.Description;
+            //dto.Description2 = data.Description2;
+            //dto.Description3 = data.Description3;
+            //dto.Description4 = data.Description4;
             //dto.Company = data.Company;
             //dto.Image1 = data.Image1;
             //dto.Image2 = data.Image2;
@@ -84,6 +88,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Title = entity.Title,
                     Subtitle = entity.Subtitle,
                     Description = entity.Description,
+                    Description2 = entity.Description2,
+                    Description3 = entity.Description3,
+                    Description4 = entity.Description4,
                     Company = entity.Company,
                     Image1 = entity.Image1,
                     Image2 = entity.Image2,
@@ -106,6 +113,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Title = entity.Title,
                     Subtitle = entity.Subtitle,
                     Description = entity.Description,
+                    Description2 = entity.Description2,
+                    Description3 = entity.Description3,
+                    Description4 = entity.Description4,
                     Company = entity.Company,
                     Image1 = entity.Image1,
                     Image2 = entity.Image2,
@@ -127,6 +137,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 entity.Title = dto.Title;
                 entity.Subtitle = dto.Subtitle;
                 entity.Description = dto.Description;
+                entity.Description2 = dto.Description2;
+                entity.Description3 = dto.Description3;
+                entity.Description4 = dto.Description4;
                 entity.Company = dto.Company;
                 entity.Image1 = dto.Image1;
                 entity.Image2 = dto.Image2;
@@ -157,6 +170,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Title = updateDto.Title,
                         Subtitle = updateDto.Subtitle,
                         Description = updateDto.Description,
+                        Description2 = updateDto.Description2,
+                        Description3 = updateDto.Description3,
+                        Description4 = updateDto.Description4,
                         Company = updateDto.Company,
                         Image1 = updateDto.Image1,
                         Image2 = updateDto.Image2,
@@ -173,6 +189,18 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 return new DataResponse<UpdateBlogDto>(ResponseType.ValidationError, updateDto, validationResult.ConverToCustomValidationError());
             }
            
+        }
+
+        public async Task<IDataResponse<GetBlogDto>> GetByIdWithProjectUserCommentAsync(int id)
+        {
+            var query = _uow.GetRepository<Blog>().GetQuery();
+            var data = await query.Where(x => x.Id == id).Include(x => x.BlogComments).ThenInclude(x => x.ProjectUser).FirstOrDefaultAsync();
+            var mappingData = _mapper.Map<GetBlogDto>(data);
+            if(mappingData != null)
+            {
+                return new DataResponse<GetBlogDto>(ResponseType.Success, mappingData);
+            }
+            return new DataResponse<GetBlogDto>(ResponseType.NotFound, $"{id} {BlogMessages.NotFoundIdBlog}");
         }
     }
 }

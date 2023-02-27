@@ -26,8 +26,6 @@ namespace Project.AndroidIosApp.DataAccess.Contexts.EntityFramework
         public DbSet<ProjectUserRole> ProjectUserRoles { get; set; }
         public DbSet<SocialMedia> SocialMedias { get; set; }
         public DbSet<Support> Supports { get; set; }
-        public DbSet<SupportUser> SupportUsers { get; set; }
-        public DbSet<SupportUserSupport> SupportUserSupports { get; set; }
         public DbSet<OS> GetOS { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -42,8 +40,6 @@ namespace Project.AndroidIosApp.DataAccess.Contexts.EntityFramework
             modelBuilder.ApplyConfiguration(new DeviceConfiguration());
             modelBuilder.ApplyConfiguration(new SocialMediaConfiguration());
             modelBuilder.ApplyConfiguration(new SupportConfiguration());
-            modelBuilder.ApplyConfiguration(new SupportUserSupportConfiguration());
-            modelBuilder.ApplyConfiguration(new SupportUserConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectUserConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectRoleConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectUserRoleConfiguration());

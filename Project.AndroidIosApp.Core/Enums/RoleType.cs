@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Project.AndroidIosApp.Core.Enums
 {
-    public enum ResponseType
+    public enum RoleType
     {
-        Success,
-        ValidationError,
-        NotFound,
-        Error
+        Admin = 1,
+        Support = 2,
+        Member = 3,
     }
 }

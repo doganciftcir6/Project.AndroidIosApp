@@ -22,14 +22,15 @@
                             <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
                             <li><a asp-controller="Contact" asp-action="Index">Contacts</a></li>
                             <li><a asp-controller="Help" asp-action="Index">Help</a></li>
-                            <li><a asp-controller="SignUp" asp-action="Index">Sign Up</a></li>
+                            <li><a asp-controller="Auth" asp-action="SignUp">Sign Up</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
             <div class="col-lg-2">
                 <div class="header__right">
-                    <a href="Login/Index"><span class="icon_profile"></span></a>
+                    <a asp-controller="Auth" asp-action="SignIn"><span class="icon_profile"></span></a>
+                    <a asp-controller="Auth" asp-action="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
                 </div>
             </div>
         </div>

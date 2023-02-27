@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Views\Comment\" />
   </ItemGroup>
 
@@ -19,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Project.AndroidIosApp.Business\Project.AndroidIosApp.Business.csproj" />
     <ProjectReference Include="..\Project.AndroidIosApp.Core\Project.AndroidIosApp.Core.csproj" />
+    <ProjectReference Include="..\Project.AndroidIosApp.Dtos\Project.AndroidIosApp.Dtos.csproj" />
   </ItemGroup>
 
 </Project>

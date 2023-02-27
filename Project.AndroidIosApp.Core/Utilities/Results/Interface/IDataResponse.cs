@@ -10,6 +10,6 @@ namespace Project.AndroidIosApp.Core.Utilities.Results.Interface
     public interface IDataResponse<T> : IResponse
     {
         T Data { get; set; }
-        List<CustomValidationErrors> ValidationErrors { get; set; }
+        //List<CustomValidationErrors> ValidationErrors { get; set; }
     }
 }

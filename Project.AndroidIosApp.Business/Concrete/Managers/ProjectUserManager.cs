@@ -3,16 +3,19 @@ using FluentValidation;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers.Constans;
 using Project.AndroidIosApp.Business.Extensions;
+using Project.AndroidIosApp.Business.Helpers;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndroidIosApp.DataAccess.UnitOfWork;
 using Project.AndroidIosApp.Dtos.BlogDtos;
+using Project.AndroidIosApp.Dtos.ProjectRole;
 using Project.AndroidIosApp.Dtos.ProjectUser;
 using Project.AndroidIosApp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,13 +26,15 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
         private readonly IUow _uow;
         private readonly IValidator<CreateProjectUserDto> _createProjectUserValidator;
         private readonly IValidator<UpdateProjectUserDto> _updateProjectUserValidator;
+        private readonly IValidator<LoginProjectUserDto> _loginProjectUserValidator;
         private readonly IMapper _mapper;
-        public ProjectUserManager(IUow uow, IValidator<CreateProjectUserDto> createProjectUserValidator, IValidator<UpdateProjectUserDto> updateProjectUserValidator, IMapper mapper)
+        public ProjectUserManager(IUow uow, IValidator<CreateProjectUserDto> createProjectUserValidator, IValidator<UpdateProjectUserDto> updateProjectUserValidator, IMapper mapper, IValidator<LoginProjectUserDto> loginProjectUserValidator)
         {
             _uow = uow;
             _createProjectUserValidator = createProjectUserValidator;
             _updateProjectUserValidator = updateProjectUserValidator;
             _mapper = mapper;
+            _loginProjectUserValidator = loginProjectUserValidator;
         }
 
         public async Task<IResponse> DeleteAsync(int id)
@@ -46,7 +51,6 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 return new Response(ResponseType.NotFound, ProjectUserMessages.NotDeletedProjectUser);
             }
         }
-
         public async Task<IDataResponse<List<GetProjectUserDto>>> GetAllAsync()
         {
             var data = await _uow.GetRepository<ProjectUser>().GetAllAsync();
@@ -97,6 +101,24 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 return new DataResponse<IDto>(ResponseType.NotFound, $"{id} {ProjectUserMessages.NotFoundIdProjectUser}");
             }
         }
+        public async Task<IDataResponse<GetProjectUserDto>> FindByUserNameAsync(string userName)
+        {
+            var data = _mapper.Map<GetProjectUserDto>(await _uow.GetRepository<ProjectUser>().GetByFilterAsync(x => x.Username == userName));
+            if(data != null)
+            {
+                return new DataResponse<GetProjectUserDto>(ResponseType.Success, data);
+            }
+            return new DataResponse<GetProjectUserDto>(ResponseType.NotFound, $"{userName} {ProjectUserMessages.NotFoundUserNameProjectUser}");
+        }
+        public async Task<IDataResponse<GetProjectUserDto>> FindByEmailAsync(string email)
+        {
+            var data = _mapper.Map<GetProjectUserDto>(await _uow.GetRepository<ProjectUser>().GetByFilterAsync(x => x.Email == email));
+            if(data != null)
+            {
+                return new DataResponse<GetProjectUserDto>(ResponseType.Success, data);
+            }
+            return new DataResponse<GetProjectUserDto>(ResponseType.NotFound, $"{email} {ProjectUserMessages.NotFoundEmailProjectUser}");
+        }
 
         public async Task<IDataResponse<CreateProjectUserDto>> InsertAsync(CreateProjectUserDto createProjectUserDto)
         {
@@ -122,8 +144,36 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             else
             {
                 return new DataResponse<CreateProjectUserDto>(ResponseType.ValidationError, createProjectUserDto, validationRule.ConverToCustomValidationError());
+            } 
+        }
+        public async Task<IResponse> InsertWithRoleAsync(CreateProjectUserDto createProjectUserDto, int roleId)
+        {
+            var validationRule = _createProjectUserValidator.Validate(createProjectUserDto);
+            if (validationRule.IsValid)
+            {
+                IResponse userInfChecks = RegisterRuleHelper.Run
+                (
+                    CheckUserNameExists(createProjectUserDto.Username),
+                    CheckEmailExists(createProjectUserDto.Email)
+                );
+                if(userInfChecks.ResponseType != ResponseType.Success)
+                {
+                    return userInfChecks;
+                }
+                else
+                {
+                    var user = _mapper.Map<ProjectUser>(createProjectUserDto);
+                    await _uow.GetRepository<ProjectUser>().InsertAsync(user);
+                    await _uow.GetRepository<ProjectUserRole>().InsertAsync(new ProjectUserRole()
+                    {
+                        ProjectUser = user,
+                        ProjectRoleId = roleId
+                    });
+                    await _uow.SaveChangesAsync();
+                    return new Response(ResponseType.Success, $"{ProjectUserMessages.SuccessRegister}");
+                }
             }
-          
+            return new Response(ResponseType.ValidationError, validationRule.ConverToCustomValidationError());
         }
 
         public async Task<IDataResponse<UpdateProjectUserDto>> UpdateAsync(UpdateProjectUserDto updateProjectUserDto)
@@ -160,5 +210,56 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 return new DataResponse<UpdateProjectUserDto>(ResponseType.ValidationError, updateProjectUserDto, validationResult.ConverToCustomValidationError());
             }
         }
+        
+        public async Task<IDataResponse<GetProjectUserDto>> CheckUserAsync(LoginProjectUserDto loginProjectUserDto)
+        {
+            var validationResult = _loginProjectUserValidator.Validate(loginProjectUserDto);
+            if (validationResult.IsValid)
+            {
+                var user = await _uow.GetRepository<ProjectUser>().GetByFilterAsync(x => x.Username == loginProjectUserDto.Username && x.Password == loginProjectUserDto.Password);
+                if (user != null)
+                {
+                    var projectUserDto = _mapper.Map<GetProjectUserDto>(user);
+                    return new DataResponse<GetProjectUserDto>(ResponseType.Success, projectUserDto);
+                }
+                return new DataResponse<GetProjectUserDto>(ResponseType.NotFound, $"{ProjectUserMessages.WrongUsernameOrPassword}");
+            }
+            return new DataResponse<GetProjectUserDto>(ResponseType.ValidationError, $"{ProjectUserMessages.NotNullUsernameOrPassword}");
+        }
+
+        public async Task<IDataResponse<List<GetProjectRoleDto>>> GetRolesByUserIdAsync(int userId)
+        {
+            var roles = await _uow.GetRepository<ProjectRole>().GetAllAsyncFilter(x => x.ProjectUserRoles.Any(x=> x.ProjectUserId == userId));
+            if(roles == null)
+            {
+                return new DataResponse<List<GetProjectRoleDto>>(ResponseType.NotFound, $"{ProjectUserMessages.NotFoundRole}");
+            }
+            var dto = _mapper.Map<List<GetProjectRoleDto>>(roles);
+            return new DataResponse<List<GetProjectRoleDto>>(ResponseType.Success, dto);
+        }
+
+
+
+        private IResponse CheckUserNameExists(string userName)
+        {
+            var query = _uow.GetRepository<ProjectUser>().GetQuery();
+            var list = query.Where(x => x.Username == userName).ToList();
+            if (list.Count > 0)
+            {
+                return new Response(ResponseType.Error,$"{ProjectUserMessages.RepeatUsername}");
+            }
+            return new Response(ResponseType.Success);
+        }
+        private IResponse CheckEmailExists(string email)
+        {
+            var query = _uow.GetRepository<ProjectUser>().GetQuery();
+            var list = query.Where(x => x.Email == email).ToList();
+            if (list.Count > 0)
+            {
+                return new Response(ResponseType.Error, $"{ProjectUserMessages.RepeatEmail}");
+            }
+            return new Response(ResponseType.Success);
+        }
+
     }
 }

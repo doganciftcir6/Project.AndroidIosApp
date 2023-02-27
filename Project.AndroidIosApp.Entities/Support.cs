@@ -14,8 +14,6 @@ namespace Project.AndroidIosApp.Entities
         //user ilişkisi(çok-bir bir supportun yalnızca bir user'ı)
         public int ProjectUserId { get; set; }
         public ProjectUser ProjectUser { get; set; }
-        //SupportUser ilişkisi(çoka-çok bir supportun birden çok usersapportu)
-        public List<SupportUserSupport> SupportUserSupports { get; set; }
         //Device ilişkisi(çok-bir bir supportun bir bir devicesi) 
         public int DeviceId { get; set; }
         public Device Device { get; set; }

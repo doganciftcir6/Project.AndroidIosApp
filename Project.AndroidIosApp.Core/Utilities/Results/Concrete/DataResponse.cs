@@ -11,7 +11,7 @@ namespace Project.AndroidIosApp.Core.Utilities.Results.Concrete
     public class DataResponse<T> : Response, IDataResponse<T>
     {
         public T Data { get; set; }
-        public List<CustomValidationErrors> ValidationErrors { get; set; }
+        //public List<CustomValidationErrors> ValidationErrors { get; set; }
 
 
         public DataResponse(ResponseType responseType, T data) : base(responseType)

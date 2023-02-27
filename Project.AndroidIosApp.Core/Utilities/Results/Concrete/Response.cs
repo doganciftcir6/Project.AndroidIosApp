@@ -12,7 +12,7 @@ namespace Project.AndroidIosApp.Core.Utilities.Results.Concrete
     {
         public string Meessage { get; set; }
         public ResponseType ResponseType { get; set; }
-
+        public List<CustomValidationErrors> ValidationErrors { get; set; }
 
         public Response(ResponseType responseType)
         {
@@ -24,6 +24,11 @@ namespace Project.AndroidIosApp.Core.Utilities.Results.Concrete
             Meessage = message;
 
         }
-     
+        public Response(ResponseType responseType, List<CustomValidationErrors> errors)
+        {
+            ResponseType = responseType;
+            ValidationErrors = errors;
+        }
+
     }
 }

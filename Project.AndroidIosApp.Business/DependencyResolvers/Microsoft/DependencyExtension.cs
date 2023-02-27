@@ -23,7 +23,6 @@ using Project.AndroidIosApp.Dtos.ProjectRole;
 using Project.AndroidIosApp.Dtos.ProjectUser;
 using Project.AndroidIosApp.Dtos.SocialMediaDtos;
 using Project.AndroidIosApp.Dtos.SupportDtos;
-using Project.AndroidIosApp.Dtos.SupportUserDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,29 +42,6 @@ namespace Project.AndroidIosApp.Business.DependencyResolvers.Microsoft
                 opt.UseSqlServer(configuration.GetConnectionString("Local"));
             });
 
-            //AutoMapper bağlantı
-            var auto = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new BlogProfile());
-                opt.AddProfile(new ContactBlogProfile());
-                opt.AddProfile(new DeviceProfile());
-                opt.AddProfile(new GenderProfile());
-                opt.AddProfile(new ProjectRoleProfile());
-                opt.AddProfile(new ProjectUserProfile());
-                opt.AddProfile(new ProjectUserRoleProfile());
-                opt.AddProfile(new SocialMediaProfile());
-                opt.AddProfile(new SupportProfile());
-                opt.AddProfile(new SupportUserProfile());
-                opt.AddProfile(new SupportUserSupportProfile());
-                opt.AddProfile(new OSProfile());
-                opt.AddProfile(new DeviceTypeProfile());
-                opt.AddProfile(new CommentProfile());
-                opt.AddProfile(new BlogCommentProfile());
-            });
-            var mapper = auto.CreateMapper();
-            //AutoMapper'ı dependecy ile ele almak için
-            services.AddSingleton(mapper);
-
             //scopes
             services.AddScoped<IUow, Uow>();
             services.AddScoped<IBlogService, BlogManager>();
@@ -77,8 +53,7 @@ namespace Project.AndroidIosApp.Business.DependencyResolvers.Microsoft
             services.AddScoped<IProjectUserRoleService, ProjectUserRoleManager>();
             services.AddScoped<ISocialMediaService, SocialMediaManager>();
             services.AddScoped<ISupportService, SupportManager>();
-            services.AddScoped<ISupportUserService,SupportUserManager>();
-            services.AddScoped<ISupportUserSupportService, SupportUserSupportManager>();
+
 
             services.AddScoped<IOSService, OSManager>();
             services.AddScoped<IDeviceTypeService, DeviceTypeManager>();
@@ -107,8 +82,6 @@ namespace Project.AndroidIosApp.Business.DependencyResolvers.Microsoft
             services.AddTransient<IValidator<UpdateSocialMediaDto>,UpdateSocialMediaDtoValidator>();
             services.AddTransient<IValidator<CreateSupportDto>,CreateSupportDtoValidator>();
             services.AddTransient<IValidator<UpdateSupportDto>,UpdateSupportDtoValidator>();
-            services.AddTransient<IValidator<CreateSupportUserDto>,CreateSupportUserDtoValidator>();
-            services.AddTransient<IValidator<UpdateSupportUserDto>,UpdateSupportUserDtoValidator>();
             services.AddTransient<IValidator<LoginProjectUserDto>,LoginProjectUserDtoValidator>();
 
             services.AddTransient<IValidator<CreateOSDto>,CreateOSDtoValidator>();

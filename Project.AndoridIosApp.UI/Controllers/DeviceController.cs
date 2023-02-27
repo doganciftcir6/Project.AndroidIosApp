@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Enums;
@@ -6,6 +7,7 @@ using Project.AndroidIosApp.Dtos.CommentDtos;
 using Project.AndroidIosApp.Dtos.DeviceDtos;
 using Project.AndroidIosApp.Entities;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Controllers
@@ -14,11 +16,15 @@ namespace Project.AndoridIosApp.UI.Controllers
     {
         private readonly IDeviceService _deviceService;
         private readonly ICommentService _commentService;
+        private readonly IProjectUserService _projectUserService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DeviceController(IDeviceService deviceService, ICommentService commentService)
+        public DeviceController(IDeviceService deviceService, ICommentService commentService, IProjectUserService projectUserService, IHttpContextAccessor httpContextAccessor)
         {
             _deviceService = deviceService;
             _commentService = commentService;
+            _projectUserService = projectUserService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -31,6 +37,12 @@ namespace Project.AndoridIosApp.UI.Controllers
             var result = await _deviceService.GetByIdWithOSDeviceTypeCommentAsync(id);
             var comment = await _commentService.GetAllCommentAsyncWithUser(id);
             var addcomment = id;
+            var user = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(user != null)
+            {
+            var intUserData = int.Parse(user);
+            ViewBag.User = intUserData;
+            }
 
             ViewBag.Comments = comment.Data;
             ViewBag.AddComment = addcomment;
@@ -41,27 +53,6 @@ namespace Project.AndoridIosApp.UI.Controllers
                 return NotFound();
             }
             return View(result.Data);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
-        {
-            createCommentDto.Status = true;
-            var response = await _commentService.InsertCommentAsync(createCommentDto);
-
-            if (response.ResponseType == ResponseType.NotFound)
-            {
-                return NotFound();
-            }
-            else if (response.ResponseType == ResponseType.ValidationError)
-            {
-                foreach (var item in response.ValidationErrors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-                //return response.Data;
-            }
-            return RedirectToAction("DeviceDetails", new RouteValueDictionary(
-              new { controller = "Device", action = "DeviceDetails", Id = createCommentDto.DeviceId }));
         }
     }
 }

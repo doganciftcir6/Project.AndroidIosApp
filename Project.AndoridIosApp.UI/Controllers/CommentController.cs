@@ -23,10 +23,7 @@ namespace Project.AndoridIosApp.UI.Controllers
         {
             return View();
         }
-        public IActionResult AddComment()
-        {
-            return View();
-        }
+
         [HttpPost]
         public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
         {

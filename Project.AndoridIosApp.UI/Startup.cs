@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Project.AndoridIosApp.UI.Mapping.AutoMapper;
 using Project.AndoridIosApp.UI.Models;
@@ -37,6 +38,8 @@ namespace Project.AndoridIosApp.UI
 
             //modelin FluenValidationu
             services.AddTransient <IValidator<UserCreateModel>, UserCreateModelValidator>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
             //login cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

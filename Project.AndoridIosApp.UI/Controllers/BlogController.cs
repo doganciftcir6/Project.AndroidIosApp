@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Dtos.BlogDtos;
@@ -6,6 +7,7 @@ using Project.AndroidIosApp.Dtos.Interfaces;
 using Project.AndroidIosApp.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Controllers
@@ -14,11 +16,13 @@ namespace Project.AndoridIosApp.UI.Controllers
     {
         private readonly IBlogService _blogService;
         private readonly IBlogCommentService _blogCommentService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BlogController(IBlogService blogService, IBlogCommentService blogCommentService)
+        public BlogController(IBlogService blogService, IBlogCommentService blogCommentService, IHttpContextAccessor httpContextAccessor)
         {
             _blogService = blogService;
             _blogCommentService = blogCommentService;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -31,6 +35,12 @@ namespace Project.AndoridIosApp.UI.Controllers
         {
             var result = await _blogService.GetByIdWithProjectUserCommentAsync(id);
             var blogComment = await _blogCommentService.GetAllBlogCommentWithUserAsync(id);
+            var user = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user != null)
+            {
+                var intUserData = int.Parse(user);
+                ViewBag.User = intUserData;
+            }
 
             ViewBag.Id = id;
             ViewBag.BlogComment = blogComment.Data;

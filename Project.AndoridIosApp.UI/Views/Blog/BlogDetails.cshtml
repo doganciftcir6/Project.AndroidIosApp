@@ -84,37 +84,50 @@
                         <h4>@ViewBag.CommentCount Comments</h4>
                         @foreach (var item in ViewBag.BlogComment)
                         {
-                           <div class="anime__review__item">
-                            <div class="anime__review__item__pic">
-                                <img src=@item.ProjectUser.ImageUrl alt="">
+                            <div class="anime__review__item">
+                                <div class="anime__review__item__pic">
+                                    <img src=@item.ProjectUser.ImageUrl alt="">
+                                </div>
+                                <div class="anime__review__item__text">
+                                    <h6>@item.ProjectUser.Firstname @item.ProjectUser.Lastname - <span>@item.CreateDate Hour ago</span></h6>
+                                    <p>
+                                        @item.Content
+                                    </p>
+                                </div>
                             </div>
-                            <div class="anime__review__item__text">
-                                <h6>@item.ProjectUser.Firstname @item.ProjectUser.Lastname - <span>@item.CreateDate Hour ago</span></h6>
-                                <p>
-                                    @item.Content
-                                </p>
-                            </div>
-                        </div>
                         }
                     </div>
 
                     @*yorumyap*@
                     <div class="blog__details__form">
                         <h4>Leave A Commnet</h4>
-                        <form asp-controller="BlogComment" asp-action="AddBlogComment" method="post">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <input type="text" name="BlogId" value="@ViewBag.Id"/>
-                                    <input type="text" name="ProjectUserId" value="@ViewBag.Id"/>
-                                    <textarea name="Content" placeholder="Message"></textarea>
-                                    <button type="submit" class="site-btn">Send Message</button>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="BlogComment" asp-action="AddBlogComment" method="post">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <input type="hidden" name="BlogId" value="@ViewBag.Id" />
+                                        <input type="hidden" name="ProjectUserId" value="@ViewBag.User" />
+                                        <textarea name="Content" placeholder="Message"></textarea>
+                                        <button type="submit" class="site-btn">Send Message</button>
+                                    </div>
                                 </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <h3>Uyarı!</h3>
+                                <p>Yorum yapmak için giriş yapmanız gerekmektedir. <a class="btn btn-sm btn-success ml-2" asp-controller="Auth" asp-action="SignIn">Giriş YAP</a></p>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
                             </div>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Blog Details Section End -->
+

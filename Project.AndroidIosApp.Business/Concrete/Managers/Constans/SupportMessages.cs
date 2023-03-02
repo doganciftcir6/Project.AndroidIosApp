@@ -12,5 +12,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers.Constans
         public static string NotDeletedSupport = "Support parametresi silinemedi çünkü Support bulanamadı.";
         public static string NotFoundSupport = "Support bulanamadı.";
         public static string NotFoundIdSupport = "Id'sine sahip Support bulanamadı.";
+        public static string NotFoundReceiverMessage = "Gelen herhangi bir mesajınız bulunmamaktadır.";
+        public static string NotFoundSenderMessage = "Gönderdiğiniz herhangi bir mesajınız bulunmamaktadır.";
     }
 }

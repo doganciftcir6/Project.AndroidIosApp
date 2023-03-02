@@ -87,7 +87,7 @@ namespace Project.AndoridIosApp.UI.Controllers
                         claims.Add(new Claim(ClaimTypes.Role, item.Definition));
                     }
                 }
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString()));
+                claims.Add(new Claim(ClaimTypes.Name, result.Data.Username));
                 var claimsIdentity = new ClaimsIdentity(
                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

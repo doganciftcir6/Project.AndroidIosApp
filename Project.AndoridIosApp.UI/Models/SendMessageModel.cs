@@ -1,22 +1,20 @@
-﻿using Project.AndroidIosApp.Dtos.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.AndroidIosApp.Dtos.SupportDtos
+namespace Project.AndoridIosApp.UI.Models
 {
-    public class UpdateSupportDto : IDto
+    public class SendMessageModel
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Sender { get; set; }
         public string Receiver { get; set; }
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
+        public DateTime Date { get; set; }
         public int ProjectUserId { get; set; }
+        public SelectList ProjectUsers { get; set; }
         public int DeviceId { get; set; }
+        public SelectList Devices { get; set; }
     }
 }

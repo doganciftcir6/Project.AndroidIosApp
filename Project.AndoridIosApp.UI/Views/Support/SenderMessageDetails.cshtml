@@ -1,0 +1,49 @@
+﻿@model Project.AndroidIosApp.Dtos.SupportDtos.GetSupportDto
+@{
+    Layout = "_MemberLayout";
+}
+
+<style>
+    .dark {
+        background-color: black;
+    }
+
+    th {
+       color: #F7E6DA;
+    }
+
+    td {
+        color: #F7E6DA;
+    }
+
+    h4 {
+        color: #F7E6DA;
+    }
+    label{
+        color: #F7E6DA;
+    }
+</style>
+
+<div class="col-lg-10 grid-margin stretch-card mb-5 container-fluid dark">
+    <div class="card dark">
+        <div class="card-body">
+            <h4 class="card-title">Mesaj Detay</h4>
+            <div> 
+                <input type="hidden" class="form-control" value="@Model.Id">
+                <br />
+                <label>Gönderen Adı</label>
+                <input class="form-control" value="@Model.SenderName">
+                <br />
+                <label>Gönderen Mail</label>
+                <input class="form-control" value="@Model.Sender">
+                <br />
+                <label>Mesaj</label>
+                <textarea class="form-control">@Model.Content</textarea>
+                <br />
+                <label>Cihaz Adı</label>
+                <input class="form-control" value="@Model.Device.DeviceName">
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

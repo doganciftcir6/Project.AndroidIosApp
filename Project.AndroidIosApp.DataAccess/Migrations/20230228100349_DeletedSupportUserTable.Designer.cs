@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.AndroidIosApp.DataAccess.Contexts.EntityFramework;
 
 namespace Project.AndroidIosApp.DataAccess.Migrations
 {
     [DbContext(typeof(AndroidIosContext))]
-    partial class AndroidIosContextModelSnapshot : ModelSnapshot
+    [Migration("20230228100349_DeletedSupportUserTable")]
+    partial class DeletedSupportUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -527,8 +529,8 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
@@ -540,26 +542,6 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
 
                     b.Property<int>("ProjectUserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Receiver")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
-
-                    b.Property<string>("ReceiverName")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
-
-                    b.Property<string>("Sender")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
-
-                    b.Property<string>("SenderName")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");

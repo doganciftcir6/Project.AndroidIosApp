@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers.Constans;
 using Project.AndroidIosApp.Business.Extensions;
@@ -8,6 +9,8 @@ using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndroidIosApp.DataAccess.UnitOfWork;
 using Project.AndroidIosApp.Dtos.BlogDtos;
+using Project.AndroidIosApp.Dtos.Interfaces;
+using Project.AndroidIosApp.Dtos.ProjectUser;
 using Project.AndroidIosApp.Dtos.SupportDtos;
 using Project.AndroidIosApp.Entities;
 using System;
@@ -53,6 +56,30 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             return new DataResponse<List<GetSupportDto>>(ResponseType.Success,data);
         }
 
+        public async Task<IDataResponse<List<GetSupportDto>>> GetAllByEmailReceiverAsync(string email)
+        {
+            var query = _uow.GetRepository<Support>().GetQuery();
+            var data = await query.Where(x => x.Receiver == email).Include(x => x.ProjectUser).Include(x => x.Device).ToListAsync();
+            var mappingData = _mapper.Map<List<GetSupportDto>>(data);
+            if(mappingData.Count > 0)
+            {
+            return new DataResponse<List<GetSupportDto>>(ResponseType.Success, mappingData);
+            }
+            return new DataResponse<List<GetSupportDto>>(ResponseType.NotFound, $"{SupportMessages.NotFoundReceiverMessage}");
+        }
+
+        public async Task<IDataResponse<List<GetSupportDto>>> GetAllByEmailSenderAsync(string email)
+        {
+            var query = _uow.GetRepository<Support>().GetQuery();
+            var data = await query.Where(x => x.Sender == email).Include(x => x.ProjectUser).Include(x => x.Device).ToListAsync();
+            var mappingData = _mapper.Map<List<GetSupportDto>>(data);
+            if(mappingData.Count > 0)
+            {
+                return new DataResponse<List<GetSupportDto>>(ResponseType.Success, mappingData);
+            }
+            return new DataResponse<List<GetSupportDto>>(ResponseType.NotFound, $"{SupportMessages.NotFoundSenderMessage}");
+        }
+
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
         {
             var data = _mapper.Map<IDto>(await _uow.GetRepository<Support>().GetByFilterAsync(x => x.Id == id));
@@ -66,18 +93,45 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             }
         }
 
+        public async Task<IDataResponse<GetSupportDto>> GetByIdWithUserAsync(int id)
+        {
+            var query = _uow.GetRepository<Support>().GetQuery();
+            var data = await query.Where(x => x.Id == id).Include(x => x.ProjectUser).Include(x => x.Device).FirstOrDefaultAsync();
+            var mappingData = _mapper.Map<GetSupportDto>(data);
+            if (data != null)
+            {
+                return new DataResponse<GetSupportDto>(ResponseType.Success, mappingData);
+            }
+            else
+            {
+                return new DataResponse<GetSupportDto>(ResponseType.NotFound, $"{id} {SupportMessages.NotFoundIdSupport}");
+            }
+        }
+
         public async Task<IDataResponse<CreateSupportDto>> InsertAsync(CreateSupportDto createSupportDto)
         {
-            var validationResult = _createSupportDtoValidator.Validate(createSupportDto);
-            if (validationResult.IsValid)
+            var validationRule = _createSupportDtoValidator.Validate(createSupportDto);
+            if (validationRule.IsValid)
             {
-                await _uow.GetRepository<Support>().InsertAsync(_mapper.Map<Support>(createSupportDto));
+                var entity = new Support()
+                {
+                    Title = createSupportDto.Title,
+                    Content = createSupportDto.Content,
+                    Sender = createSupportDto.Sender,
+                    SenderName = createSupportDto.SenderName,
+                    Receiver = createSupportDto.Receiver,
+                    ReceiverName = createSupportDto.SenderName,
+                    Date = createSupportDto.Date,
+                    ProjectUserId = createSupportDto.ProjectUserId,
+                    DeviceId = createSupportDto.DeviceId,
+                };
+                await _uow.GetRepository<Support>().InsertAsync(entity);
                 await _uow.SaveChangesAsync();
                 return new DataResponse<CreateSupportDto>(ResponseType.Success, createSupportDto);
             }
             else
             {
-                return new DataResponse<CreateSupportDto>(ResponseType.ValidationError, createSupportDto, validationResult.ConverToCustomValidationError());
+                return new DataResponse<CreateSupportDto>(ResponseType.ValidationError, createSupportDto, validationRule.ConverToCustomValidationError());
             }
         }
 

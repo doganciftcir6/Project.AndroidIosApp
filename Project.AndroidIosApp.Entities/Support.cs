@@ -10,6 +10,10 @@ namespace Project.AndroidIosApp.Entities
     {
         public string Title { get; set; }
         public string Content { get; set; }
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+        public string SenderName { get; set; }
+        public string ReceiverName { get; set; }
         public DateTime Date { get; set; }
         //user ilişkisi(çok-bir bir supportun yalnızca bir user'ı)
         public int ProjectUserId { get; set; }

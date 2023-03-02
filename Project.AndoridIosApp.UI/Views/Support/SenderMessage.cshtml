@@ -1,0 +1,62 @@
+﻿@model List<Project.AndroidIosApp.Dtos.SupportDtos.GetSupportDto>
+@{
+    Layout = "_MemberLayout";
+}
+
+<style>
+    .dark {
+        background-color: black;
+    }
+
+    th {
+        color: #F7E6DA;
+    }
+
+    td {
+        color: #F7E6DA;
+    }
+
+    h4 {
+        color: #F7E6DA;
+    }
+</style>
+
+
+<div>
+    @if (Model != null)
+    {
+        <div class="col-lg-10 grid-margin stretch-card mb-5 container-fluid dark">
+            <div class="card dark">
+                <div class="card-body">
+                    <h4 class="card-title">Giden Kutusu</h4>
+                    <div class="table-responsive">
+                        <table class="table dark">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Konu</th>
+                                    <th>Alıcı</th>
+                                    <th>Tarih</th>
+                                    <th>Detaylar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th>@item.Receiver</th>
+                                        <td>@item.Title</td>
+                                        <td>@item.ReceiverName</td>
+                                        <td>@(((DateTime)item.Date).ToString("dd-MMM-yyyy"))</td>
+                                        <td><a asp-controller="Support" asp-action="SenderMessageDetails" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Mesajı Gör</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div asp-validation-summary="All"></div>
+</div>

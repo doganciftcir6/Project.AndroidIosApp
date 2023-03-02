@@ -38,6 +38,7 @@ namespace Project.AndoridIosApp.UI
 
             //modelin FluenValidationu
             services.AddTransient <IValidator<UserCreateModel>, UserCreateModelValidator>();
+            services.AddTransient<IValidator<SendMessageModel>, SendMessageModelValidator>();  
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
@@ -60,6 +61,7 @@ namespace Project.AndoridIosApp.UI
             //automapper
             var profiles = MapperHelper.GetProfiles();
             profiles.Add(new UserCreateModelProfile());
+            profiles.Add(new SendMessageModelProfile());
             var configurations = new MapperConfiguration(opt =>
             {
                 opt.AddProfiles(profiles);

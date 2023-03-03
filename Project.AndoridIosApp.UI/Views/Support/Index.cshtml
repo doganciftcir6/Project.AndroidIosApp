@@ -9,18 +9,18 @@
             <div class="col-md-9">
                 <h2 class="alert alert-light">Aklınıza takılan sorular mı var?</h2>
                 <br />
-                <h3>Endişelenmeyin sizler için buradayız. Aklınızdaki soruları gidermek için destek elemanlarımıza mesaj atarak onlardan en doğru cevapları almanız mümkün. </h3>
+                <h3>Endişelenmeyin sizler için buradayız. Aklınızdaki soruları gidermek için destek çalışanlarımıza mesaj atarak onlardan en doğru cevapları almanız mümkün. </h3>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <br />
                     <h3>
-                        Ancak destek elemanlarımıza ulaşmak için sayfamıza giriş yapmanız gerekmektedir.
+                        Ancak destek çalışanlarımıza ulaşmak için sayfamıza giriş yapmanız gerekmektedir.
                     </h3>
                 }
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <br />
-                    <span><i class="fa-light fa-right-to-bracket"></i> <a class="btn btn-primary font-weight-bold text-light" asp-controller="Auth" asp-action="SignIn">Hemen giriş yapın!</a></span>
+                    <span><a class="btn btn-primary font-weight-bold text-light" style="margin-left:780px;" asp-controller="Auth" asp-action="SignIn">Hemen giriş yapın!</a></span>
                 }
                 <br />
                 <div class="rounded mt-3" style="height:600px; width:600px;">

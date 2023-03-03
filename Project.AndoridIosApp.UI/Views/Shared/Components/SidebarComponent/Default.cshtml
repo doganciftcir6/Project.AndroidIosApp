@@ -11,14 +11,14 @@
             {
                 <div class="product__sidebar__comment__item">
                     <div class="product__sidebar__comment__item__pic">
-                        <img src="~/androidiostema/img/sidebar/comment-1.jpg" alt="">
+                        <img style="height:150px; width:90px;" src="@item.Image1" alt="">
                     </div>
                     <div class="product__sidebar__comment__item__text">
                         <ul>
                             <li><i class="fa-solid fa-blog"></i> Blog</li>
                             <li>@item.Company</li>
                         </ul>
-                        <h5><a href="#">@item.Title</a></h5>
+                        <h5><a href="Blog/BlogDetails/@item.Id">@item.Title</a></h5>
                         <span><i class="fa-solid fa-clock"></i>@item.CreateDate</span>
                     </div>
                 </div>

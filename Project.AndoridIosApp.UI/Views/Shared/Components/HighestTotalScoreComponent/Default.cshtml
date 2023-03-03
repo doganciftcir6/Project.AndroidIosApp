@@ -28,7 +28,7 @@
                             <ul>
                                 <li>@item.DeviceType.Definition</li>
                             </ul>
-                            <h5><a href="#">@item.DeviceName</a></h5>
+                            <h5><a asp-controller="Device" asp-action="DeviceDetails" asp-route-id="@item.Id">@item.DeviceName</a></h5>
                         </div>
                     </div>
                 </div>

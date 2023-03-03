@@ -11,7 +11,7 @@
         <div class="product__sidebar__view__item set-bg" data-setbg="@item.Image1">
             <div class="ep">Blog</div>
             <div class="view"><i class="fa fa-eye"></i> @item.CreateDate</div>
-            <h5><a href="Blog/Index">@item.Title</a></h5>
+            <h5><a asp-controller="Blog" asp-action="BlogDetails" asp-route-id="@item.Id">@item.Title</a></h5>
         </div>
         }
     </div>

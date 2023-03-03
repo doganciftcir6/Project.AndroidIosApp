@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "_MemberLayout";
+}
+
+<div class="container-fluid">
+    @if (!User.IsInRole("SupportUser"))
+    {
+        <div class="row">
+            <div class="col-md-9">
+                <h2 class="alert alert-light">Aklınıza takılan sorular mı var?</h2>
+                <br />
+                <h3>Endişelenmeyin sizler için buradayız. Aklınızdaki soruları gidermek için destek elemanlarımıza mesaj atarak onlardan en doğru cevapları almanız mümkün. </h3>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <br />
+                    <h3>
+                        Ancak destek elemanlarımıza ulaşmak için sayfamıza giriş yapmanız gerekmektedir.
+                    </h3>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <br />
+                    <span><i class="fa-light fa-right-to-bracket"></i> <a class="btn btn-primary font-weight-bold text-light" asp-controller="Auth" asp-action="SignIn">Hemen giriş yapın!</a></span>
+                }
+                <br />
+                <div class="rounded mt-3" style="height:600px; width:600px;">
+                    <img src="~/img/destek.gif" />
+                </div>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-md-3">
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Gelen Kutuma Gitmek İçin</h4>
+                        <a asp-controller="Support" asp-action="ReceiverMessage" class="btn btn-outline-primary">Gelen Kutusu</a>
+                    </div>
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Giden Kutuma Gitmek İçin</h4>
+                        <a asp-controller="Support" asp-action="SenderMessage" class="btn btn-outline-primary">Giden Kutusu</a>
+                    </div>
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Yeni Bir Destek Mesajı Oluşturun</h4>
+                        <a asp-controller="Support" asp-action="SendMessage" class="btn btn-outline-primary">Destek Mesajı Gönder</a>
+                    </div>
+
+                </div>
+            }
+        </div>
+    }
+    @if (User.IsInRole("SupportUser"))
+    {
+        <div class="row">
+            <div class="col-md-9">
+                <h2 class="alert alert-light">Kullanıcılarımıza Destekte Bulunun...</h2>
+                <br />
+                <h3>Kullanıcılarımızın aklına takılan sorulara en doğru cevapları vereceğinizden eminiz. Lütfen sizi üzen ve olumsuz etkileyen bir durumla karşılaştığınızda veya bize önerileriniz olursa fikirlerinizi bizimle paylaşmak için Contact kısmından bizimle iletişime geçmekten çekinmeyin. </h3>
+                <br />
+                <div class="rounded" style="height:600px; width:600px;">
+                    <img src="~/img/destek.gif" />
+                </div>
+            </div>
+                <div class="col-md-3">
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Gelen Kutuma Gitmek İçin</h4>
+                        <a asp-controller="Support" asp-action="ReceiverMessage" class="btn btn-outline-primary">Gelen Kutusu</a>
+                    </div>
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Giden Kutuma Gitmek İçin</h4>
+                        <a asp-controller="Support" asp-action="SenderMessage" class="btn btn-outline-primary">Giden Kutusu</a>
+                    </div>
+                    <div class="mb-5 alert alert-info">
+                        <h4 class="mb-2">Yeni Bir Destek Mesajı Oluşturun</h4>
+                        <a asp-controller="Support" asp-action="SendMessage" class="btn btn-outline-primary">Destek Mesajı Gönder</a>
+                    </div>
+
+                </div>
+        </div>
+    }
+</div>

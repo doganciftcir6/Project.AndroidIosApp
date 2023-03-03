@@ -4,12 +4,14 @@
 }
 
 <style>
-    h2{
+    h2 {
         color: #F7E6DA;
     }
 </style>
 
-<div class="alet alert-warning" asp-validation-summary="All"></div>
+<div class="container font-weight-bold">
+    <div class="alet alert-warning" asp-validation-summary="All"></div>
+</div>
 
 @if (User.IsInRole("Member"))
 {
@@ -55,37 +57,37 @@
 @if (User.IsInRole("SupportUser"))
 {
     <form asp-controller="Support" asp-action="SendMessage" class="form-group" method="post">
-    <div class="container-fluid">
-        <h2>Kullanıcılarımızın Destek Taleplerine Cevap Verin</h2>
-        <br />
-        <div class="row">
-            <div class="col-md-8">
-                <h5>Receiver Mail</h5>
-                <input type="email" asp-for="Receiver" class="form-control">
-                <br />
-                <h5>Title</h5>
-                <input type="text" asp-for="Title" class="form-control">
-                <br />
-                <h5>Message</h5>
-                <textarea asp-for="Content" class="form-control"></textarea>
-                <div class="mb-4">
-                    <h5>Device</h5>
-                    <select class="form-select" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
-                        <option value="0">Bir Cihaz seçiniz.</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary" style="margin-left:900px;">Gönder</button>
+        <div class="container-fluid">
+            <h2>Kullanıcılarımızın Destek Taleplerine Cevap Verin</h2>
+            <br />
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Receiver Mail</h5>
+                    <input type="email" asp-for="Receiver" class="form-control">
+                    <br />
+                    <h5>Title</h5>
+                    <input type="text" asp-for="Title" class="form-control">
+                    <br />
+                    <h5>Message</h5>
+                    <textarea asp-for="Content" class="form-control"></textarea>
+                    <div class="mb-4">
+                        <h5>Device</h5>
+                        <select class="form-select" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
+                            <option value="0">Bir Cihaz seçiniz.</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" style="margin-left:900px;">Gönder</button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="alert alert-info">
-                    <h4 class="text-danger">Uyarı!</h4>
-                    <h3>Sevgili destek çalışanlarımız, Sizlere gönderilen destek taleplerine cevap mesajı gönderirken alıcının email adresini eksiksiz şekilde yazmaya, kullanıcının hangi cihaz hakkında soru sorduğunu doğru şekilde seçmeye lütfen özen gösteriniz! </h3>
-                    <br />
-                    <br />
-                    <h4 class="text-warning">Kullanıcılarımıza sağladığınız destekler için teşekkür ederiz!</h4>
+                <div class="col-md-4">
+                    <div class="alert alert-info">
+                        <h4 class="text-danger">Uyarı!</h4>
+                        <h3>Sevgili destek çalışanlarımız, Sizlere gönderilen destek taleplerine cevap mesajı gönderirken alıcının email adresini eksiksiz şekilde yazmaya, kullanıcının hangi cihaz hakkında soru sorduğunu doğru şekilde seçmeye lütfen özen gösteriniz! </h3>
+                        <br />
+                        <br />
+                        <h4 class="text-warning">Kullanıcılarımıza sağladığınız destekler için teşekkür ederiz!</h4>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </form>
 }

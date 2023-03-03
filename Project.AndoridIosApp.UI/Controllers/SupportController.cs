@@ -40,6 +40,10 @@ namespace Project.AndoridIosApp.UI.Controllers
             _context = context;
             _mapper = mapper;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
         [Authorize(Roles = "Member, SupportUser")]
         public async Task<IActionResult> ReceiverMessage()
         {

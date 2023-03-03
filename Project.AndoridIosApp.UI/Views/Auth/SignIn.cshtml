@@ -3,8 +3,6 @@
     Layout = "_MemberLayout";
 }
 
-<div asp-validation-summary="All"></div>
-
 <!-- Normal Breadcrumb Begin -->
 <section class="normal-breadcrumb set-bg" data-setbg="/img/login.jpg">
     <div class="container">
@@ -20,6 +18,8 @@
 </section>
 <!-- Normal Breadcrumb End -->
 <!-- Login Section Begin -->
+<div class="alert alert-danger mt-4" asp-validation-summary="ModelOnly"></div>
+
 <section class="login spad">
     <div class="container">
         <div class="row">

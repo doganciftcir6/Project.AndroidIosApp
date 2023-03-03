@@ -103,7 +103,7 @@ namespace Project.AndoridIosApp.UI.Controllers
                 return RedirectToAction("Index", "Home");
             }
             //login işlemi gerçekleşmez
-            ModelState.AddModelError("Kulanıcı adı veya şifre hatalı", result.Meessage);
+            ModelState.AddModelError("", result.Meessage);
             return View(loginProjectUserDto);
         }
         public async Task<IActionResult> LogOut()

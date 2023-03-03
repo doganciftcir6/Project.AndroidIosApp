@@ -41,12 +41,12 @@
                         <h5>Name</h5>
                         <div class="input__item">
                             <input type="text" placeholder="Your Name" asp-for="@Model.Firstname">
-                            <span class="icon_profile"></span>
+                            <span><i class="fa-sharp fa-solid fa-user"></i></span>
                         </div>
                         <h5>Lastname</h5>
                         <div class="input__item">
                             <input type="text" placeholder="Your LastName" asp-for="@Model.Lastname">
-                            <span class="icon_profile"></span>
+                            <span><i class="fa-sharp fa-regular fa-user"></i></span>
                         </div>
                         <h5>Gender</h5>
                         <div class="mb-3">
@@ -70,11 +70,12 @@
                             <h5>Phone</h5>
                             <div class="input__item">
                                 <input type="text" placeholder="Phone Number" asp-for="@Model.PhoneNumber">
-                                <span class="icon_lock"></span>
+                                <span><i class="fa-sharp fa-solid fa-phone-volume"></i></span>
                             </div>
                             <h5>Image</h5>
                             <div class="input__item">
                                 <input class="form-control" type="file" asp-for="@Model.ImageUrl">
+                                <span><i class="fa-solid fa-image"></i></span>
                             </div>
                         </div>
                     </div>

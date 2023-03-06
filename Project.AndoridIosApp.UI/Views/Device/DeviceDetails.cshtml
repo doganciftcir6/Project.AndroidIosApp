@@ -89,7 +89,7 @@
                     {
                         <div class="anime__review__item">
                             <div class="anime__review__item__pic">
-                                <img src=@item.ProjectUser.ImageUrl alt="">
+                                <img src="~/userImage/@item.ProjectUser.ImageUrl" alt="">
                             </div>
                             <div class="anime__review__item__text">
                                 <h6>@item.ProjectUser.Firstname @item.ProjectUser.Lastname - <span>@item.CreateDate Hour ago</span></h6>
@@ -109,7 +109,7 @@
                     {
                         <form asp-controller="Comment" asp-action="AddComment" method="post">
                             <input type="hidden" name="DeviceId" value="@ViewBag.AddComment" />
-                            <input type="hidden" name="ProjectUserId" value="@ViewBag.User" />
+                            <input type="hidden" name="ProjectUserId" value="@ViewBag.UserId" />
                             <textarea placeholder="Your Comment" name="Content"></textarea>
                             <button type="submit"><i class="fa fa-location-arrow"></i> Send</button>
                         </form>

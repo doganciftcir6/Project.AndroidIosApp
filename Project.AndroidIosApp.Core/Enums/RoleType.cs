@@ -9,7 +9,7 @@ namespace Project.AndroidIosApp.Core.Enums
     public enum RoleType
     {
         Admin = 1,
-        Support = 2,
-        Member = 3,
+        Member = 2,
+        SupportUser = 3,
     }
 }

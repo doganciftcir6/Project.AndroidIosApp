@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Comment\" />
+    <Folder Include="wwwroot\userImage\" />
   </ItemGroup>
 
   <ItemGroup>

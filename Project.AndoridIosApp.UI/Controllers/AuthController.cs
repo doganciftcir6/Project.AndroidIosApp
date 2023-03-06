@@ -13,6 +13,9 @@ using Project.AndroidIosApp.Dtos.ProjectUser;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -22,12 +25,14 @@ namespace Project.AndoridIosApp.UI.Controllers
         private readonly IValidator<UserCreateModel> _userCreateModelValidator;
         private readonly IProjectUserService _projectUserService;
         private readonly IMapper _mapper;
-        public AuthController(IGenderService genderService, IValidator<UserCreateModel> userCreateModelValidator, IProjectUserService projectUserService, IMapper mapper)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public AuthController(IGenderService genderService, IValidator<UserCreateModel> userCreateModelValidator, IProjectUserService projectUserService, IMapper mapper, IHostingEnvironment hostingEnvironment)
         {
             _genderService = genderService;
             _userCreateModelValidator = userCreateModelValidator;
             _projectUserService = projectUserService;
             _mapper = mapper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IActionResult> SignUp()
@@ -45,7 +50,27 @@ namespace Project.AndoridIosApp.UI.Controllers
             var validation = _userCreateModelValidator.Validate(userCreateModel);
             if (validation.IsValid)
             {
-                var dto = _mapper.Map<CreateProjectUserDto>(userCreateModel);
+                var dto = new CreateProjectUserDto();
+
+                if (userCreateModel.ImageUrl != null)
+                {
+                    //upload burada olacak çünkü ıformfile modelde verdim.
+                    var fileName = Guid.NewGuid().ToString();
+                    var extName = Path.GetExtension(userCreateModel.ImageUrl.FileName);
+                    string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage" , fileName + extName);
+                    var stream = new FileStream(path, FileMode.Create);
+                    await userCreateModel.ImageUrl.CopyToAsync(stream);
+                    dto.ImageUrl = fileName+extName;
+                }
+                dto.Username = userCreateModel.Username;
+                dto.Firstname = userCreateModel.Firstname;
+                dto.Lastname = userCreateModel.Lastname;
+                dto.Password = userCreateModel.Password;
+                dto.PasswordVerify = userCreateModel.PasswordVerify;
+                dto.PhoneNumber = userCreateModel.PhoneNumber;
+                dto.Email = userCreateModel.Email;
+                dto.GenderId = userCreateModel.GenderId;
+
                 var data = await _projectUserService.InsertWithRoleAsync(dto,(int)RoleType.Member);
                 if(data.ResponseType == ResponseType.Error)
                 {

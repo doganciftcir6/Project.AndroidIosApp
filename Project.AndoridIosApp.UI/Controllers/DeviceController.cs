@@ -37,11 +37,12 @@ namespace Project.AndoridIosApp.UI.Controllers
             var result = await _deviceService.GetByIdWithOSDeviceTypeCommentAsync(id);
             var comment = await _commentService.GetAllCommentAsyncWithUser(id);
             var addcomment = id;
-            var user = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if(user != null)
+            //login olmuş kişiyi bulmak
+            var loginUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
+            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
+            if(loginUser.ResponseType == ResponseType.Success)
             {
-            var intUserData = int.Parse(user);
-            ViewBag.User = intUserData;
+                 ViewBag.UserId = loginUser.Data.Id;
             }
 
             ViewBag.Comments = comment.Data;

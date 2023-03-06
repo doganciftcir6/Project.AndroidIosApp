@@ -17,12 +17,14 @@ namespace Project.AndoridIosApp.UI.Controllers
         private readonly IBlogService _blogService;
         private readonly IBlogCommentService _blogCommentService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IProjectUserService _projectUserService;
 
-        public BlogController(IBlogService blogService, IBlogCommentService blogCommentService, IHttpContextAccessor httpContextAccessor)
+        public BlogController(IBlogService blogService, IBlogCommentService blogCommentService, IHttpContextAccessor httpContextAccessor, IProjectUserService projectUserService)
         {
             _blogService = blogService;
             _blogCommentService = blogCommentService;
             _httpContextAccessor = httpContextAccessor;
+            _projectUserService = projectUserService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -35,11 +37,12 @@ namespace Project.AndoridIosApp.UI.Controllers
         {
             var result = await _blogService.GetByIdWithProjectUserCommentAsync(id);
             var blogComment = await _blogCommentService.GetAllBlogCommentWithUserAsync(id);
-            var user = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (user != null)
+            //login olmuş kişiyi bulmak
+            var loginUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
+            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
+            if (loginUser.ResponseType == ResponseType.Success)
             {
-                var intUserData = int.Parse(user);
-                ViewBag.User = intUserData;
+                ViewBag.UserId = loginUser.Data.Id;
             }
 
             ViewBag.Id = id;

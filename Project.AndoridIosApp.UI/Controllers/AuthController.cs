@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Project.AndroidIosApp.Core.Utilities.Results.Interface;
+using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
+using Project.AndoridIosApp.UI.Helpers;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -54,14 +57,32 @@ namespace Project.AndoridIosApp.UI.Controllers
 
                 if (userCreateModel.ImageUrl != null)
                 {
-                    //upload burada olacak çünkü ıformfile modelde verdim.
-                    var fileName = Guid.NewGuid().ToString();
-                    var extName = Path.GetExtension(userCreateModel.ImageUrl.FileName);
-                    string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage" , fileName + extName);
-                    var stream = new FileStream(path, FileMode.Create);
-                    await userCreateModel.ImageUrl.CopyToAsync(stream);
-                    dto.ImageUrl = fileName+extName;
+                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    (
+                        CheckImageName(userCreateModel.ImageUrl.FileName),
+                        CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
+                        CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
+                    );
+                    if(imageRuleChecks.ResponseType == ResponseType.Success)
+                    {
+                        //upload burada olacak çünkü ıformfile modelde verdim.
+                        var fileName = Guid.NewGuid().ToString();
+                        var extName = Path.GetExtension(userCreateModel.ImageUrl.FileName);
+                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
+                        var stream = new FileStream(path, FileMode.Create);
+                        await userCreateModel.ImageUrl.CopyToAsync(stream);
+                        dto.ImageUrl = fileName + extName;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", imageRuleChecks.Meessage);
+                        //checklerda hata var hata mesajı gitsin ama aynı azamanda genderlist kaybolmamalı
+                        var response3 = await _genderService.GetAllAsync();
+                        userCreateModel.Genders = new SelectList(response3.Data, "Id", "Definition", userCreateModel.GenderId);
+                        return View(userCreateModel);
+                    }
                 }
+
                 dto.Username = userCreateModel.Username;
                 dto.Firstname = userCreateModel.Firstname;
                 dto.Lastname = userCreateModel.Lastname;
@@ -140,6 +161,37 @@ namespace Project.AndoridIosApp.UI.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+
+        private IResponse CheckIfImageExtensionsAllow(string fileName)
+        {
+            var ext = fileName.Substring(fileName.LastIndexOf('.'));
+            var extension = ext.ToLower();
+            List<string> allowFileExtensions = new List<string>() { ".jpg", ".jpeg", ".gif", ".png" };
+
+            if (!allowFileExtensions.Contains(extension))
+            {
+                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim .jpg, .jpeg, .gif, .png türlerinden birisi olmalıdır! ");
+            }
+            return new Response(ResponseType.Success);
+        }
+        private IResponse CheckIfImageSizeIsLessThanOneMb(long imageSize)
+        {
+            decimal imgMbSize = Convert.ToDecimal(imageSize * 0.000001);
+            if(imgMbSize > 1)
+            {
+                return new Response(ResponseType.Error, "Yüklediğiniz resim boyutu 1 mb'dan düşük olmalıdır!");
+            }
+            return new Response(ResponseType.Success);
+        }
+        private IResponse CheckImageName(string fileName)
+        {
+            if(fileName.Contains("/") || fileName.Contains("<") || fileName.Contains(">") || fileName.Contains("%2F")|| fileName.Contains("%5C"))
+            {
+                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim ismi /, <, >, %2F, %5C karakterlerini içeremez!");
+            }
+            return new Response(ResponseType.Success);
         }
     }
 }

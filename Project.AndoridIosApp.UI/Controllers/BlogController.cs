@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Enums;
@@ -55,6 +56,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             }
             return View(result.Data);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Insert()
         {

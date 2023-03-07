@@ -80,6 +80,9 @@ namespace Project.AndoridIosApp.UI
                 app.UseDeveloperExceptionPage();
             }
 
+            //error site
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/Error404/");
+
             app.UseStaticFiles();
 
             app.UseRouting();

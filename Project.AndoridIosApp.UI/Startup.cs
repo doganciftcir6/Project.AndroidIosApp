@@ -83,6 +83,7 @@ namespace Project.AndoridIosApp.UI
             //error site
             app.UseStatusCodePagesWithReExecute("/ErrorPage/Error404/");
 
+
             app.UseStaticFiles();
 
             app.UseRouting();

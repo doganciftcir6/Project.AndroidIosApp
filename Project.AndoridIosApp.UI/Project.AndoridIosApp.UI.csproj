@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Views\Comment\" />
     <Folder Include="wwwroot\userImage\" />
   </ItemGroup>

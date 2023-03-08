@@ -1,0 +1,32 @@
+﻿@model List<Project.AndroidIosApp.Dtos.BlogDtos.GetBlogDto>
+
+<div class="col-md-6">
+    <div class="dark_bg full margin_bottom_30">
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Recently Added Blog</h2>
+            </div>
+        </div>
+        <div class="full graph_revenue">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content testimonial">
+                        <div id="testimonial_slider" class="carousel slide" data-ride="carousel">
+                            <!-- Wrapper for carousel items -->
+                                @foreach (var item in Model.Take(1))
+                                {
+                                <div class="carousel-inner">
+                                    <div class="item carousel-item active">
+                                    <div class="img-box"><img src="@item.Image1" alt=""></div>
+                                    <p class="testimonial">@item.Title</p>
+                                    <p class="overview"><b>@item.Company</b>Writer</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

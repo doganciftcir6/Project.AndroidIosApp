@@ -18,6 +18,8 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
         Task<IDataResponse<GetDeviceDto>> GetByIdWithOSDeviceTypeCommentAsync(int id);
         Task<IDataResponse<List<GetDeviceDto>>> GetAllAsync();
+        Task<IDataResponse<List<GetDeviceDto>>> GetAllIosAsync();
+        Task<IDataResponse<List<GetDeviceDto>>> GetAllAndoridAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToCreateDateWithOsDeviceTypeAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToTotalScoreWithOsDeviceTypeAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllWithOSAndDeviceTypeAsync();

@@ -24,6 +24,7 @@
                                 <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
                                 <li><a asp-controller="Contact" asp-action="Index">Contacts</a></li>
                                 <li><a asp-controller="Support" asp-action="Index">Help</a></li>
+                                <li><a href="/admin/adminhome">AdminPanel</a></li>
                             }
                             @if (User.IsInRole("SupportUser") || User.IsInRole("Admin"))
                             {

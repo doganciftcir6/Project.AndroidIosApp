@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers.Constans;
 using Project.AndroidIosApp.Business.Extensions;
@@ -73,7 +74,13 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             }
             return new DataResponse<List<GetProjectUserDto>>(ResponseType.Success, dto);
         }
-
+        public async Task<IDataResponse<List<GetProjectUserDto>>> GetAllWithGenderAsync()
+        {
+            var query = _uow.GetRepository<ProjectUser>().GetQuery();
+            var data = await query.Include(x => x.Gender).ToListAsync();
+            var mappingData = _mapper.Map<List<GetProjectUserDto>>(data);
+            return new DataResponse<List<GetProjectUserDto>>(ResponseType.Success, mappingData);
+        }
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
         {
             //var data = await _uow.GetRepository<ProjectUser>().GetByFilterAsync(x => x.Id == id);
@@ -260,6 +267,5 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             }
             return new Response(ResponseType.Success);
         }
-
     }
 }

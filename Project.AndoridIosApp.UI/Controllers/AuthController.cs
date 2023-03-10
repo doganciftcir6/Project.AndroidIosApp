@@ -59,9 +59,9 @@ namespace Project.AndoridIosApp.UI.Controllers
                 {
                     var imageRuleChecks = UserImageUploadRuleHelper.Run
                     (
-                        CheckImageName(userCreateModel.ImageUrl.FileName),
-                        CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
-                        CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
+                        UserCreateUploadCheckHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
+                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
+                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
                     );
                     if(imageRuleChecks.ResponseType == ResponseType.Success)
                     {
@@ -161,37 +161,6 @@ namespace Project.AndoridIosApp.UI.Controllers
         public IActionResult AccessDenied()
         {
             return View();
-        }
-
-
-        private IResponse CheckIfImageExtensionsAllow(string fileName)
-        {
-            var ext = fileName.Substring(fileName.LastIndexOf('.'));
-            var extension = ext.ToLower();
-            List<string> allowFileExtensions = new List<string>() { ".jpg", ".jpeg", ".gif", ".png" };
-
-            if (!allowFileExtensions.Contains(extension))
-            {
-                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim .jpg, .jpeg, .gif, .png türlerinden birisi olmalıdır! ");
-            }
-            return new Response(ResponseType.Success);
-        }
-        private IResponse CheckIfImageSizeIsLessThanOneMb(long imageSize)
-        {
-            decimal imgMbSize = Convert.ToDecimal(imageSize * 0.000001);
-            if(imgMbSize > 1)
-            {
-                return new Response(ResponseType.Error, "Yüklediğiniz resim boyutu 1 mb'dan düşük olmalıdır!");
-            }
-            return new Response(ResponseType.Success);
-        }
-        private IResponse CheckImageName(string fileName)
-        {
-            if(fileName.Contains("/") || fileName.Contains("<") || fileName.Contains(">") || fileName.Contains("%2F")|| fileName.Contains("%5C"))
-            {
-                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim ismi /, <, >, %2F, %5C karakterlerini içeremez!");
-            }
-            return new Response(ResponseType.Success);
         }
     }
 }

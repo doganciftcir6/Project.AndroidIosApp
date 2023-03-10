@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Project.AndroidIosApp.Dtos.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Project.AndroidIosApp.Dtos.ProjectUser
+namespace Project.AndoridIosApp.UI.Areas.Admin.Models
 {
-    public class UpdateProjectUserDto : IDto
+    public class UpdateProjectUserModel
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -20,5 +15,6 @@ namespace Project.AndroidIosApp.Dtos.ProjectUser
         public string Email { get; set; }
         public string ImageUrl { get; set; }
         public int GenderId { get; set; }
+        public SelectList Genders { get; set; }
     }
 }

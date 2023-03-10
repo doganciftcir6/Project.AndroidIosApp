@@ -23,7 +23,10 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.ViewComponents
             var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
             if(loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.Success)
             {
-                return View(loginUser.Data);
+                ViewBag.UserName = loginUser.Data.Firstname;
+                ViewBag.UserLastName = loginUser.Data.Lastname;
+                ViewBag.UserImage = loginUser.Data.ImageUrl;
+                return View();
             }
             return View();
         }

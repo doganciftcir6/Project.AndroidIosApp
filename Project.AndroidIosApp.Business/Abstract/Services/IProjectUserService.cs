@@ -16,6 +16,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<GetProjectUserDto>> CheckUserAsync(LoginProjectUserDto loginProjectUserDto);
         Task<IResponse> DeleteAsync(int id);
         Task<IDataResponse<List<GetProjectUserDto>>> GetAllAsync();
+        Task<IDataResponse<List<GetProjectUserDto>>> GetAllWithGenderAsync();
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
         Task<IDataResponse<List<GetProjectRoleDto>>> GetRolesByUserIdAsync(int userId);
         Task<IDataResponse<GetProjectUserDto>> FindByUserNameAsync(string userName);

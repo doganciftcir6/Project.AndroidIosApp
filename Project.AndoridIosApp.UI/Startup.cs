@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Project.AndoridIosApp.UI.Areas.Admin.Models;
 using Project.AndoridIosApp.UI.Mapping.AutoMapper;
 using Project.AndoridIosApp.UI.Models;
 using Project.AndoridIosApp.UI.ValidationRules;
@@ -38,7 +39,8 @@ namespace Project.AndoridIosApp.UI
 
             //modelin FluenValidationu
             services.AddTransient <IValidator<UserCreateModel>, UserCreateModelValidator>();
-            services.AddTransient<IValidator<SendMessageModel>, SendMessageModelValidator>();  
+            services.AddTransient <IValidator<UpdateProjectUserModel>, UpdateProjectUserModelValidator>();
+            services.AddTransient<IValidator<SendMessageModel>, SendMessageModelValidator>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
@@ -62,6 +64,7 @@ namespace Project.AndoridIosApp.UI
             var profiles = MapperHelper.GetProfiles();
             profiles.Add(new UserCreateModelProfile());
             profiles.Add(new SendMessageModelProfile());
+            profiles.Add(new UpdateProjectUserModelProfile());
             var configurations = new MapperConfiguration(opt =>
             {
                 opt.AddProfiles(profiles);
@@ -92,10 +95,20 @@ namespace Project.AndoridIosApp.UI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //auto route
+            //route
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Default}/{action=Index}/{id?}"
+                );
             });
         }
     }

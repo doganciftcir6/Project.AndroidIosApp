@@ -1,0 +1,61 @@
+﻿@model UpdateProjectUserModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description"> Adding New ProjectUser Panel </p>
+            <form asp-controller="AdminProjectUser" asp-action="Update" class="forms-sample" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All"></div>
+                <br />
+                <input type="hidden" asp-for="@Model.Id"/>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" asp-for="@Model.Username">
+                </div>
+                <div class="form-group">
+                    <label>Firstname</label>
+                    <input type="text" class="form-control" asp-for="@Model.Firstname">
+                </div>
+                <div class="form-group">
+                    <label>Lastname</label>
+                    <input type="text" class="form-control" asp-for="@Model.Lastname">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" class="form-control" asp-for="@Model.Password">
+                </div>
+                <div class="form-group">
+                    <label>PasswordVerify</label>
+                    <input type="text" class="form-control" asp-for="@Model.PasswordVerify">
+                </div>
+                <div class="form-group">
+                    <label>PhoneNumber</label>
+                    <input type="number" class="form-control" asp-for="@Model.PhoneNumber">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" asp-for="@Model.Email">
+                </div>
+                <div class="form-group">
+                    <label>ImageUrl</label>
+                    <input type="text" class="form-control" value="@Model.ImageUrl" readonly="readonly">
+                    <br />
+                    <input type="file" class="form-control" name="ImageUrl">
+                </div>
+                <div class="mb-3">
+                    <label>Gender</label>
+                    <input type="text" class="form-control" value="@Model.GenderId" readonly="readonly">
+                    <br />
+                    <select class="form-select" asp-items="@Model.Genders" asp-for="@Model.GenderId">
+                        <option value="0">Bir cinsiyet seçiniz.</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <button class="btn btn-dark">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

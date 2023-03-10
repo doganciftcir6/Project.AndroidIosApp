@@ -1,6 +1,4 @@
-﻿@model Project.AndroidIosApp.Dtos.ProjectUser.GetProjectUserDto
-
-<nav id="sidebar">
+﻿<nav id="sidebar">
     <div class="sidebar_blog_1">
         <div class="sidebar-header">
             <div class="logo_section">
@@ -9,16 +7,13 @@
         </div>
         <div class="sidebar_user_info">
             <div class="icon_setting"></div>
-            @if(Model != null)
-            {
             <div class="user_profle_side">
-                <div class="user_img"><img class="img-responsive" src="~/userImage/@Model.ImageUrl" alt="#" /></div>
+                <div class="user_img"><img class="img-responsive" src="~/userImage/@ViewBag.UserImage" alt="#" /></div>
                 <div class="user_info">
-                    <h6>@Model.Firstname @Model.Lastname</h6>
+                    <h6>@ViewBag.UserName @ViewBag.UserLastName</h6>
                     <p><span class="online_animation"></span> Online</p>
                 </div>
             </div>      
-            }
         </div>
     </div>
     <div class="sidebar_blog_2">

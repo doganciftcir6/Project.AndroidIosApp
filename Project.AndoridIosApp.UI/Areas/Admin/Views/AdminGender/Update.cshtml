@@ -1,4 +1,4 @@
-﻿@model Project.AndroidIosApp.Dtos.ProjectRole.UpdateProjectRoleDto
+﻿@model Project.AndroidIosApp.Dtos.GenderDto.UpdateGenderDto
 
 @{
     Layout = "_AdminLayout";
@@ -7,10 +7,10 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <p class="card-description"> Update ProjectRole Panel </p>
-            <form asp-controller="AdminProjectRole" asp-action="Update" class="forms-sample" method="post">
-                <div asp-validation-summary="All"></div>
+            <p class="card-description"> Update Gender Panel </p>
+            <form asp-controller="AdminGender" asp-action="Update" class="forms-sample" method="post">
                 <input type="hidden" class="form-control" asp-for="@Model.Id">
+                <div asp-validation-summary="All"></div>
                 <div class="form-group">
                     <label>Definition</label>
                     <input type="text" class="form-control" asp-for="@Model.Definition">

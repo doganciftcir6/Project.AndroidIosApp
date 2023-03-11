@@ -1,0 +1,22 @@
+﻿@model Project.AndroidIosApp.Dtos.ProjectRole.CreateProjectRoleDto
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description"> Adding New ProjectRole Panel </p>
+            <form asp-controller="AdminProjectRole" asp-action="Insert" class="forms-sample" method="post">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label>Definition</label>
+                    <input type="text" class="form-control" asp-for="@Model.Definition">
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <button class="btn btn-dark">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

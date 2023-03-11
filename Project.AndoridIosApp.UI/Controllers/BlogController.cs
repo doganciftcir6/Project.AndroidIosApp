@@ -76,7 +76,7 @@ namespace Project.AndoridIosApp.UI.Controllers
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
-                return View(response.Data);
+                return View(dto);
             }
                 return RedirectToAction("Index");
         }

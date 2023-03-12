@@ -11,5 +11,6 @@ namespace Project.AndroidIosApp.Dtos.SocialMediaDtos
         public string Name { get; set; }
         public string Url { get; set; }
         public string Icon { get; set; }
+        public bool Status { get; set; }
     }
 }

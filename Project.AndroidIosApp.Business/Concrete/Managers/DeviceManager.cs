@@ -110,6 +110,21 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             var mappingData = _mapper.Map<List<GetDeviceDto>>(list);
             return new DataResponse<List<GetDeviceDto>>(ResponseType.Success, mappingData);
         }
+        public async Task<IDataResponse<List<GetDeviceDto>>> GetAllPhoneAsync()
+        {
+            var query = _uow.GetRepository<Device>().GetQuery();
+            var data = await query.Where(x => x.DeviceTypeId == (int)Core.Enums.DeviceTypeEnum.Phone).ToListAsync();
+            var mappingData = _mapper.Map<List<GetDeviceDto>>(data);
+            return new DataResponse<List<GetDeviceDto>>(ResponseType.Success, mappingData);
+        }
+
+        public async Task<IDataResponse<List<GetDeviceDto>>> GetAllTabletAsync()
+        {
+            var query = _uow.GetRepository<Device>().GetQuery();
+            var data = await query.Where(x => x.DeviceTypeId == (int)Core.Enums.DeviceTypeEnum.Tablet).ToListAsync();
+            var mappingData = _mapper.Map<List<GetDeviceDto>>(data);
+            return new DataResponse<List<GetDeviceDto>>(ResponseType.Success, mappingData);
+        }
         public async Task<IDataResponse<List<GetDeviceDto>>> GetAllIosAsync()
         {
             var query = _uow.GetRepository<Device>().GetQuery();

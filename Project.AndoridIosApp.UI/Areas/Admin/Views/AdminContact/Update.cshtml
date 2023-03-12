@@ -1,0 +1,68 @@
+﻿@model Project.AndroidIosApp.Dtos.ContactDtos.UpdateContactDto
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<style>
+    input[type="radio"] + label {
+        cursor: pointer;
+    }
+
+    input[type="radio"]:checked + label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description"> Update Contact Panel </p>
+            <form asp-controller="AdminContact" asp-action="Update" class="forms-sample" method="post">
+                <div asp-validation-summary="All"></div>
+                <input type="hidden" asp-for="@Model.Id" />
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" asp-for="@Model.Title">
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <input type="text" class="form-control" asp-for="@Model.Content">
+                </div>
+                <div class="form-group">
+                    <label>Adress</label>
+                    <input type="text" class="form-control" asp-for="@Model.Adress">
+                </div>
+                <div class="form-group">
+                    <label>Mail</label>
+                    <input type="text" class="form-control" asp-for="@Model.Mail">
+                </div>
+                <div class="form-group">
+                    <label>Skype</label>
+                    <input type="text" class="form-control" asp-for="@Model.Skype">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" asp-for="@Model.Phone">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="form-check d-flex flex-row justify-content-md-start">
+                        <div>
+                            <input class="form-check-input" id="radio1" type="radio" name="Status" value="true" @(Model.Status ? "checked" : "")>
+                            <label for="radio1" class="form-check-label">Active</label>
+
+                        </div>
+                        <div class="ml-5">
+                            <input class="form-check-input" id="radio2" type="radio" name="Status" value="false" @(Model.Status ? "" : "checked")>
+                            <label for="radio2" class="form-check-label">Inactive</label>
+
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <button class="btn btn-dark">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

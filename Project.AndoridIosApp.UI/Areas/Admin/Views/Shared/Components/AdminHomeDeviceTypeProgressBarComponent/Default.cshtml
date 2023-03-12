@@ -1,0 +1,28 @@
+﻿<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Amount Of Devices By Device Type Available</h2>
+            </div>
+        </div>
+        <div class="full progress_bar_inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="progress_bar">
+                        <!-- Skill Bars -->
+                        <span class="skill" style="width:@ViewBag.PhoneDevicesCount%;">Phone <span class="info_valume">@ViewBag.PhoneDevicesCount</span></span>
+                        <div class="progress skill-bar ">
+                            <div class="progress-bar progress-bar-animated progress-bar-striped" role="progressbar" aria-valuenow="@ViewBag.PhoneDevicesCount" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.PhoneDevicesCount%;">
+                            </div>
+                        </div>
+                        <span class="skill" style="width:@ViewBag.TabletDevicesCount%;">Tablet <span class="info_valume">@ViewBag.TabletDevicesCount</span></span>
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-animated progress-bar-striped" role="progressbar" aria-valuenow="@ViewBag.TabletDevicesCount" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.TabletDevicesCount%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

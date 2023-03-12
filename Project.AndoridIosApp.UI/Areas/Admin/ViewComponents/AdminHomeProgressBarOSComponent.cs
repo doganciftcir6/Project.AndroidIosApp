@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.ViewComponents
 {
-    public class AdminHomeProgressBarComponent : ViewComponent
+    public class AdminHomeProgressBarOSComponent : ViewComponent
     {
         private readonly IDeviceService _deviceService;
 
-        public AdminHomeProgressBarComponent(IDeviceService deviceService)
+        public AdminHomeProgressBarOSComponent(IDeviceService deviceService)
         {
             _deviceService = deviceService;
         }

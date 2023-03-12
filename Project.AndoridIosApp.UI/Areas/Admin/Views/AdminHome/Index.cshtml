@@ -23,7 +23,10 @@
             @await Component.InvokeAsync("AdminHomeRecentlyAddedBlogComponent")
             <!-- end testimonial -->
             <!-- progress bar -->
-            @await Component.InvokeAsync("AdminHomeProgressBarComponent")
+            <div class="col-md-6">
+                @await Component.InvokeAsync("AdminHomeProgressBarOSComponent")
+                @await Component.InvokeAsync("AdminHomeDeviceTypeProgressBarComponent")
+            </div>
             <!-- end progress bar -->
         </div>
     </div>

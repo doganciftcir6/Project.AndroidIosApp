@@ -3,6 +3,8 @@
     Layout = "_AdminLayout";
 }
 
+<link href="~/CustomStyle/AdminDeviceCommentStyleSheet.css" rel="stylesheet" />
+
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
@@ -47,14 +49,15 @@
                 </div>
                 <div class="mb-3">
                     <label>Gender</label>
+                    <br />
                     <input type="text" class="form-control" value="@Model.GenderId" readonly="readonly">
                     <br />
-                    <select class="form-select" asp-items="@Model.Genders" asp-for="@Model.GenderId">
-                        <option value="0">Bir cinsiyet seçiniz.</option>
+                    <select class="classic" asp-items="@Model.Genders" asp-for="@Model.GenderId">
+                        <option value="0">Select a gender.</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Save</button>
-                <button class="btn btn-dark">Cancel</button>
+                <a href="/Admin/AdminProjectUser/Index" class="btn btn-dark">Cancel</a>
             </form>
         </div>
     </div>

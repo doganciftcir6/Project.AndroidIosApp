@@ -41,6 +41,8 @@ namespace Project.AndoridIosApp.UI
             services.AddTransient <IValidator<UserCreateModel>, UserCreateModelValidator>();
             services.AddTransient <IValidator<UpdateProjectUserModel>, UpdateProjectUserModelValidator>();
             services.AddTransient<IValidator<SendMessageModel>, SendMessageModelValidator>();
+            services.AddTransient<IValidator<CreateDeviceCommentModel>, CreateDeviceCommentValidator>();
+            services.AddTransient<IValidator<UpdateDeviceCommentModel>, UpdateDeviceCommentModelValidator>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
@@ -65,6 +67,8 @@ namespace Project.AndoridIosApp.UI
             profiles.Add(new UserCreateModelProfile());
             profiles.Add(new SendMessageModelProfile());
             profiles.Add(new UpdateProjectUserModelProfile());
+            profiles.Add(new CreateDeviceCommentModelProfile());
+            profiles.Add(new UpdateDeviceCommentModelProfile());
             var configurations = new MapperConfiguration(opt =>
             {
                 opt.AddProfiles(profiles);

@@ -15,6 +15,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<CreateCommentDto>> InsertCommentAsync(CreateCommentDto createCommentDto);
         Task<IDataResponse<UpdateCommentDto>> UpdateCommentAsync(UpdateCommentDto updateCommentDto);
         Task<IDataResponse<List<GetCommentDto>>> GetAllCommentAsync();
+        Task<IDataResponse<List<GetCommentDto>>> GetAllCommentWithUserAndDeviceAsync();
         Task<IDataResponse<List<GetCommentDto>>> GetAllCommentAsyncWithUser(int id);
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
         Task<IDataResponse<GetCommentDto>> GetByIdWithProjectUserDeviceOSDeviceTypeTable(int id);

@@ -76,6 +76,15 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             var mappingData = _mapper.Map<List<GetCommentDto>>(list);
             return new DataResponse<List<GetCommentDto>>(ResponseType.Success, mappingData);
         }
+
+        public async Task<IDataResponse<List<GetCommentDto>>> GetAllCommentWithUserAndDeviceAsync()
+        {
+            var query = _uow.GetRepository<Comment>().GetQuery();
+            var data = await query.Include(x => x.ProjectUser).Include(x => x.Device).ToListAsync();
+            var mappingData = _mapper.Map<List<GetCommentDto>>(data);
+            return new DataResponse<List<GetCommentDto>>(ResponseType.Success, mappingData);
+        }
+
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
         {
             var data = await _uow.GetRepository<Comment>().GetByFilterAsync(x => x.Id == id);
@@ -145,7 +154,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Id = updateCommentDto.Id,
                         Content = updateCommentDto.Content,
                         Status = updateCommentDto.Status,
-                        UpdateDate = updateCommentDto.UpdateDate //BURAYI UNUTMA CONTROLLERDA DATETİME NOW ATILACAK DTO İÇİNE
+                        UpdateDate = updateCommentDto.UpdateDate, //BURAYI UNUTMA CONTROLLERDA DATETİME NOW ATILACAK DTO İÇİNE
+                        ProjectUserId = updateCommentDto.ProjectUserId,
+                        DeviceId = updateCommentDto.DeviceId,
                     }, unChangedData);
                     await _uow.SaveChangesAsync();
                     return new DataResponse<UpdateCommentDto>(ResponseType.Success, updateCommentDto);

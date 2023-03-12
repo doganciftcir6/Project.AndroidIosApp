@@ -1,0 +1,43 @@
+﻿@model List<Project.AndroidIosApp.Dtos.OSDtos.GetOSDto>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<!-- table section -->
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Device OS</h2>
+            </div>
+        </div>
+        <div class="table_section padding_infor_info">
+            <a href="/Admin/AdminDeviceOS/Insert" class="btn btn-outline-info mb-2">Add New Device OS</a>
+            <div class="table-responsive-sm">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Definition</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.Id</th>
+                                <td>@item.Definition</td>
+                                <td><a href="/Admin/AdminDeviceOS/Update/@item.Id" class="btn btn-outline-success">Update</a></td>
+                                <td><a href="/Admin/AdminDeviceOS/Delete/@item.Id" class="btn btn-outline-danger">Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- table section -->

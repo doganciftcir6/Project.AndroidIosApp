@@ -1,0 +1,84 @@
+﻿@model UpdateMessageModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<link href="~/CustomStyle/AdminDeviceCommentStyleSheet.css" rel="stylesheet" />
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description"> Update Message Panel </p>
+            <form asp-controller="AdminMessage" asp-action="Update" class="forms-sample" method="post">
+                <div asp-validation-summary="All"></div>
+                <input type="hidden" asp-for="@Model.Id"/>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" asp-for="@Model.Title">
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <input type="text" class="form-control" asp-for="@Model.Content">
+                </div>
+                <div class="form-group">
+                    <label>Sender</label>
+                    <input type="text" class="form-control" asp-for="@Model.Sender">
+                </div>
+                <div class="form-group">
+                    <label>Sender Name</label>
+                    <input type="text" class="form-control" asp-for="@Model.SenderName">
+                </div>
+                <div class="form-group">
+                    <label>Receiver</label>
+                    <input type="text" class="form-control" asp-for="@Model.Receiver">
+                </div>
+                <div class="form-group">
+                    <label>Receiver Name</label>
+                    <input type="text" class="form-control" asp-for="@Model.ReceiverName">
+                </div>
+
+                <div class="form-group">
+                    <label>Device</label>
+                    <br />
+                    <input type="text" id="searchInput2" placeholder="Search...">
+                    <br />
+                    <select id="selectList2" class="classic" asp-items="@Model.Device" asp-for="@Model.DeviceId">
+                        <option id="option2" value="0">Select a device.</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="form-check d-flex flex-row justify-content-md-start">
+                        <div>
+                            <input class="form-check-input" id="radio1" type="radio" name="Status" value="true" @(Model.Status ? "checked" : "")>
+                            <label for="radio1" class="form-check-label">Active</label>
+                        </div>
+                        <div class="ml-5">
+                            <input class="form-check-input" id="radio2" type="radio" name="Status" value="false" @(Model.Status ? "" : "checked")>
+                            <label for="radio2" class="form-check-label">Inactive</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <a href="/Admin/AdminMessage/Index" class="btn btn-dark">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var input2 = document.getElementById('searchInput2');
+    var options2 = document.getElementById('selectList2').getElementsByTagName('option');
+    input2.addEventListener('keyup', function () {
+        var filter = input2.value.toLowerCase();
+        for (var i = 0; i < options2.length; i++) {
+            var option2 = options2[i];
+            if (option2.text.toLowerCase().indexOf(filter) > -1) {
+                option2.style.display = '';
+            } else {
+                option2.style.display = 'none';
+            }
+        }
+    });
+</script>

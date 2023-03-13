@@ -14,7 +14,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminDeviceComment/{action}/{id?}")]
-    public class AdminDeviceComment : Controller
+    public class AdminDeviceCommentController : Controller
     {
         private readonly ICommentService _commentService;
         private readonly IValidator<CreateDeviceCommentModel> _createDeviceCommentModelValidator;
@@ -23,7 +23,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
         private readonly IProjectUserService _projectUserService;
         private readonly IDeviceService _deviceService;
 
-        public AdminDeviceComment(ICommentService commentService, IValidator<CreateDeviceCommentModel> createDeviceCommentModelValidator, IMapper mapper, IProjectUserService projectUserService, IDeviceService deviceService, IValidator<UpdateDeviceCommentModel> updateDeviceCommentModelValidator)
+        public AdminDeviceCommentController(ICommentService commentService, IValidator<CreateDeviceCommentModel> createDeviceCommentModelValidator, IMapper mapper, IProjectUserService projectUserService, IDeviceService deviceService, IValidator<UpdateDeviceCommentModel> updateDeviceCommentModelValidator)
         {
             _commentService = commentService;
             _createDeviceCommentModelValidator = createDeviceCommentModelValidator;

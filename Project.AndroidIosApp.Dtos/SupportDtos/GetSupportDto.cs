@@ -18,6 +18,8 @@ namespace Project.AndroidIosApp.Dtos.SupportDtos
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
         public DateTime Date { get; set; }
+        public bool Status { get; set; }
+
         public int ProjectUserId { get; set; }
         public GetProjectUserDto ProjectUser { get; set; }
         public int DeviceId { get; set; }

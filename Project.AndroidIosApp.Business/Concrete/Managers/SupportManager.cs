@@ -80,6 +80,14 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             return new DataResponse<List<GetSupportDto>>(ResponseType.NotFound, $"{SupportMessages.NotFoundSenderMessage}");
         }
 
+        public async Task<IDataResponse<List<GetSupportDto>>> GetAllWithDeviceAsync()
+        {
+            var query = _uow.GetRepository<Support>().GetQuery();
+            var data = await query.Include(x => x.Device).ToListAsync();
+            var mappingData = _mapper.Map<List<GetSupportDto>>(data);
+            return new DataResponse<List<GetSupportDto>>(ResponseType.Success, mappingData);
+        }
+
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
         {
             var data = _mapper.Map<IDto>(await _uow.GetRepository<Support>().GetByFilterAsync(x => x.Id == id));
@@ -124,6 +132,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Date = createSupportDto.Date,
                     ProjectUserId = createSupportDto.ProjectUserId,
                     DeviceId = createSupportDto.DeviceId,
+                    Status = createSupportDto.Status,
                 };
                 await _uow.GetRepository<Support>().InsertAsync(entity);
                 await _uow.SaveChangesAsync();

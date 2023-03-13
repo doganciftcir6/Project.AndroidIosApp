@@ -14,6 +14,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<UpdateSupportDto>> UpdateAsync(UpdateSupportDto updateSupportDto);
         Task<IResponse> DeleteAsync(int id);
         Task<IDataResponse<List<GetSupportDto>>> GetAllAsync();
+        Task<IDataResponse<List<GetSupportDto>>> GetAllWithDeviceAsync();
         Task<IDataResponse<List<GetSupportDto>>> GetAllByEmailReceiverAsync(string email);
         Task<IDataResponse<List<GetSupportDto>>> GetAllByEmailSenderAsync(string email);
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);

@@ -1,4 +1,6 @@
-﻿using Project.AndroidIosApp.Dtos.Interfaces;
+﻿using Project.AndroidIosApp.Dtos.DeviceDtos;
+using Project.AndroidIosApp.Dtos.Interfaces;
+using Project.AndroidIosApp.Dtos.ProjectUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,11 @@ namespace Project.AndroidIosApp.Dtos.SupportDtos
         public string Receiver { get; set; }
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
+        public bool Status { get; set; }
+
         public int ProjectUserId { get; set; }
+        public GetProjectUserDto ProjectUser { get; set; }
         public int DeviceId { get; set; }
+        public GetDeviceDto Device { get; set; }
     }
 }

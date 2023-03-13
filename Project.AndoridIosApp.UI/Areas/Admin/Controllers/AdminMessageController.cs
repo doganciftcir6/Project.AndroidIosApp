@@ -88,19 +88,20 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var mappingModel = new UpdateMessageModel()
-            {
-                Id = response.Data.Id,
-                Title = response.Data.Title,
-                Content = response.Data.Content,
-                Sender = response.Data.Sender,
-                Receiver = response.Data.Receiver,
-                SenderName = response.Data.SenderName,
-                ReceiverName = response.Data.ReceiverName,
-                Status = response.Data.Status,
-                ProjectUserId = response.Data.ProjectUserId,
-                DeviceId = response.Data.DeviceId,
-            };
+            //var mappingModel = new UpdateMessageModel()
+            //{
+            //    Id = response.Data.Id,
+            //    Title = response.Data.Title,
+            //    Content = response.Data.Content,
+            //    Sender = response.Data.Sender,
+            //    Receiver = response.Data.Receiver,
+            //    SenderName = response.Data.SenderName,
+            //    ReceiverName = response.Data.ReceiverName,
+            //    Status = response.Data.Status,
+            //    ProjectUserId = response.Data.ProjectUserId,
+            //    DeviceId = response.Data.DeviceId,
+            //};
+            var mappingModel = _mapper.Map<UpdateMessageModel>(response.Data);
             //seleclist kaybolmamalı
             var deviceResponse3 = await _deviceService.GetAllAsync();
             mappingModel.Device = new SelectList(deviceResponse3.Data, "Id", "DeviceName");

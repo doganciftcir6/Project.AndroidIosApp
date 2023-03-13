@@ -15,6 +15,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<UpdateProjectUserRoleDto>> UpdateAsync(UpdateProjectUserRoleDto updateProjectUserRoleDto);
         Task<IResponse> DeleteAsync(int id);
         Task<IDataResponse<List<GetProjectUserRoleDto>>> GetAllAsync();
+        Task<IDataResponse<List<GetProjectUserRoleDto>>> GetAllWithProjectUserAndRoleAsync();
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
     }
 }

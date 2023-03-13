@@ -1,0 +1,68 @@
+﻿@model CreateProjectUserRoleModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<link href="~/CustomStyle/AdminDeviceCommentStyleSheet.css" rel="stylesheet" />
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description"> Adding New ProjectUserRole Panel </p>
+            <form asp-controller="AdminProjectUserRole" asp-action="Insert" class="forms-sample" method="post">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label>ProjectUser</label>
+                    <br />
+                    <input type="text" id="searchInput1" placeholder="Search...">
+                    <br />
+                    <select id="selectList1" class="classic" asp-items="@Model.ProjectUser" asp-for="@Model.ProjectUserId">
+                        <option value="0">Select a projectuser.</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ProjectRole</label>
+                    <br />
+                    <input type="text" id="searchInput2" placeholder="Search...">
+                    <br />
+                    <select id="selectList2" class="classic" asp-items="@Model.ProjectRole" asp-for="@Model.ProjectRoleId">
+                        <option id="option2" value="0">Select a projectrole.</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <a href="/Admin/AdminProjectUserRole/Index" class="btn btn-dark">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var input1 = document.getElementById('searchInput1');
+    var options1 = document.getElementById('selectList1').getElementsByTagName('option');
+    input1.addEventListener('keyup', function () {
+        var filter = input1.value.toLowerCase();
+        for (var i = 0; i < options1.length; i++) {
+            var option1 = options1[i];
+            if (option1.text.toLowerCase().indexOf(filter) > -1) {
+                option1.style.display = '';
+            } else {
+                option1.style.display = 'none';
+            }
+        }
+    });
+
+    var input2 = document.getElementById('searchInput2');
+    var options2 = document.getElementById('selectList2').getElementsByTagName('option');
+    input2.addEventListener('keyup', function () {
+        var filter = input2.value.toLowerCase();
+        for (var i = 0; i < options2.length; i++) {
+            var option2 = options2[i];
+            if (option2.text.toLowerCase().indexOf(filter) > -1) {
+                option2.style.display = '';
+            } else {
+                option2.style.display = 'none';
+            }
+        }
+    });
+</script>

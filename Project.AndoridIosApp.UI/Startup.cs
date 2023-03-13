@@ -77,6 +77,9 @@ namespace Project.AndoridIosApp.UI
             profiles.Add(new UpdateBlogCommentProfile());
             profiles.Add(new CreateMessageModelProfile());
             profiles.Add(new UpdateMessageModelProfile());
+            profiles.Add(new CreateProjectUserRoleModelProfile());
+            profiles.Add(new UpdateProjectUserRoleModelProfile());
+            profiles.Add(new UpdateMessageModelProfile());
             var configurations = new MapperConfiguration(opt =>
             {
                 opt.AddProfiles(profiles);

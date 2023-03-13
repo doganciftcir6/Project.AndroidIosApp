@@ -1,4 +1,6 @@
 ﻿using Project.AndroidIosApp.Dtos.Interfaces;
+using Project.AndroidIosApp.Dtos.ProjectRole;
+using Project.AndroidIosApp.Dtos.ProjectUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ namespace Project.AndroidIosApp.Dtos.ProjectUserRoleDto
     public class UpdateProjectUserRoleDto : IDto
     {
         public int Id { get; set; }
+
         public int ProjectUserId { get; set; }
         public int ProjectRoleId { get; set; }
     }

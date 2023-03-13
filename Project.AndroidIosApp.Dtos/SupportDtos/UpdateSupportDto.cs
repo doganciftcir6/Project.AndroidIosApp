@@ -21,8 +21,6 @@ namespace Project.AndroidIosApp.Dtos.SupportDtos
         public bool Status { get; set; }
 
         public int ProjectUserId { get; set; }
-        public GetProjectUserDto ProjectUser { get; set; }
         public int DeviceId { get; set; }
-        public GetDeviceDto Device { get; set; }
     }
 }

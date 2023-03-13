@@ -19,18 +19,22 @@
                 <div class="form-group">
                     <label>ProjectUser</label>
                     <br />
-                    <select class="classic" asp-items="@Model.ProjectUsers" asp-for="@Model.ProjectUserId">
+                    <input type="text" id="searchInput1" placeholder="Search...">
+                    <br />
+                    <select id="selectList1" class="classic" asp-items="@Model.ProjectUsers" asp-for="@Model.ProjectUserId">
                         <option value="0">Select a projectuser.</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>ProjectUser</label>
+                    <label>Device</label>
                     <br />
-                    <select class="classic" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
-                        <option value="0">Select a device.</option>
+                    <input type="text" id="searchInput2" placeholder="Search...">
+                    <br />
+                    <select id="selectList2" class="classic" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
+                        <option id="option2" value="0">Select a device.</option>
                     </select>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label>Status</label>
                     <div class="form-check d-flex flex-row justify-content-md-start">
                         <div>
@@ -49,3 +53,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    var input1 = document.getElementById('searchInput1');
+    var options1 = document.getElementById('selectList1').getElementsByTagName('option');
+    input1.addEventListener('keyup', function () {
+        var filter = input1.value.toLowerCase();
+        for (var i = 0; i < options1.length; i++) {
+            var option1 = options1[i];
+            if (option1.text.toLowerCase().indexOf(filter) > -1) {
+                option1.style.display = '';
+            } else {
+                option1.style.display = 'none';
+            }
+        }
+    });
+
+    var input2 = document.getElementById('searchInput2');
+    var options2 = document.getElementById('selectList2').getElementsByTagName('option');
+    input2.addEventListener('keyup', function () {
+        var filter = input2.value.toLowerCase();
+        for (var i = 0; i < options2.length; i++) {
+            var option2 = options2[i];
+            if (option2.text.toLowerCase().indexOf(filter) > -1) {
+                option2.style.display = '';
+            } else {
+                option2.style.display = 'none';
+            }
+        }
+    });
+</script>

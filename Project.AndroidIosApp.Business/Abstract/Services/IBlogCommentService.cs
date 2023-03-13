@@ -14,6 +14,7 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<CreateBlogCommentDto>> InsertBlogCommentAsync(CreateBlogCommentDto createBlogCommentDto);
         Task<IDataResponse<UpdateBlogCommentDto>> UpdateBlogCommentAsync(UpdateBlogCommentDto updateBlogCommentDto);
         Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentAsync();
+        Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentWithUserAndBlogAsync();
         Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentWithUserAsync(int id);
         Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id);
         Task<IDataResponse<GetBlogCommentDto>> GetByIdWithBlogAndUserTableAsync(int id);

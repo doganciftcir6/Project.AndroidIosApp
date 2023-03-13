@@ -68,6 +68,14 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             return new DataResponse<List<GetBlogCommentDto>>(ResponseType.Success, dto);
         }
 
+        public async Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentWithUserAndBlogAsync()
+        {
+            var query = _uow.GetRepository<BlogComment>().GetQuery();
+            var data = await query.Include(x => x.ProjectUser).Include(x => x.Blog).ToListAsync();
+            var mappingData = _mapper.Map<List<GetBlogCommentDto>>(data);
+            return new DataResponse<List<GetBlogCommentDto>>(ResponseType.Success, mappingData);
+        }
+
         public async Task<IDataResponse<List<GetBlogCommentDto>>> GetAllBlogCommentWithUserAsync(int id)
         {
             var query = _uow.GetRepository<BlogComment>().GetQuery();
@@ -144,7 +152,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Id = updateBlogCommentDto.Id,
                         Content = updateBlogCommentDto.Content,
                         Status = updateBlogCommentDto.Status,
-                        UpdateDate = updateBlogCommentDto.UpdateDate //BURAYI UNUTMA CONTROLLERDA DATETİME NOW ATILACAK DTO İÇİNE
+                        UpdateDate = updateBlogCommentDto.UpdateDate, //BURAYI UNUTMA CONTROLLERDA DATETİME NOW ATILACAK DTO İÇİNE
+                        ProjectUserId = updateBlogCommentDto.ProjectUserId,
+                        BlogId = updateBlogCommentDto.BlogId,
                     }, unChangedData);
                     await _uow.SaveChangesAsync();
                     return new DataResponse<UpdateBlogCommentDto>(ResponseType.Success, updateBlogCommentDto);

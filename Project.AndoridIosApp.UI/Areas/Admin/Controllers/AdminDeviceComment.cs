@@ -116,7 +116,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             {
                 ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
             }
-            //selectlistteki veriler validatoneror sonrasında kaybolmamalı ayrıca checkbutonda
+            //selectlistteki veriler validatoneror sonrasında kaybolmamalı ayrıca checkbutonda kullandığım özellikler sayesinde o da kaybolmayacak.
             var projectUserResponse3 = await _projectUserService.GetAllAsync();
             var deviceResponse3 = await _deviceService.GetAllAsync();
             updateDeviceCommentModel.ProjectUsers = new SelectList(projectUserResponse3.Data, "Id", "Username");

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.AndroidIosApp.DataAccess.Contexts.EntityFramework;
 
 namespace Project.AndroidIosApp.DataAccess.Migrations
 {
     [DbContext(typeof(AndroidIosContext))]
-    partial class AndroidIosContextModelSnapshot : ModelSnapshot
+    [Migration("20230314131137_EditDeviceTable")]
+    partial class EditDeviceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

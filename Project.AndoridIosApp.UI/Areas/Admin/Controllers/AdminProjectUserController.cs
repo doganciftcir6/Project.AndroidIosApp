@@ -17,6 +17,7 @@ using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Dtos.Interfaces;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
+using Project.AndroidIosApp.Dtos.DeviceDtos;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
@@ -125,6 +126,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
+            //update yaparken upload mapping hatası burasıyla ilgili çekilen var olan verilerde yani dtodaki stringi modeldeki ıformfile'a dönüştüremiyor bu yüzden upload sayfası hiç gelmiyor. Çözüm için modeldeki ımageurlede string yapıp dosyası update parametresinde yakalayacağız.
             var genderResponse = await _genderService.GetAllAsync();
             var userResponse = await _projectUserService.GetByIdAsync<UpdateProjectUserDto>(id);
             if(userResponse.ResponseType == ResponseType.Success)
@@ -148,8 +150,20 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             return NotFound(userResponse.Meessage);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateProjectUserModel updateProjectUserModel, IFormFile imageUrl)
+        public async Task<IActionResult> Update(UpdateProjectUserModel updateProjectUserModel, IFormFile imageUrl, int id)
         {
+            var loadedDtoData = await _projectUserService.GetByIdAsync<UpdateProjectUserDto>(id);
+            //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
+            if (imageUrl != null)
+            {
+                updateProjectUserModel.ImageUrl = imageUrl.FileName;
+            }
+            else
+            {
+                //eğer kullanıcı diğer bilgileri güncelleyip upload bilgisini güncellemediyse eski upload dosya bilgisini dtodan alıp modele vereceğiz ki bu sefer resim alanı boş diye validation'a takılmayalım bunun için parametre olarak id almaya ihtiyacım var ki getbyid ile var olan veriyi çekebileyim.
+                updateProjectUserModel.ImageUrl = loadedDtoData.Data.ImageUrl;
+            }
+
             var validation = _updateProjectModelValidator.Validate(updateProjectUserModel);
             if (validation.IsValid)
             {

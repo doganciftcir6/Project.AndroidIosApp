@@ -15,7 +15,7 @@ namespace Project.AndroidIosApp.Entities
         public int UX { get; set; }
         public int TotalScore { get; set; }
         public double Price { get; set; }
-        public DateTime ReleaseYear { get; set; }
+        public string ReleaseYear { get; set; }
         public DateTime CreateDate { get; set; }
         public string ImageUrl { get; set; }
 

@@ -17,6 +17,9 @@ namespace Project.AndroidIosApp.Dtos.DeviceDtos
         public double Price { get; set; }
         public string ImageUrl { get; set; }
         public bool Status { get; set; }
-        public DateTime ReleaseYear { get; set; }
+        public string ReleaseYear { get; set; }
+
+        public int OSId { get; set; }
+        public int DeviceTypeId { get; set; }
     }
 }

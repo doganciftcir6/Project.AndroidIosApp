@@ -1,16 +1,12 @@
-﻿using Project.AndroidIosApp.Dtos.CommentDtos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.AndroidIosApp.Dtos.DeviceTypeDtos;
-using Project.AndroidIosApp.Dtos.GenderDto;
 using Project.AndroidIosApp.Dtos.OSDtos;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.AndroidIosApp.Dtos.DeviceDtos
+namespace Project.AndoridIosApp.UI.Areas.Admin.Models
 {
-    public class GetDeviceDto
+    public class UpdateDeviceModel
     {
         public int Id { get; set; }
         public string DeviceName { get; set; }
@@ -23,15 +19,10 @@ namespace Project.AndroidIosApp.Dtos.DeviceDtos
         public double Price { get; set; }
         public bool Status { get; set; }
         public string ReleaseYear { get; set; }
-        public DateTime CreateDate { get; set; }
 
         public int OSId { get; set; }
-        public GetOSDto OS { get; set; }
+        public SelectList OS { get; set; }
         public int DeviceTypeId { get; set; }
-        public GetDeviceTypeDto DeviceType { get; set; }
-
-        public List<GetCommentDto> Comments { get; set; }
-
-
+        public SelectList DeviceType { get; set; }
     }
 }

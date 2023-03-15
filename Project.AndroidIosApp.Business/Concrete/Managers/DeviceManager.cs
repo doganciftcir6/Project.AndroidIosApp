@@ -71,6 +71,13 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             var data = _mapper.Map<List<GetDeviceDto>>(await _deviceDal.GetAllWithOSAndDeviceTypeAsync());
             return new DataResponse<List<GetDeviceDto>>(ResponseType.Success, data);
         }
+        public async Task<IDataResponse<List<GetDeviceDto>>> GetAllWithOSAndDeviceTypePageAsync(int page, int pageSize)
+        {
+            var query = _uow.GetRepository<Device>().GetQuery();
+            var data = await query.Include(x => x.DeviceType).Include(x => x.OS).Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
+            var mappingData = _mapper.Map<List<GetDeviceDto>>(data);
+            return new DataResponse<List<GetDeviceDto>>(ResponseType.Success, mappingData);
+        }
         public async Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToCreateDateWithOsDeviceTypeAsync()
         {
             //var entity = await _uow.GetRepository<Device>().GetAllBySorting(x => x.CreateDate, OrderByType.DESC);
@@ -185,7 +192,9 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Price = createDeviceDto.Price,
                     ReleaseYear = createDeviceDto.ReleaseYear,
                     ImageUrl = createDeviceDto.ImageUrl,
-                    Status = createDeviceDto.Status
+                    Status = createDeviceDto.Status,
+                    DeviceTypeId = createDeviceDto.DeviceTypeId,
+                    OSId = createDeviceDto.OSId
                 };
                 await _uow.GetRepository<Device>().InsertAsync(entity);
                 await _uow.SaveChangesAsync();
@@ -219,6 +228,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 {
                     _uow.GetRepository<Device>().Update(new Device()
                     {
+                        Id = updateDeviceDto.Id,
                         DeviceName = updateDeviceDto.DeviceName,
                         CPU = updateDeviceDto.CPU,
                         GPU = updateDeviceDto.GPU,
@@ -229,6 +239,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         ReleaseYear = updateDeviceDto.ReleaseYear,
                         ImageUrl = updateDeviceDto.ImageUrl,
                         Status = updateDeviceDto.Status,
+                        DeviceTypeId = updateDeviceDto.DeviceTypeId,
+                        OSId = updateDeviceDto.OSId,
                     }, unChangedData);
                     await _uow.SaveChangesAsync();
                     return new DataResponse<UpdateDeviceDto>(ResponseType.Success, updateDeviceDto);

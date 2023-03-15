@@ -25,5 +25,6 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToCreateDateWithOsDeviceTypeAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllBySortingToTotalScoreWithOsDeviceTypeAsync();
         Task<IDataResponse<List<GetDeviceDto>>> GetAllWithOSAndDeviceTypeAsync();
+        Task<IDataResponse<List<GetDeviceDto>>> GetAllWithOSAndDeviceTypePageAsync(int page, int pageSize);
     }
 }

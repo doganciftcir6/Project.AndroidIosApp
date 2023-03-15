@@ -1,16 +1,11 @@
 ﻿using FluentValidation;
-using Project.AndroidIosApp.Dtos.DeviceDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Project.AndoridIosApp.UI.Areas.Admin.Models;
 
-namespace Project.AndroidIosApp.Business.ValidationRules.FluentValidation
+namespace Project.AndoridIosApp.UI.ValidationRules
 {
-    public class CreateDeviceDtoValidator : AbstractValidator<CreateDeviceDto>
+    public class CreateDeviceModelValidator : AbstractValidator<CreateDeviceModel>
     {
-        public CreateDeviceDtoValidator()
+        public CreateDeviceModelValidator()
         {
             RuleFor(x => x.DeviceName).NotEmpty().WithMessage("Cihaz adı alanı boş olamaz!");
             RuleFor(x => x.DeviceName).MaximumLength(100).WithMessage("Cihaz adı alanı en fazla 100 karakter içerebilir!!");

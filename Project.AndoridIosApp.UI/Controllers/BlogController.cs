@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Dtos.BlogDtos;
@@ -39,11 +40,10 @@ namespace Project.AndoridIosApp.UI.Controllers
             var result = await _blogService.GetByIdWithProjectUserCommentAsync(id);
             var blogComment = await _blogCommentService.GetAllBlogCommentWithUserAsync(id);
             //login olmuş kişiyi bulmak
-            var loginUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
-            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-            if (loginUser.ResponseType == ResponseType.Success)
+            var loginUserResponse = GetLoginUser.CreateInstance(_httpContextAccessor, _projectUserService).RunAsync();
+            if (loginUserResponse.Result.ResponseType == ResponseType.Success)
             {
-                ViewBag.UserId = loginUser.Data.Id;
+                ViewBag.UserId = loginUserResponse.Result.Data.Id;
             }
 
             ViewBag.Id = id;

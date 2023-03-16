@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Dtos.SupportDtos;
 using System.Threading.Tasks;
@@ -54,16 +55,15 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             var validationResult = _createMessageModelValidator.Validate(createMessageModel);
             if (validationResult.IsValid)
             {
-                var loginUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-                if (loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+                //login olmuş kişiyi bulmak
+                var loginUserResponse = GetLoginUser.CreateInstance(_httpContextAccessor, _projectUserService).RunAsync();
+                if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
                 {
-                    ModelState.AddModelError("", loginUser.Meessage);
+                    ModelState.AddModelError("", loginUserResponse.Result.Meessage);
                     return View(createMessageModel);
                 }
-                var loginUserId = loginUser.Data.Id;
                 var mappingDataDto = _mapper.Map<CreateSupportDto>(createMessageModel);
-                mappingDataDto.ProjectUserId = loginUserId;
+                mappingDataDto.ProjectUserId = loginUserResponse.Result.Data.Id;
                 var response = await _supportService.InsertAsync(mappingDataDto);
                 if (response.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
                 {
@@ -114,15 +114,14 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             if (validationResult.IsValid)
             {
                 var mappingDto = _mapper.Map<UpdateSupportDto>(updateMessageModel);
-                var loginUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-                if (loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+                //login olmuş kişiyi bulmak
+                var loginUserResponse = GetLoginUser.CreateInstance(_httpContextAccessor, _projectUserService).RunAsync();
+                if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
                 {
-                    ModelState.AddModelError("", loginUser.Meessage);
+                    ModelState.AddModelError("", loginUserResponse.Result.Meessage);
                     return View(updateMessageModel);
                 }
-                var loginUserId = loginUser.Data.Id;
-                mappingDto.ProjectUserId = loginUserId;
+                mappingDto.ProjectUserId = loginUserResponse.Result.Data.Id;
                 var response = await _supportService.UpdateAsync(mappingDto);
                 if(response.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
                 {

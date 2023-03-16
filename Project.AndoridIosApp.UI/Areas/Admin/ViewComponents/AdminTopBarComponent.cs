@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using System.Threading.Tasks;
 
@@ -19,13 +20,12 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             //login olmuş kişiyi bulmak
-            var loginUserName = _contextAccessor.HttpContext.User.Identity.Name;
-            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-            if(loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.Success)
+            var loginUserResponse = GetLoginUser.CreateInstance(_contextAccessor, _projectUserService).RunAsync();
+            if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.Success)
             {
-                ViewBag.UserName = loginUser.Data.Firstname;
-                ViewBag.UserLastName = loginUser.Data.Lastname;
-                ViewBag.UserImage = loginUser.Data.ImageUrl;
+                ViewBag.UserName = loginUserResponse.Result.Data.Firstname;
+                ViewBag.UserLastName = loginUserResponse.Result.Data.Lastname;
+                ViewBag.UserImage = loginUserResponse.Result.Data.ImageUrl;
                 return View();
             }
             return View();

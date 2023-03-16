@@ -128,7 +128,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Sender = createSupportDto.Sender,
                     SenderName = createSupportDto.SenderName,
                     Receiver = createSupportDto.Receiver,
-                    ReceiverName = createSupportDto.SenderName,
+                    ReceiverName = createSupportDto.ReceiverName,
                     Date = createSupportDto.Date,
                     ProjectUserId = createSupportDto.ProjectUserId,
                     DeviceId = createSupportDto.DeviceId,

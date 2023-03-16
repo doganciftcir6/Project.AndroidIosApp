@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 using Project.AndoridIosApp.UI.Models;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
@@ -48,14 +49,13 @@ namespace Project.AndoridIosApp.UI.Controllers
         public async Task<IActionResult> ReceiverMessage()
         {
             //login olmuş kişiyi bulmak
-            var loginUserName = _contextAccessor.HttpContext.User.Identity.Name;
-            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-            if(loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+            var loginUserResponse = GetLoginUser.CreateInstance(_contextAccessor, _projectUserService).RunAsync();
+            if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
             {
-                ModelState.AddModelError("", loginUser.Meessage);
-                return View(loginUser.Data);
+                ModelState.AddModelError("", loginUserResponse.Result.Meessage);
+                return View(loginUserResponse.Result.Data);
             }
-            var loginUserMail = loginUser.Data.Email;
+            var loginUserMail = loginUserResponse.Result.Data.Email;
             //bu şekilde maile göre listeleme yapıcaz kullanıcının mailine göre.
             var messageList = await _supportService.GetAllByEmailReceiverAsync(loginUserMail);
   
@@ -70,14 +70,13 @@ namespace Project.AndoridIosApp.UI.Controllers
         public async Task<IActionResult> SenderMessage()
         {
             //login olmuş kişiyi bulmak
-            var loginUserName = _contextAccessor.HttpContext.User.Identity.Name;
-            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-            if(loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+            var loginUserResponse = GetLoginUser.CreateInstance(_contextAccessor, _projectUserService).RunAsync();
+            if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
             {
-                ModelState.AddModelError("", loginUser.Meessage);
-                return View(loginUser.Data);
+                ModelState.AddModelError("", loginUserResponse.Result.Meessage);
+                return View(loginUserResponse.Result.Data);
             }
-            var loginUserMail = loginUser.Data.Email;
+            var loginUserMail = loginUserResponse.Result.Data.Email;
             ////bu şekilde maile göre listeleme yapıcaz kullanıcının mailine göre.
             var messageList = await _supportService.GetAllByEmailSenderAsync(loginUserMail);
 
@@ -125,12 +124,11 @@ namespace Project.AndoridIosApp.UI.Controllers
         [Authorize(Roles = "Member, SupportUser")]
         public async Task<IActionResult> SendMessage(SendMessageModel sendMessageModel)
         {
-            //login olmuş kişi
-            var loginUserName = _contextAccessor.HttpContext.User.Identity.Name;
-            var loginUser = await _projectUserService.FindByUserNameAsync(loginUserName);
-            if(loginUser.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+            //login olmuş kişiyi bulmak
+            var loginUserResponse = GetLoginUser.CreateInstance(_contextAccessor, _projectUserService).RunAsync();
+            if (loginUserResponse.Result.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
             {
-                ModelState.AddModelError("", loginUser.Meessage);
+                ModelState.AddModelError("", loginUserResponse.Result.Meessage);
                 var response = await _deviceService.GetAllAsync();
                 //selectlist kaybolmasın
                 sendMessageModel.Devices = new SelectList(response.Data, "Id", "DeviceName", sendMessageModel.DeviceId);
@@ -140,14 +138,14 @@ namespace Project.AndoridIosApp.UI.Controllers
             var validation = _sendMessageModelValidator.Validate(sendMessageModel);
             if (validation.IsValid)
             {
-                var loginUserMail = loginUser.Data.Email;
+                var loginUserMail = loginUserResponse.Result.Data.Email;
                 //login olan kullanıcının map işlemleri
                 sendMessageModel.Sender = loginUserMail;
-                sendMessageModel.SenderName = loginUser.Data.Firstname + " " + loginUser.Data.Lastname;
+                sendMessageModel.SenderName = loginUserResponse.Result.Data.Firstname + " " + loginUserResponse.Result.Data.Lastname;
                 //date
                 sendMessageModel.Date = Convert.ToDateTime(DateTime.Now.ToShortDateString());
                 //login olan kullanıcının project user ıd
-                sendMessageModel.ProjectUserId = loginUser.Data.Id;
+                sendMessageModel.ProjectUserId = loginUserResponse.Result.Data.Id;
                 //mesaj gönderirken alıcı adının eklenmesi
                 var usernameSurname = await _context.ProjectUsers.Where(x => x.Email == sendMessageModel.Receiver).Select(x => x.Firstname + " " + x.Lastname).FirstOrDefaultAsync();
                 sendMessageModel.ReceiverName = usernameSurname;

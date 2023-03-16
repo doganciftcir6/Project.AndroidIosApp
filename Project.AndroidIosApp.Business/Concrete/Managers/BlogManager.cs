@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.TestHelper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers.Constans;
 using Project.AndroidIosApp.Business.Extensions;
+using Project.AndroidIosApp.Business.Helpers;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
@@ -14,6 +17,7 @@ using Project.AndroidIosApp.Dtos.Interfaces;
 using Project.AndroidIosApp.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,29 +30,31 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
         private readonly IMapper _mapper;
         private readonly IValidator<CreateBlogDto> _createBlogDtoValidator;
         private readonly IValidator<UpdateBlogDto> _updateBlogDtoValidator;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public BlogManager(IUow uow, IMapper mapper, IValidator<CreateBlogDto> createBlogDtoValidator, IValidator<UpdateBlogDto> updateBlogDtoValidator)
+        public BlogManager(IUow uow, IMapper mapper, IValidator<CreateBlogDto> createBlogDtoValidator, IValidator<UpdateBlogDto> updateBlogDtoValidator, IHostingEnvironment hostingEnvironment)
         {
             _uow = uow;
             _mapper = mapper;
             _createBlogDtoValidator = createBlogDtoValidator;
             _updateBlogDtoValidator = updateBlogDtoValidator;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IResponse> DeleteAsync(int id)
         {
             var result = await _uow.GetRepository<Blog>().GetByIdAsync(id);
-            if(result != null)
+            if (result != null)
             {
                 _uow.GetRepository<Blog>().Delete(result);
                 await _uow.SaveChangesAsync();
-                return new Response(ResponseType.Success,BlogMessages.DeletedBlog);
+                return new Response(ResponseType.Success, BlogMessages.DeletedBlog);
             }
             else
             {
-                return new Response(ResponseType.NotFound,BlogMessages.NotDeletedBlog);
+                return new Response(ResponseType.NotFound, BlogMessages.NotDeletedBlog);
             }
-       
+
         }
 
         public async Task<IDataResponse<IDto>> GetByIdAsync<IDto>(int id)
@@ -73,7 +79,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             //dto.Image3 = data.Image3;
             //dto.CreateDate = data.CreateDate;
             //dto.Status = data.Status;
-            return new DataResponse<IDto>(ResponseType.Success,data);
+            return new DataResponse<IDto>(ResponseType.Success, data);
         }
 
         public async Task<IDataResponse<List<GetBlogDto>>> GetAllAsync()
@@ -99,7 +105,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     Status = entity.Status,
                 });
             }
-            return new DataResponse<List<GetBlogDto>>(ResponseType.Success,dto);
+            return new DataResponse<List<GetBlogDto>>(ResponseType.Success, dto);
         }
         public async Task<IDataResponse<List<GetBlogDto>>> GetAllBySortingToCreateDateAsync()
         {
@@ -127,11 +133,64 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             return new DataResponse<List<GetBlogDto>>(ResponseType.Success, dto);
         }
 
-        public async Task<IDataResponse<CreateBlogDto>> InsertAsync(CreateBlogDto dto)
+        public async Task<IDataResponse<CreateBlogDto>> InsertAsync(CreateBlogDto dto, IFormFile Image1, IFormFile Image2, IFormFile Image3)
         {
+            if (Image1 != null)
+            {
+                dto.Image1 = Image1.FileName;
+            }
             var validationResult = _createBlogDtoValidator.Validate(dto);
             if (validationResult.IsValid)
             {
+                //upload burda yapılabilir zaten modelim yok dto ile çalışıyorum.
+                //upload
+                var uploadClass = new BlogImageUploadAfterWwwroot(_hostingEnvironment);
+                //erorr mesajlarım bu değişekende saklanacak ve en son hepsi gösterilecek ne kadar error varsa bu sayede bir kontrolde hata olunca diğerlerine bakılamma sorunundan kurtulacağım.
+                var errorMessages = new List<string>();
+                if (Image1 != null)
+                {
+                    var uploadResponse = uploadClass.RunUpload(Image1);
+                    if (uploadResponse.Result.ResponseType == ResponseType.Success)
+                    {
+                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
+                        dto.Image1 = uploadResponse.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse.Result.Meessage);
+                    }
+                }
+                if (Image2 != null)
+                {
+                    var uploadResponse2 = uploadClass.RunUpload(Image2);
+                    if (uploadResponse2.Result.ResponseType == ResponseType.Success)
+                    {
+                        dto.Image2 = uploadResponse2.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse2.Result.Meessage);
+                    }
+                }
+                if (Image3 != null)
+                {
+                    var uploadResponse3 = uploadClass.RunUpload(Image3);
+                    if (uploadResponse3.Result.ResponseType == ResponseType.Success)
+                    {
+                        dto.Image3 = uploadResponse3.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse3.Result.Meessage);
+                    }
+                }
+                if (errorMessages.Any())
+                {
+                    //tüm mesajları birleştirip controller'a öyle yollayalım burda hata alamamak için, ayırma işlemini controllerda yapacağız, mesajları liste olarak buraya yazarsak hata alırız.
+                    string errorMessage = string.Join(Environment.NewLine, errorMessages);
+                    return new DataResponse<CreateBlogDto>(ResponseType.Error, errorMessage);
+                }
+
                 var entity = new Blog();
 
                 entity.Title = dto.Title;
@@ -148,21 +207,83 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
 
                 await _uow.GetRepository<Blog>().InsertAsync(entity);
                 await _uow.SaveChangesAsync();
-                return new DataResponse<CreateBlogDto>(ResponseType.Success,dto);
+                return new DataResponse<CreateBlogDto>(ResponseType.Success, dto);
             }
             else
             {
-                return new DataResponse<CreateBlogDto>(ResponseType.ValidationError,dto, validationResult.ConverToCustomValidationError());
+                return new DataResponse<CreateBlogDto>(ResponseType.ValidationError, dto, validationResult.ConverToCustomValidationError());
             }
         }
 
-        public async Task<IDataResponse<UpdateBlogDto>> UpdateAsync(UpdateBlogDto updateDto)
+        public async Task<IDataResponse<UpdateBlogDto>> UpdateAsync(UpdateBlogDto updateDto, IFormFile Image1, IFormFile Image2, IFormFile Image3, int id)
         {
+            //eğer upload kısımlarına veri girilmeden güncelleme yapılırsa mevcut verileri kaybetmemek için;
+            var loadedData = await _uow.GetRepository<Blog>().GetByIdAsync(id);
+            if(loadedData != null)
+            {
+            updateDto.Image1 = Image1 != null ? Image1.FileName : loadedData.Image1;
+            updateDto.Image2 = Image2 != null ? Image2.FileName : loadedData.Image2;
+            updateDto.Image3 = Image3 != null ? Image3.FileName : loadedData.Image3;
+            }
+            else
+            {
+                return new DataResponse<UpdateBlogDto>(ResponseType.Error, "Kaynak veri bulunamadı");
+            }
+
             var validationResult = _updateBlogDtoValidator.Validate(updateDto);
             if (validationResult.IsValid)
             {
+                //upload burda yapılabilir zaten modelim yok dto ile çalışıyorum.
+                //upload
+                var uploadClass = new BlogImageUploadAfterWwwroot(_hostingEnvironment);
+                //erorr mesajlarım bu değişekende saklanacak ve en son hepsi gösterilecek ne kadar error varsa bu sayede bir kontrolde hata olunca diğerlerine bakılamma sorunundan kurtulacağım.
+                var errorMessages = new List<string>();
+                if (Image1 != null)
+                {
+                    var uploadResponse = uploadClass.RunUpload(Image1);
+                    if (uploadResponse.Result.ResponseType == ResponseType.Success)
+                    {
+                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
+                        updateDto.Image1 = uploadResponse.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse.Result.Meessage);
+                    }
+                }
+                if (Image2 != null)
+                {
+                    var uploadResponse2 = uploadClass.RunUpload(Image2);
+                    if (uploadResponse2.Result.ResponseType == ResponseType.Success)
+                    {
+                        updateDto.Image2 = uploadResponse2.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse2.Result.Meessage);
+                    }
+                }
+                if (Image3 != null)
+                {
+                    var uploadResponse3 = uploadClass.RunUpload(Image3);
+                    if (uploadResponse3.Result.ResponseType == ResponseType.Success)
+                    {
+                        updateDto.Image3 = uploadResponse3.Result.Meessage;
+                    }
+                    else
+                    {
+                        errorMessages.Add(uploadResponse3.Result.Meessage);
+                    }
+                }
+                if (errorMessages.Any())
+                {
+                    //tüm mesajları birleştirip controller'a öyle yollayalım burda hata alamamak için, ayırma işlemini controllerda yapacağız, mesajları liste olarak buraya yazarsak hata alırız.
+                    string errorMessage = string.Join(Environment.NewLine, errorMessages);
+                    return new DataResponse<UpdateBlogDto>(ResponseType.Error, errorMessage);
+                }
+
                 var updatedEntity = await _uow.GetRepository<Blog>().GetByIdAsync(updateDto.Id);
-                if(updatedEntity != null)
+                if (updatedEntity != null)
                 {
                     _uow.GetRepository<Blog>().Update(new()
                     {
@@ -188,7 +309,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             {
                 return new DataResponse<UpdateBlogDto>(ResponseType.ValidationError, updateDto, validationResult.ConverToCustomValidationError());
             }
-           
+
         }
 
         public async Task<IDataResponse<GetBlogDto>> GetByIdWithProjectUserCommentAsync(int id)
@@ -196,7 +317,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             var query = _uow.GetRepository<Blog>().GetQuery();
             var data = await query.Where(x => x.Id == id).Include(x => x.BlogComments).ThenInclude(x => x.ProjectUser).FirstOrDefaultAsync();
             var mappingData = _mapper.Map<GetBlogDto>(data);
-            if(mappingData != null)
+            if (mappingData != null)
             {
                 return new DataResponse<GetBlogDto>(ResponseType.Success, mappingData);
             }
@@ -204,3 +325,6 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
         }
     }
 }
+
+
+

@@ -4,9 +4,9 @@ using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using System.Collections.Generic;
 using System;
 
-namespace Project.AndoridIosApp.UI.Helpers
+namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
-    public static class UserCreateUploadCheckHelper
+    public static class ImageUploadRuleHelper
     {
         public static IResponse CheckIfImageExtensionsAllow(string fileName)
         {

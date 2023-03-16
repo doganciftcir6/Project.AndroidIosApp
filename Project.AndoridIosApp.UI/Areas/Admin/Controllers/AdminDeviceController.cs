@@ -11,7 +11,6 @@ using AutoMapper;
 using FluentValidation;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Project.AndoridIosApp.UI.Helpers;
 using Project.AndoridIosApp.UI.Models;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Dtos.Interfaces;
@@ -19,6 +18,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
+using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
@@ -73,11 +73,11 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                 //upload
                 if (createDeviceModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    var imageRuleChecks = ImageUploadCheckHelper.Run
                     (
-                        UserCreateUploadCheckHelper.CheckImageName(createDeviceModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(createDeviceModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(createDeviceModel.ImageUrl.Length)
+                        ImageUploadRuleHelper.CheckImageName(createDeviceModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(createDeviceModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(createDeviceModel.ImageUrl.Length)
                     );
                     if (imageRuleChecks.ResponseType == ResponseType.Success)
                     {
@@ -139,15 +139,22 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(UpdateDeviceModel updateDeviceModel, IFormFile ImageUrl, int id)
         {
             var loadedDtoData = await _deviceService.GetByIdAsync<UpdateDeviceDto>(id);
-            //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
-            if (ImageUrl != null)
+            if (loadedDtoData.ResponseType == ResponseType.Success)
             {
-                updateDeviceModel.ImageUrl = ImageUrl.FileName;
+                //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
+                if (ImageUrl != null)
+                {
+                    updateDeviceModel.ImageUrl = ImageUrl.FileName;
+                }
+                else
+                {
+                    //eğer kullanıcı diğer bilgileri güncelleyip upload bilgisini güncellemediyse eski upload dosya bilgisini dtodan alıp modele vereceğiz ki bu sefer resim alanı boş diye validation'a takılmayalım bunun için parametre olarak id almaya ihtiyacım var ki getbyid ile var olan veriyi çekebileyim.
+                    updateDeviceModel.ImageUrl = loadedDtoData.Data.ImageUrl;
+                }
             }
             else
             {
-                //eğer kullanıcı diğer bilgileri güncelleyip upload bilgisini güncellemediyse eski upload dosya bilgisini dtodan alıp modele vereceğiz ki bu sefer resim alanı boş diye validation'a takılmayalım bunun için parametre olarak id almaya ihtiyacım var ki getbyid ile var olan veriyi çekebileyim.
-                updateDeviceModel.ImageUrl = loadedDtoData.Data.ImageUrl;
+                NotFound();
             }
 
             var mappingDto = _mapper.Map<UpdateDeviceDto>(updateDeviceModel);
@@ -157,11 +164,11 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                 //pathtteki wwwroottan sonrasını dbye kaydeden upload
                 if (ImageUrl != null)
                 {
-                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    var imageRuleChecks = ImageUploadCheckHelper.Run
                     (
-                        UserCreateUploadCheckHelper.CheckImageName(ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(ImageUrl.FileName.Length)
+                        ImageUploadRuleHelper.CheckImageName(ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(ImageUrl.FileName.Length)
                     );
                     if (imageRuleChecks.ResponseType == ResponseType.Success)
                     {

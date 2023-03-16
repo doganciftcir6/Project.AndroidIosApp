@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Project.AndoridIosApp.UI.Helpers;
 using Project.AndoridIosApp.UI.Models;
 using Project.AndoridIosApp.UI.ValidationRules;
 using Project.AndroidIosApp.Business.Abstract.Services;
@@ -19,7 +18,7 @@ using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
 using Project.AndroidIosApp.Dtos.DeviceDtos;
 
-namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
+namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
     [Area("Admin")]
     [Route("Admin/AdminProjectUser/{action}/{id?}")]
@@ -67,11 +66,11 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 
                 if (userCreateModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    var imageRuleChecks = ImageUploadCheckHelper.Run
                     (
-                        UserCreateUploadCheckHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
+                        ImageUploadRuleHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
                     );
                     if (imageRuleChecks.ResponseType == ResponseType.Success)
                     {
@@ -129,7 +128,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             //update yaparken upload mapping hatası burasıyla ilgili çekilen var olan verilerde yani dtodaki stringi modeldeki ıformfile'a dönüştüremiyor bu yüzden upload sayfası hiç gelmiyor. Çözüm için modeldeki ımageurlede string yapıp dosyası update parametresinde yakalayacağız.
             var genderResponse = await _genderService.GetAllAsync();
             var userResponse = await _projectUserService.GetByIdAsync<UpdateProjectUserDto>(id);
-            if(userResponse.ResponseType == ResponseType.Success)
+            if (userResponse.ResponseType == ResponseType.Success)
             {
                 var model = new UpdateProjectUserModel()
                 {
@@ -153,15 +152,22 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(UpdateProjectUserModel updateProjectUserModel, IFormFile imageUrl, int id)
         {
             var loadedDtoData = await _projectUserService.GetByIdAsync<UpdateProjectUserDto>(id);
-            //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
-            if (imageUrl != null)
+            if (loadedDtoData.ResponseType == ResponseType.Success)
             {
-                updateProjectUserModel.ImageUrl = imageUrl.FileName;
+                //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
+                if (imageUrl != null)
+                {
+                    updateProjectUserModel.ImageUrl = imageUrl.FileName;
+                }
+                else
+                {
+                    //eğer kullanıcı diğer bilgileri güncelleyip upload bilgisini güncellemediyse eski upload dosya bilgisini dtodan alıp modele vereceğiz ki bu sefer resim alanı boş diye validation'a takılmayalım bunun için parametre olarak id almaya ihtiyacım var ki getbyid ile var olan veriyi çekebileyim.
+                    updateProjectUserModel.ImageUrl = loadedDtoData.Data.ImageUrl;
+                }
             }
             else
             {
-                //eğer kullanıcı diğer bilgileri güncelleyip upload bilgisini güncellemediyse eski upload dosya bilgisini dtodan alıp modele vereceğiz ki bu sefer resim alanı boş diye validation'a takılmayalım bunun için parametre olarak id almaya ihtiyacım var ki getbyid ile var olan veriyi çekebileyim.
-                updateProjectUserModel.ImageUrl = loadedDtoData.Data.ImageUrl;
+                return NotFound();
             }
 
             var validation = _updateProjectModelValidator.Validate(updateProjectUserModel);
@@ -171,11 +177,11 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 
                 if (imageUrl != null)
                 {
-                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    var imageRuleChecks = ImageUploadCheckHelper.Run
                     (
-                        UserCreateUploadCheckHelper.CheckImageName(imageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(imageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(imageUrl.Length)
+                        ImageUploadRuleHelper.CheckImageName(imageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(imageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(imageUrl.Length)
                     );
                     if (imageRuleChecks.ResponseType == ResponseType.Success)
                     {

@@ -2,9 +2,9 @@
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 
-namespace Project.AndoridIosApp.UI.Helpers
+namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
-    public class UserImageUploadRuleHelper
+    public class ImageUploadCheckHelper
     {
         public static IResponse Run(params IResponse[] logics)
         {

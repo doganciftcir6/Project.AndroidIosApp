@@ -1,0 +1,157 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@model IPagedList<Project.AndroidIosApp.Dtos.BlogDtos.GetBlogDto>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<!-- table section -->
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Blogs</h2>
+            </div>
+        </div>
+        <div class="table_section padding_infor_info">
+            <a href="/Admin/AdminBlog/Insert" class="btn btn-outline-info mb-2">Add New Blog</a>
+            <div class="table-responsive-sm">
+                <table id="myTable" class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Subtitle</th>
+                            <th>Description</th>
+                            <th>Description2</th>
+                            <th>Description3</th>
+                            <th>Description4</th>
+                            <th>Company</th>
+                            <th>Image1</th>
+                            <th>Image2</th>
+                            <th>Image3</th>
+                            <th>CreateDate</th>
+                            <th>Status</th>
+                            <th>#</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>@item.Id</td>
+                                @if(item.Title.Length > 30)
+                                {
+                                    <td>@item.Title.Substring(0,30)...</td>
+                                }
+                                else
+                                {
+                                    <td>@item.Title</td>
+                                }
+
+                                  @if(item.Subtitle.Length > 30)
+                                {
+                                    <td>@item.Subtitle.Substring(0,30)...</td>
+                                }
+                                else
+                                {
+                                    <td>@item.Subtitle</td>
+                                }
+
+                                @if (item.Description != null)
+                                {
+                                    @if (item.Description.Length > 30)
+                                    {
+                                        <td>@item.Description.Substring(0,30)...</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Description</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>#</td>
+                                }
+
+                                @if (item.Description2 != null)
+                                {
+                                    @if (item.Description2.Length > 30)
+                                    {
+                                        <td>@item.Description2.Substring(0,30)...</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Description2</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>#</td>
+                                }
+
+                                @if (item.Description3 != null)
+                                {
+                                    @if (item.Description3.Length > 30)
+                                    {
+                                        <td>@item.Description3.Substring(0,30)...</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Description3</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>#</td>
+                                }
+
+                                @if (item.Description4 != null)
+                                {
+                                    @if (item.Description4.Length > 30)
+                                    {
+                                        <td>@item.Description4.Substring(0,30)...</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Description4</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>#</td>
+                                }
+
+                                <td>@item.Company</td>
+                                <td>@item.Image1</td>
+                                <td>@item.Image2</td>
+                                <td>@item.Image3</td>
+                                <td>@item.CreateDate</td>
+                                <td>@item.Status</td>
+                                <td><a href="/Admin/AdminBlog/Update/@item.Id" class="btn btn-outline-success">Update</a></td>
+                                <td><a href="/Admin/AdminBlog/Delete/@item.Id" class="btn btn-outline-danger">Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div style="margin-left:815px;">
+                    @Html.PagedListPager(
+                    (IPagedList)Model,
+                    page => Url.Action("Index", new { page }),
+                    new X.PagedList.Web.Common.PagedListRenderOptions
+                    {
+                    ContainerDivClasses = new[] { "navigation" },
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" },
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- table section -->

@@ -1,4 +1,5 @@
-﻿using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
+﻿using Microsoft.AspNetCore.Http;
+using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndroidIosApp.Dtos.BlogDtos;
 using Project.AndroidIosApp.Dtos.Interfaces;
@@ -13,8 +14,8 @@ namespace Project.AndroidIosApp.Business.Abstract.Services
 {
     public interface IBlogService
     {
-        Task<IDataResponse<CreateBlogDto>> InsertAsync(CreateBlogDto createDto);
-        Task<IDataResponse<UpdateBlogDto>> UpdateAsync(UpdateBlogDto updateDto);
+        Task<IDataResponse<CreateBlogDto>> InsertAsync(CreateBlogDto dto, IFormFile Image1, IFormFile Image2, IFormFile Image3);
+        Task<IDataResponse<UpdateBlogDto>> UpdateAsync(UpdateBlogDto updateDto, IFormFile Image1, IFormFile Image2, IFormFile Image3, int id);
         Task<IResponse> DeleteAsync(int id);
         Task<IDataResponse<List<GetBlogDto>>> GetAllAsync();
         Task<IDataResponse<List<GetBlogDto>>> GetAllBySortingToCreateDateAsync();

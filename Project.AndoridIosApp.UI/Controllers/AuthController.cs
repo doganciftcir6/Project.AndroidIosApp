@@ -18,7 +18,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
-using Project.AndoridIosApp.UI.Helpers;
+using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -57,11 +57,11 @@ namespace Project.AndoridIosApp.UI.Controllers
 
                 if (userCreateModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = UserImageUploadRuleHelper.Run
+                    var imageRuleChecks = ImageUploadCheckHelper.Run
                     (
-                        UserCreateUploadCheckHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
-                        UserCreateUploadCheckHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
+                        ImageUploadRuleHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
+                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
                     );
                     if(imageRuleChecks.ResponseType == ResponseType.Success)
                     {

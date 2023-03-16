@@ -62,24 +62,6 @@ namespace Project.AndoridIosApp.UI.Controllers
         {
             return View(new CreateBlogDto());
         }
-        [HttpPost]
-        public async Task<IActionResult> Insert(CreateBlogDto dto)
-        {
-            var response = await _blogService.InsertAsync(dto);
-            if (response.ResponseType == ResponseType.NotFound)
-            {
-                return NotFound();
-            }
-            else if (response.ResponseType == ResponseType.ValidationError)
-            {
-                foreach (var item in response.ValidationErrors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-                return View(dto);
-            }
-                return RedirectToAction("Index");
-        }
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -104,24 +86,24 @@ namespace Project.AndoridIosApp.UI.Controllers
             return View(response.Data);
         
         }
-        [HttpPost]
-        public async Task<IActionResult> Update(UpdateBlogDto service)
-        {
-            var response = await _blogService.UpdateAsync(service);
-            if(response.ResponseType == ResponseType.NotFound)
-            {
-                return NotFound();
-            }
-            else if(response.ResponseType == ResponseType.ValidationError)
-            {
-                foreach (var item in response.ValidationErrors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-                return View(response.Data);
-            }
-            return RedirectToAction("Index");
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Update(UpdateBlogDto service)
+        //{
+        //    var response = await _blogService.UpdateAsync(service);
+        //    if(response.ResponseType == ResponseType.NotFound)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else if(response.ResponseType == ResponseType.ValidationError)
+        //    {
+        //        foreach (var item in response.ValidationErrors)
+        //        {
+        //            ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+        //        }
+        //        return View(response.Data);
+        //    }
+        //    return RedirectToAction("Index");
+        //}
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _blogService.DeleteAsync(id);

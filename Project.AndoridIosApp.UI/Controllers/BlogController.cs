@@ -47,8 +47,10 @@ namespace Project.AndoridIosApp.UI.Controllers
             }
 
             ViewBag.Id = id;
-            ViewBag.BlogComment = blogComment.Data;
-            ViewBag.CommentCount = blogComment.Data.Count();
+            //commentları gönderirken sadece statusu false olanları gönderelim ki admin onları true çekip öyle göstersin
+            ViewBag.BlogComment = blogComment.Data.Where(x => x.Status == true);
+            //commentların sayısını gönderirken sadece statusu false olanları gönderelim ki doğru bilgi olsun
+            ViewBag.CommentCount = blogComment.Data.Where(x => x.Status == true).Count();
 
             if (result.ResponseType == ResponseType.NotFound)
             {

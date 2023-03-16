@@ -44,10 +44,11 @@ namespace Project.AndoridIosApp.UI.Controllers
             {
                  ViewBag.UserId = loginUser.Data.Id;
             }
-
-            ViewBag.Comments = comment.Data;
+            //commentları gönderirken sadece statusu false olanları gönderelim ki admin onları true çekip öyle göstersin
+            ViewBag.Comments = comment.Data.Where(x => x.Status == true);
             ViewBag.AddComment = addcomment;
-            ViewBag.CommentCount = comment.Data.Count();
+            //commentların sayısını gönderirken sadece statusu false olanları gönderelim ki doğru bilgi olsun
+            ViewBag.CommentCount = comment.Data.Where(x => x.Status == true).Count();
 
             if (result.ResponseType == ResponseType.NotFound)
             {

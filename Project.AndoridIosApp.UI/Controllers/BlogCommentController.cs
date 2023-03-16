@@ -25,7 +25,7 @@ namespace Project.AndoridIosApp.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBlogComment(CreateBlogCommentDto createBlogCommentDto)
         {
-            createBlogCommentDto.Status = true;
+            createBlogCommentDto.Status = false;
             var response = await _blogCommentService.InsertBlogCommentAsync(createBlogCommentDto);
 
             if(response.ResponseType == ResponseType.NotFound)

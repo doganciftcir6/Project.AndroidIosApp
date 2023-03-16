@@ -27,7 +27,7 @@ namespace Project.AndoridIosApp.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
         {
-            createCommentDto.Status = true;
+            createCommentDto.Status = false;
             var response = await _commentService.InsertCommentAsync(createCommentDto);
 
             if (response.ResponseType == ResponseType.NotFound)
@@ -42,6 +42,7 @@ namespace Project.AndoridIosApp.UI.Controllers
                 }
                 return View(response.Data);
             }
+
             return RedirectToAction("DeviceDetails", new RouteValueDictionary(
               new { controller = "Device", action = "DeviceDetails", Id = createCommentDto.DeviceId }));
         }

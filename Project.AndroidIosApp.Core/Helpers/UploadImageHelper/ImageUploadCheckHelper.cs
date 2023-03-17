@@ -1,6 +1,8 @@
 ﻿using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
@@ -8,16 +10,16 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
     {
         public static IResponse Run(params IResponse[] logics)
         {
-            //parametrede aldığım her bir kontrol metotunu burda tek tek döndürmem lazım.
-            foreach (var logic in logics)
+            var errorMessages = logics.Where(x => x.ResponseType != ResponseType.Success)
+                                      .Select(x => x.Meessage)
+                                      .ToList();
+
+            if (errorMessages.Any())
             {
-                if (logic.ResponseType != ResponseType.Success)
-                {
-                    //demekki hata var. Kayıt duracak hata mesajı gözükecek.
-                    return logic;
-                }
+                // Hata mesajlarını birleştirerek ErrorResponse döndür
+                var errorMessage = string.Join("", errorMessages);
+                return new Response(ResponseType.Error, errorMessage);
             }
-            //eğer hiç bir metotta hata yoksa sucess döncek
             return new Response(ResponseType.Success);
         }
     }

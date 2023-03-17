@@ -144,12 +144,11 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             {
                 //upload burda yapılabilir zaten modelim yok dto ile çalışıyorum.
                 //upload
-                var uploadClass = new BlogImageUploadAfterWwwroot(_hostingEnvironment);
                 //erorr mesajlarım bu değişekende saklanacak ve en son hepsi gösterilecek ne kadar error varsa bu sayede bir kontrolde hata olunca diğerlerine bakılamma sorunundan kurtulacağım.
                 var errorMessages = new List<string>();
                 if (Image1 != null)
                 {
-                    var uploadResponse = uploadClass.RunUpload(Image1);
+                    var uploadResponse = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image1);
                     if (uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
                         //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
@@ -162,7 +161,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 }
                 if (Image2 != null)
                 {
-                    var uploadResponse2 = uploadClass.RunUpload(Image2);
+                    var uploadResponse2 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image2);
                     if (uploadResponse2.Result.ResponseType == ResponseType.Success)
                     {
                         dto.Image2 = uploadResponse2.Result.Meessage;
@@ -174,7 +173,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 }
                 if (Image3 != null)
                 {
-                    var uploadResponse3 = uploadClass.RunUpload(Image3);
+                    var uploadResponse3 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image3);
                     if (uploadResponse3.Result.ResponseType == ResponseType.Success)
                     {
                         dto.Image3 = uploadResponse3.Result.Meessage;
@@ -235,12 +234,11 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
             {
                 //upload burda yapılabilir zaten modelim yok dto ile çalışıyorum.
                 //upload
-                var uploadClass = new BlogImageUploadAfterWwwroot(_hostingEnvironment);
                 //erorr mesajlarım bu değişekende saklanacak ve en son hepsi gösterilecek ne kadar error varsa bu sayede bir kontrolde hata olunca diğerlerine bakılamma sorunundan kurtulacağım.
                 var errorMessages = new List<string>();
                 if (Image1 != null)
                 {
-                    var uploadResponse = uploadClass.RunUpload(Image1);
+                    var uploadResponse = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image1);
                     if (uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
                         //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
@@ -253,7 +251,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 }
                 if (Image2 != null)
                 {
-                    var uploadResponse2 = uploadClass.RunUpload(Image2);
+                    var uploadResponse2 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image2);
                     if (uploadResponse2.Result.ResponseType == ResponseType.Success)
                     {
                         updateDto.Image2 = uploadResponse2.Result.Meessage;
@@ -265,7 +263,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                 }
                 if (Image3 != null)
                 {
-                    var uploadResponse3 = uploadClass.RunUpload(Image3);
+                    var uploadResponse3 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image3);
                     if (uploadResponse3.Result.ResponseType == ResponseType.Success)
                     {
                         updateDto.Image3 = uploadResponse3.Result.Meessage;

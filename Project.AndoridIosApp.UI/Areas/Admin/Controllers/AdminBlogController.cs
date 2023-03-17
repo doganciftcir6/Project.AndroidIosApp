@@ -47,7 +47,8 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             else if(insertBlogResponse.ResponseType == AndroidIosApp.Core.Enums.ResponseType.Error)
             {
                 //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
-                var errorMessages = insertBlogResponse.Meessage.Split('!');
+                //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                var errorMessages = insertBlogResponse.Meessage.Split('^');
                 foreach (var errorMessage in errorMessages)
                 {
                     ModelState.AddModelError("", errorMessage);
@@ -85,7 +86,8 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
             else if(updateBlogResponse.ResponseType == AndroidIosApp.Core.Enums.ResponseType.Error)
             {
                 //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
-                var errorMessages = updateBlogResponse.Meessage.Split('!');
+                //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                var errorMessages = updateBlogResponse.Meessage.Split('^');
                 foreach (var errorMessage in errorMessages)
                 {
                     ModelState.AddModelError("", errorMessage);

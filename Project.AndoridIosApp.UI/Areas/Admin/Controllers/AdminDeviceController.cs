@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
+using Project.AndoridIosApp.UI.Helpers.DeviceHelper;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Project.AndroidIosApp.Dtos.BlogDtos;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
@@ -73,41 +76,35 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                 //upload
                 if (createDeviceModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = ImageUploadCheckHelper.Run
-                    (
-                        ImageUploadRuleHelper.CheckImageName(createDeviceModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(createDeviceModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(createDeviceModel.ImageUrl.Length)
-                    );
-                    if (imageRuleChecks.ResponseType == ResponseType.Success)
+                    var uploadResponse = DeviceImageUploadThenAferwwrootHelper.CreateInstance(_hostingEnvironment).RunDeviceUploadAsync(createDeviceModel.ImageUrl);
+                    if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //pathtteki wwwroottan sonrasını dbye kaydeden upload burada olacak çünkü ıformfile modelde verdim.
-                        var fileName = Path.GetFileNameWithoutExtension(createDeviceModel.ImageUrl.FileName);
-                        var extName = Path.GetExtension(createDeviceModel.ImageUrl.FileName);
-                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "img/device", fileName + extName);
-                        var stream = new FileStream(path, FileMode.Create);
-                        await createDeviceModel.ImageUrl.CopyToAsync(stream);
-                        //wwwtrottan sonrasını kayıt edelim dbye
-                        string wwwrootSonrasi = path.Replace(_hostingEnvironment.WebRootPath, "").Replace('\\', '/');
-                        mappingDataDto.ImageUrl = wwwrootSonrasi;
+                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
+                        mappingDataDto.ImageUrl = uploadResponse.Result.Meessage;
                     }
                     else
                     {
-                        ModelState.AddModelError("", imageRuleChecks.Meessage);
-                        //checklerda hata var hata mesajı gitsin ama aynı azamanda selectlist kaybolmamalı
-                        var deviceTypeResponse3 = await _deviceTypeService.GetAllAsync();
-                        var deviceOSResponse3 = await _OSservice.GetAllAsync();
-                        createDeviceModel.DeviceType = new SelectList(deviceTypeResponse3.Data, "Id", "Definition");
-                        createDeviceModel.OS = new SelectList(deviceOSResponse3.Data, "Id", "Definition");
+                        //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
+                        //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                        var errorMessages = uploadResponse.Result.Meessage.Split('^');
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            ModelState.AddModelError("", errorMessage);
+                        }
+                        //checklerda hata var hata mesajı gitsin ama aynı azamanda seleclist kaybolmamalı
+                        var deviceTypeResponse6 = await _deviceTypeService.GetAllAsync();
+                        var deviceOSResponse6 = await _OSservice.GetAllAsync();
+                        createDeviceModel.DeviceType = new SelectList(deviceTypeResponse6.Data, "Id", "Definition");
+                        createDeviceModel.OS = new SelectList(deviceOSResponse6.Data, "Id", "Definition");
                         return View(createDeviceModel);
                     }
-                    var response = await _deviceService.InsertAsync(mappingDataDto);
-                    if (response.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
-                    {
-                        return NotFound();
-                    }
-                    return RedirectToAction("Index");
                 }
+                var response = await _deviceService.InsertAsync(mappingDataDto);
+                if (response.ResponseType == AndroidIosApp.Core.Enums.ResponseType.NotFound)
+                {
+                    return NotFound();
+                }
+                return RedirectToAction("Index");
             }
             foreach (var item in validationResult.Errors)
             {
@@ -164,25 +161,21 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                 //pathtteki wwwroottan sonrasını dbye kaydeden upload
                 if (ImageUrl != null)
                 {
-                    var imageRuleChecks = ImageUploadCheckHelper.Run
-                    (
-                        ImageUploadRuleHelper.CheckImageName(ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(ImageUrl.FileName.Length)
-                    );
-                    if (imageRuleChecks.ResponseType == ResponseType.Success)
+                    var uploadResponse = DeviceImageUploadThenAferwwrootHelper.CreateInstance(_hostingEnvironment).RunDeviceUploadAsync(ImageUrl);
+                    if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        var fileName = Path.GetFileNameWithoutExtension(ImageUrl.FileName);
-                        var extName = Path.GetExtension(ImageUrl.FileName);
-                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "img/device", fileName + extName);
-                        var stream = new FileStream(path, FileMode.Create);
-                        await ImageUrl.CopyToAsync(stream);
-                        string wwwrootSonrasi = path.Replace(_hostingEnvironment.WebRootPath, "").Replace('\\', '/');
-                        mappingDto.ImageUrl = wwwrootSonrasi;
+                        //data messagede geliyor. Karıştırma!
+                        mappingDto.ImageUrl = uploadResponse.Result.Meessage;
                     }
                     else
                     {
-                        ModelState.AddModelError("", imageRuleChecks.Meessage);
+                        //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
+                        //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                        var errorMessages = uploadResponse.Result.Meessage.Split('^');
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            ModelState.AddModelError("", errorMessage);
+                        }
                         //checklerda hata var hata mesajı gitsin ama aynı azamanda seleclist kaybolmamalı
                         var deviceTypeResponse6 = await _deviceTypeService.GetAllAsync();
                         var deviceOSResponse6 = await _OSservice.GetAllAsync();

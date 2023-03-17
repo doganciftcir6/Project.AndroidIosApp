@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -57,25 +58,21 @@ namespace Project.AndoridIosApp.UI.Controllers
 
                 if (userCreateModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = ImageUploadCheckHelper.Run
-                    (
-                        ImageUploadRuleHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
-                    );
-                    if(imageRuleChecks.ResponseType == ResponseType.Success)
+                    var uploadResponse = UserImageUploadHelper.CreateInstance(_hostingEnvironment).RunUploadAsync(userCreateModel.ImageUrl);
+                    if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //upload burada olacak çünkü ıformfile modelde verdim.
-                        var fileName = Guid.NewGuid().ToString();
-                        var extName = Path.GetExtension(userCreateModel.ImageUrl.FileName);
-                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
-                        var stream = new FileStream(path, FileMode.Create);
-                        await userCreateModel.ImageUrl.CopyToAsync(stream);
-                        dto.ImageUrl = fileName + extName;
+                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
+                        dto.ImageUrl = uploadResponse.Result.Meessage;
                     }
                     else
                     {
-                        ModelState.AddModelError("", imageRuleChecks.Meessage);
+                        //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
+                        //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                        var errorMessages = uploadResponse.Result.Meessage.Split('^');
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            ModelState.AddModelError("", errorMessage);
+                        }
                         //checklerda hata var hata mesajı gitsin ama aynı azamanda genderlist kaybolmamalı
                         var response3 = await _genderService.GetAllAsync();
                         userCreateModel.Genders = new SelectList(response3.Data, "Id", "Definition", userCreateModel.GenderId);

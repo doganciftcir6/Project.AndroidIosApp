@@ -3,6 +3,8 @@ using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
@@ -16,7 +18,7 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 
             if (!allowFileExtensions.Contains(extension))
             {
-                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim .jpg, .jpeg, .gif, .png türlerinden birisi olmalıdır! ");
+                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim .jpg, .jpeg, .gif, .png türlerinden birisi olmalıdır!^");
             }
             return new Response(ResponseType.Success);
         }
@@ -25,7 +27,7 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
             decimal imgMbSize = Convert.ToDecimal(imageSize * 0.000001);
             if (imgMbSize > 1)
             {
-                return new Response(ResponseType.Error, "Yüklediğiniz resim boyutu 1 mb'dan düşük olmalıdır!");
+                return new Response(ResponseType.Error, "Yüklediğiniz resim boyutu 1 mb'dan düşük olmalıdır!^");
             }
             return new Response(ResponseType.Success);
         }
@@ -33,7 +35,17 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
         {
             if (fileName.Contains("/") || fileName.Contains("<") || fileName.Contains(">") || fileName.Contains("%2F") || fileName.Contains("%5C"))
             {
-                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim ismi /, <, >, %2F, %5C karakterlerini içeremez!");
+                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resim ismi /, <, >, %2F, %5C karakterlerini içeremez!^");
+            }
+            return new Response(ResponseType.Success);
+        }
+
+        public static IResponse CheckImageNameDot(IFormFile file)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+            if (fileName.Contains("."))
+            {
+                return new Response(ResponseType.Error, "Yüklemiş olduğunuz resimin isminde . karakteri bulunamaz!^");
             }
             return new Response(ResponseType.Success);
         }

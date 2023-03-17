@@ -1,42 +1,47 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Core.Enums;
 using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
 using Project.AndroidIosApp.Core.Utilities.Results.Concrete;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
-using Project.AndroidIosApp.Dtos.BlogDtos;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System;
 using System.Threading.Tasks;
 
-namespace Project.AndroidIosApp.Business.Helpers
+namespace Project.AndoridIosApp.UI.Helpers.DeviceHelper
 {
-    //Bu helper'a static yapamam newlemek zorundayım çünkü dependency olarak IHostingEnvironment kullanmak istiyorum. Tabi bu kullanılmadan da static şekilde upload yapılabilir başka yöntemler ile. Tercih meselesi.
-    public class BlogImageUploadAfterWwwroot
+    public class DeviceImageUploadThenAferwwrootHelper
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        public BlogImageUploadAfterWwwroot(IHostingEnvironment hostingEnvironment)
+
+        private static DeviceImageUploadThenAferwwrootHelper _instance;
+        public DeviceImageUploadThenAferwwrootHelper(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
-        public async Task<IDataResponse<string>> RunUpload(IFormFile file)
+
+        //newlemekten kurtul
+        public static DeviceImageUploadThenAferwwrootHelper CreateInstance(IHostingEnvironment hostingEnvironment)
+        {
+            _instance = new DeviceImageUploadThenAferwwrootHelper(hostingEnvironment);
+            return _instance;
+        }
+
+        public async Task<IDataResponse<string>> RunDeviceUploadAsync(IFormFile file)
         {
             var imageRuleChecks = ImageUploadCheckHelper.Run
-                   (
-                       ImageUploadRuleHelper.CheckImageName(file.FileName),
-                       ImageUploadRuleHelper.CheckIfImageExtensionsAllow(file.FileName),
-                       ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(file.FileName.Length)
-                   );
+                  (
+                      ImageUploadRuleHelper.CheckImageName(file.FileName),
+                      ImageUploadRuleHelper.CheckIfImageExtensionsAllow(file.FileName),
+                      ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(file.Length),
+                      ImageUploadRuleHelper.CheckImageNameDot(file)
+                  );
             if (imageRuleChecks.ResponseType == ResponseType.Success)
             {
-                //pathtteki wwwroottan sonrasını dbye kaydeden upload burada olacak çünkü ıformfile modelde verdim.
+                //pathtteki wwwroottan sonrasını dbye kaydeden upload burada olacak çünkü ıformfile modelde verdim(controller için geçerliydi helperdan önce).
                 var uploadfileName = Path.GetFileNameWithoutExtension(file.FileName);
                 var extName = Path.GetExtension(file.FileName);
-                string path = Path.Combine(_hostingEnvironment.WebRootPath, "img/blog", uploadfileName + DateTime.Now.Ticks.ToString() + extName);
+                string path = Path.Combine(_hostingEnvironment.WebRootPath, "img/device", uploadfileName + DateTime.Now.Ticks.ToString() + extName);
                 var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
                 //wwwtrottan sonrasını kayıt edelim dbye

@@ -36,7 +36,7 @@
                             }
                             @if (!User.Identity.IsAuthenticated)
                             {
-                            <li><a asp-controller="Auth" asp-action="SignUp">Sign Up</a></li> 
+                                <li><a asp-controller="Auth" asp-action="SignUp">Sign Up</a></li>
                             }
                         </ul>
                     </nav>
@@ -46,11 +46,15 @@
                 <div class="header__right">
                     @if (!User.Identity.IsAuthenticated)
                     {
-                    <a asp-controller="Auth" asp-action="SignIn"><span class="icon_profile"></span></a>
+                        <a asp-controller="Auth" asp-action="SignIn"><span class="icon_profile"></span></a>
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <a asp-controller="Auth" asp-action="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
+                        @if (ViewBag.LoginUserId != null)
+                        {
+                            <a href="/Auth/UpdateUser/@ViewBag.LoginUserId"><i class="fa-solid fa-gear"></i></a>
+                        }
+                        <a asp-controller="Auth" asp-action="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
                     }
                 </div>
             </div>

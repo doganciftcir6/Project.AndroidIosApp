@@ -141,6 +141,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                 //Direkt ımageurl null olarak algılanıp validation hatasına giriyor parametre olarak dosya adlığımız için. Ayrıca resim güncellenmek istemezse diye null kontrolü koymam lazım yoksa diğer bilgiler güncellenip dosya kısmı güncellenmezse burası null referance verir.
                 if (ImageUrl != null)
                 {
+                    //bu sayede kullanıcı upload validationlarına girdiğinde value inputunda validationa takılan yeni dosyanın ismi gözükecek.
                     updateDeviceModel.ImageUrl = ImageUrl.FileName;
                 }
                 else

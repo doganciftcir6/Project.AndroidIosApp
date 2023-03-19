@@ -39,6 +39,7 @@ namespace Project.AndoridIosApp.UI
 
             //modelin FluenValidationu
             services.AddTransient <IValidator<UserCreateModel>, UserCreateModelValidator>();
+            services.AddTransient <IValidator<UserUpdateModel>, UserUpdateModelValidator>();
             services.AddTransient <IValidator<UpdateProjectUserModel>, UpdateProjectUserModelValidator>();
             services.AddTransient<IValidator<SendMessageModel>, SendMessageModelValidator>();
             services.AddTransient<IValidator<CreateDeviceCommentModel>, CreateDeviceCommentValidator>();
@@ -71,6 +72,7 @@ namespace Project.AndoridIosApp.UI
             //automapper
             var profiles = MapperHelper.GetProfiles();
             profiles.Add(new UserCreateModelProfile());
+            profiles.Add(new UserUpdateModelProfile());
             profiles.Add(new SendMessageModelProfile());
             profiles.Add(new UpdateProjectUserModelProfile());
             profiles.Add(new CreateDeviceCommentModelProfile());

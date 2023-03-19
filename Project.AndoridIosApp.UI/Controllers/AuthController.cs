@@ -61,8 +61,8 @@ namespace Project.AndoridIosApp.UI.Controllers
                     var uploadResponse = UserImageUploadHelper.CreateInstance(_hostingEnvironment).RunUploadAsync(userCreateModel.ImageUrl);
                     if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
-                        dto.ImageUrl = uploadResponse.Result.Meessage;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        dto.ImageUrl = uploadResponse.Result.StringData;
                     }
                     else
                     {

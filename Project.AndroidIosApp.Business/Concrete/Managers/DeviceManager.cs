@@ -241,6 +241,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Status = updateDeviceDto.Status,
                         DeviceTypeId = updateDeviceDto.DeviceTypeId,
                         OSId = updateDeviceDto.OSId,
+                        //update sırasında createdate bilgisini eskisiyle dolduralım bu bilgi değişmemeli.
+                        CreateDate = unChangedData.CreateDate,
                     }, unChangedData);
                     await _uow.SaveChangesAsync();
                     return new DataResponse<UpdateDeviceDto>(ResponseType.Success, updateDeviceDto);

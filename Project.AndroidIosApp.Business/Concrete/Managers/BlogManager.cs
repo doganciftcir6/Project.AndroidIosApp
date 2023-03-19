@@ -151,8 +151,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image1);
                     if (uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
-                        dto.Image1 = uploadResponse.Result.Meessage;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum.
+                        dto.Image1 = uploadResponse.Result.StringData;
                     }
                     else
                     {
@@ -164,7 +164,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse2 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image2);
                     if (uploadResponse2.Result.ResponseType == ResponseType.Success)
                     {
-                        dto.Image2 = uploadResponse2.Result.Meessage;
+                        dto.Image2 = uploadResponse2.Result.StringData;
                     }
                     else
                     {
@@ -176,7 +176,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse3 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image3);
                     if (uploadResponse3.Result.ResponseType == ResponseType.Success)
                     {
-                        dto.Image3 = uploadResponse3.Result.Meessage;
+                        dto.Image3 = uploadResponse3.Result.StringData;
                     }
                     else
                     {
@@ -241,8 +241,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image1);
                     if (uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
-                        updateDto.Image1 = uploadResponse.Result.Meessage;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        updateDto.Image1 = uploadResponse.Result.StringData;
                     }
                     else
                     {
@@ -254,7 +254,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse2 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image2);
                     if (uploadResponse2.Result.ResponseType == ResponseType.Success)
                     {
-                        updateDto.Image2 = uploadResponse2.Result.Meessage;
+                        updateDto.Image2 = uploadResponse2.Result.StringData;
                     }
                     else
                     {
@@ -266,7 +266,7 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                     var uploadResponse3 = BlogImageUploadAfterWwwroot.CreateInstance(_hostingEnvironment).RunUploadAsync(Image3);
                     if (uploadResponse3.Result.ResponseType == ResponseType.Success)
                     {
-                        updateDto.Image3 = uploadResponse3.Result.Meessage;
+                        updateDto.Image3 = uploadResponse3.Result.StringData;
                     }
                     else
                     {
@@ -297,6 +297,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Image2 = updateDto.Image2,
                         Image3 = updateDto.Image3,
                         Status = updateDto.Status,
+                        //update sırasında eski datayı atayalım ki createdate bozulmasın.
+                        CreateDate = updatedEntity.CreateDate,
                     }, updatedEntity);
                     await _uow.SaveChangesAsync();
                     return new DataResponse<UpdateBlogDto>(ResponseType.Success, updateDto);

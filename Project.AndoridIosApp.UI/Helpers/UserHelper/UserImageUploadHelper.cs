@@ -47,7 +47,7 @@ namespace Project.AndoridIosApp.UI.Helpers.UserHelper
                 var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
                 var dbCreateFileName = fileName + extName;
-                return new DataResponse<string>(ResponseType.Success, dbCreateFileName);
+                return new DataResponse<string>(ResponseType.Success, dbCreateFileName, "Upload işlemi başarılı...");
             }
             else
             {

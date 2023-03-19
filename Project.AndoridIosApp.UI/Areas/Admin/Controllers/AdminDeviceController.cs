@@ -79,8 +79,8 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                     var uploadResponse = DeviceImageUploadThenAferwwrootHelper.CreateInstance(_hostingEnvironment).RunDeviceUploadAsync(createDeviceModel.ImageUrl);
                     if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //data yerine message kullandım veri string olduğu için message olarak algılıyor entity olarak değil.
-                        mappingDataDto.ImageUrl = uploadResponse.Result.Meessage;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        mappingDataDto.ImageUrl = uploadResponse.Result.StringData;
                     }
                     else
                     {
@@ -164,8 +164,8 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
                     var uploadResponse = DeviceImageUploadThenAferwwrootHelper.CreateInstance(_hostingEnvironment).RunDeviceUploadAsync(ImageUrl);
                     if(uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //data messagede geliyor. Karıştırma!
-                        mappingDto.ImageUrl = uploadResponse.Result.Meessage;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        mappingDto.ImageUrl = uploadResponse.Result.StringData;
                     }
                     else
                     {

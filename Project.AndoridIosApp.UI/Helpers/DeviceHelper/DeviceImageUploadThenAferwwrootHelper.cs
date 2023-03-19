@@ -47,7 +47,7 @@ namespace Project.AndoridIosApp.UI.Helpers.DeviceHelper
                 //wwwtrottan sonrasını kayıt edelim dbye
                 string wwwrootSonrasi = path.Replace(_hostingEnvironment.WebRootPath, "").Replace('\\', '/');
                 //eğer upload başarılı ise wwwrootsonrasi pathi geri yollasınki ben ilgili businees veya controllerda bunu yakalayıp mapleme yapabileyim modelime veya dtoma.
-                return new DataResponse<string>(ResponseType.Success, wwwrootSonrasi);
+                return new DataResponse<string>(ResponseType.Success, wwwrootSonrasi, "Upload işlemi başarılı...");
             }
             else
             {

@@ -1,4 +1,7 @@
-﻿@model List<Project.AndroidIosApp.Dtos.BlogDtos.GetBlogDto>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@model IPagedList<Project.AndroidIosApp.Dtos.BlogDtos.GetBlogDto>
 @{
     Layout = "_MemberLayout";
 }
@@ -50,17 +53,18 @@
             }
 
             <!-- pagination ekleyelim alta bir tane -->
-            <nav class="my-5">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                        <a href="#" class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a href="" class="page-link">1</a></li>
-                    <li class="page-item"><a href="" class="page-link">2</a></li>
-                    <li class="page-item"><a href="" class="page-link">3</a></li>
-                    <li class="page-item"><a href="" class="page-link">Next</a></li>
-                </ul>
-            </nav>
+            <div style="margin-left:815px;">
+                @Html.PagedListPager(
+                (IPagedList)Model,
+                page => Url.Action("Index", new { page }),
+                new X.PagedList.Web.Common.PagedListRenderOptions
+                {
+                ContainerDivClasses = new[] { "navigation" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                })
+            </div>
 
         </div>
     </div>

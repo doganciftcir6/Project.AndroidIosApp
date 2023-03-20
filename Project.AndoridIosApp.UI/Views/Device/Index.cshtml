@@ -1,4 +1,6 @@
-﻿@model List<Project.AndroidIosApp.Dtos.DeviceDtos.GetDeviceDto>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Project.AndroidIosApp.Dtos.DeviceDtos.GetDeviceDto>
 
 @{
     Layout = "_MemberLayout";
@@ -37,6 +39,18 @@
                                 </div>
                             }
                         }
+                        <div style="margin-left:815px;">
+                            @Html.PagedListPager(
+                            (IPagedList)Model,
+                            page => Url.Action("Index", new { page }),
+                            new X.PagedList.Web.Common.PagedListRenderOptions
+                            {
+                            ContainerDivClasses = new[] { "navigation" },
+                            LiElementClasses = new[] { "page-item" },
+                            PageClasses = new[] { "page-link" },
+                            DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                            })
+                        </div>
                     </div>
                 </div>
             </div>

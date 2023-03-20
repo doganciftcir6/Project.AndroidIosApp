@@ -3,9 +3,10 @@
     Layout = "_MemberLayout";
 }
 
+<link href="~/CustomStyle/AdminDeviceCommentStyleSheet.css" rel="stylesheet" />
 <style>
-    h2 {
-        color: #F7E6DA;
+    h5{
+        color: #F7E6DA
     }
 </style>
 
@@ -13,81 +14,80 @@
     <div class="alet alert-warning" asp-validation-summary="All"></div>
 </div>
 
-@if (User.IsInRole("Member"))
-{
-    <form asp-controller="Support" asp-action="SendMessage" class="form-group" method="post">
-        <div class="container-fluid">
+<form asp-controller="Support" asp-action="SendMessage" class="form-group" method="post">
+    <div class="container-fluid">
+        @if (User.IsInRole("Member"))
+        {
             <h2>Yeni Bir Destek Talebinde Bulunun</h2>
-            <br />
-            <div class="row">
-                <div class="col-md-8">
-                    <h5>Receiver Mail</h5>
-                    <input type="email" asp-for="Receiver" class="form-control">
+        }
+        @if (User.IsInRole("SupportUser"))
+        {
+            <h2>Kullanıcılarımızın Destek Taleplerine Cevap Verin</h2>
+        }
+        <br />
+        <div class="row">
+            <div class="col-md-8">
+                <h5>Receiver Mail</h5>
+                <input type="email" asp-for="Receiver" class="form-control">
+                <br />
+                <h5>Title</h5>
+                <input type="text" asp-for="Title" class="form-control">
+                <br />
+                <h5>Message</h5>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <div class="mt-2">
+                    <h5>Device</h5>
+                    <input type="text" id="searchInput2" placeholder="Search...">
                     <br />
-                    <h5>Title</h5>
-                    <input type="text" asp-for="Title" class="form-control">
-                    <br />
-                    <h5>Message</h5>
-                    <textarea asp-for="Content" class="form-control"></textarea>
-                    <div class="mb-4">
-                        <h5>Device</h5>
-                        <select class="form-select" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
-                            <option value="0">Select a device.</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary" style="margin-left:900px;">Gönder</button>
-                    </div>
+                    <select id="selectList2" class="classic" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
+                        <option id="option2" value="0">Select a device.</option>
+                    </select>
                 </div>
-                <div class="col-md-4">
-                    <div class="alert alert-info">
-                        <h4 class="text-danger">Uyarı!</h4>
+                <button type="submit" class="btn btn-primary" style="margin-left:1017px;">Gönder</button>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-info">
+                    <h4 class="text-danger">Uyarı!</h4>
+                    @if (User.IsInRole("Member"))
+                    {
                         <h3>Sevgili kullanıcılarımız, destek taleplerinizin bizlere ulaşabilmesi için aşağıda bulunan destek çalışanlarımızın email adreslerini eksiksiz ve doğru şekilde yazmaya, sorunuzla ilgili olan cihazı doğru şekilde seçmeye lütfen özen gösteriniz! </h3>
-                        <br />
-                        <br />
+                    }
+                    @if (User.IsInRole("SupportUser"))
+                    {
+                        <h3>Sevgili destek çalışanlarımız, Sizlere gönderilen destek taleplerine cevap mesajı gönderirken alıcının email adresini eksiksiz şekilde yazmaya, kullanıcının hangi cihaz hakkında soru sorduğunu doğru şekilde seçmeye lütfen özen gösteriniz! </h3>
+                    }
+                    <br />
+                    <br />
+                    @if (User.IsInRole("Member"))
+                    {
                         <h4 class="text-warning">Destek çalışanlarımızın mail adresleri;</h4>
                         <section>
                             <label>doganciftcir66@hotmail.com</label>
                             <br />
                         </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-}
-@if (User.IsInRole("SupportUser"))
-{
-    <form asp-controller="Support" asp-action="SendMessage" class="form-group" method="post">
-        <div class="container-fluid">
-            <h2>Kullanıcılarımızın Destek Taleplerine Cevap Verin</h2>
-            <br />
-            <div class="row">
-                <div class="col-md-8">
-                    <h5>Receiver Mail</h5>
-                    <input type="email" asp-for="Receiver" class="form-control">
-                    <br />
-                    <h5>Title</h5>
-                    <input type="text" asp-for="Title" class="form-control">
-                    <br />
-                    <h5>Message</h5>
-                    <textarea asp-for="Content" class="form-control"></textarea>
-                    <div class="mb-4">
-                        <h5>Device</h5>
-                        <select class="form-select" asp-items="@Model.Devices" asp-for="@Model.DeviceId">
-                            <option value="0">Select a device.</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary" style="margin-left:900px;">Gönder</button>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="alert alert-info">
-                        <h4 class="text-danger">Uyarı!</h4>
-                        <h3>Sevgili destek çalışanlarımız, Sizlere gönderilen destek taleplerine cevap mesajı gönderirken alıcının email adresini eksiksiz şekilde yazmaya, kullanıcının hangi cihaz hakkında soru sorduğunu doğru şekilde seçmeye lütfen özen gösteriniz! </h3>
-                        <br />
-                        <br />
+                    }
+                    @if (User.IsInRole("SupportUser"))
+                    {
                         <h4 class="text-warning">Kullanıcılarımıza sağladığınız destekler için teşekkür ederiz!</h4>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
-    </form>
-}
+    </div>
+</form>
+
+<script>
+    var input2 = document.getElementById('searchInput2');
+    var options2 = document.getElementById('selectList2').getElementsByTagName('option');
+    input2.addEventListener('keyup', function () {
+        var filter = input2.value.toLowerCase();
+        for (var i = 0; i < options2.length; i++) {
+            var option2 = options2[i];
+            if (option2.text.toLowerCase().indexOf(filter) > -1) {
+                option2.style.display = '';
+            } else {
+                option2.style.display = 'none';
+            }
+        }
+    });
+</script>

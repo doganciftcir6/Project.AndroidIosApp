@@ -10,6 +10,7 @@ using Project.AndroidIosApp.Entities;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -28,10 +29,11 @@ namespace Project.AndoridIosApp.UI.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var result = await _deviceService.GetAllWithOSAndDeviceTypeAsync();
-            return View(result.Data);
+            var pagedData = result.Data.ToPagedList(page,21);
+            return View(pagedData);
         }
         public async Task<IActionResult> DeviceDetails(int id)
         {

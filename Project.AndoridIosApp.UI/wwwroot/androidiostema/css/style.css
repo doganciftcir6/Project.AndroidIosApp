@@ -15,7 +15,7 @@
 	1.2	Mixins
 	1.3	Flexbox
 	1.4	Reset
-2.  Helper Css
+2.  Helper Cssf
 3.  Header Section
 4.  Hero Section
 5.  Banner Section
@@ -878,7 +878,7 @@ ol {
 	margin-right: 16px;
 }
 
-.product__page__title .product__page__filter .nice-select {
+.product__page__title .product__page__filter {
 	float: none;
 	display: inline-block;
 	font-size: 15px;
@@ -891,7 +891,7 @@ ol {
 	line-height: 32px;
 }
 
-.product__page__title .product__page__filter .nice-select:after {
+.product__page__title .product__page__filter{
 	border-bottom: 2px solid #111;
 	border-right: 2px solid #111;
 	height: 8px;
@@ -900,7 +900,7 @@ ol {
 	right: 15px;
 }
 
-.product__page__title .product__page__filter .nice-select .list {
+.product__page__title .product__page__filter {
 	margin-top: 0;
 	border-radius: 0;
 }

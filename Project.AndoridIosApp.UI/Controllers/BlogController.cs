@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Project.AndoridIosApp.UI.Controllers
 {
@@ -29,10 +30,11 @@ namespace Project.AndoridIosApp.UI.Controllers
             _projectUserService = projectUserService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var response = await _blogService.GetAllAsync();
-            return View(response.Data);
+            var pagedDta = response.Data.ToPagedList(page, 10);
+            return View(pagedDta);
 
         }
         public async Task<IActionResult> BlogDetails(int id)

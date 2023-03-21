@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Dtos.ProjectUserRoleDto;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminProjectUserRole/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminProjectUserRoleController : Controller
     {
         private readonly IProjectUserRoleService _projectUserRoleService;

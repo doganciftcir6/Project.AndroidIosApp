@@ -46,6 +46,7 @@ namespace Project.AndoridIosApp.UI.Helpers.UserHelper
                 string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
                 var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
+                stream.Close();
                 var dbCreateFileName = fileName + extName;
                 return new DataResponse<string>(ResponseType.Success, dbCreateFileName, "Upload işlemi başarılı...");
             }

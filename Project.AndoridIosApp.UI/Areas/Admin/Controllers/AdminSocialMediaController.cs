@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Dtos.SocialMediaDtos;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminSocialMedia/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminSocialMediaController : Controller
     {
         private readonly ISocialMediaService _socialMediaSevice;

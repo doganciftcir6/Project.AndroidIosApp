@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project.AndroidIosApp.Business.Abstract.Services;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.ViewComponents
 {
+    [Authorize(Roles = "Admin")]
     public class AdminHomeRecentlyAddedBlogComponent : ViewComponent
     {
         private readonly IBlogService _blogService;

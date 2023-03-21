@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Dtos.ContactDtos;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminContact/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminContactController : Controller
     {
         private readonly IContactService _contactService;

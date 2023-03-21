@@ -51,6 +51,7 @@ namespace Project.AndroidIosApp.Business.Helpers
                 string path = Path.Combine(_hostingEnvironment.WebRootPath, "img/blog", uploadfileName + DateTime.Now.Ticks.ToString() + extName);
                 var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
+                stream.Close();
                 //wwwtrottan sonrasını kayıt edelim dbye
                 string wwwrootSonrasi = path.Replace(_hostingEnvironment.WebRootPath, "").Replace('\\', '/');
                 //eğer upload başarılı ise wwwrootsonrasi pathi geri yollasınki ben ilgili businees veya controllerda bunu yakalayıp mapleme yapabileyim modelime veya dtoma.

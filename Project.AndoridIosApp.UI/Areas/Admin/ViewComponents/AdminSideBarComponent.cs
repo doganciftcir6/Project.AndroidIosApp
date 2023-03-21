@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project.AndoridIosApp.UI.Helpers.UserHelper;
 using Project.AndroidIosApp.Business.Abstract.Services;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.ViewComponents
 {
+    [Authorize(Roles = "Admin")]
     public class AdminSideBarComponent : ViewComponent
     {
         private readonly IProjectUserService _projectUserService;

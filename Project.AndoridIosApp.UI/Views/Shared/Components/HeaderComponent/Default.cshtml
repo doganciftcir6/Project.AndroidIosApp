@@ -17,22 +17,25 @@
                 <div class="header__nav">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            @if (!User.IsInRole("SupportUser"))
+                            @if (!User.IsInRole("SupportUser") || User.IsInRole("Admin"))
                             {
                                 <li class="active"><a asp-controller="Home" asp-action="Index">Homepage</a></li>
                                 <li><a asp-controller="Device" asp-action="Index">Devices</a></li>
                                 <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
                                 <li><a asp-controller="Contact" asp-action="Index">Contacts</a></li>
                                 <li><a asp-controller="Support" asp-action="Index">Help</a></li>
-                                <li><a href="/admin/adminhome">AdminPanel</a></li>
                             }
-                            @if (User.IsInRole("SupportUser") || User.IsInRole("Admin"))
+                            @if (User.IsInRole("SupportUser"))
                             {
                                 <li class="active"><a asp-controller="Home" asp-action="Index">Homepage</a></li>
                                 <li><a asp-controller="Device" asp-action="Index">Devices</a></li>
                                 <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
                                 <li><a asp-controller="Contact" asp-action="Index">Contacts</a></li>
                                 <li><a asp-controller="Support" asp-action="Index">ResponseSupport</a></li>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li><a href="/Admin/AdminHome">AdminPanel</a></li>
                             }
                             @if (!User.Identity.IsAuthenticated)
                             {

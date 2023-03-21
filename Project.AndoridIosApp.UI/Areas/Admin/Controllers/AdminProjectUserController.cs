@@ -17,11 +17,15 @@ using Project.AndroidIosApp.Dtos.Interfaces;
 using Project.AndroidIosApp.Core.Utilities.Results.Interface;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
 using Project.AndroidIosApp.Dtos.DeviceDtos;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using Project.AndoridIosApp.UI.Helpers.UserHelper;
 
 namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 {
     [Area("Admin")]
     [Route("Admin/AdminProjectUser/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminProjectUserController : Controller
     {
         private readonly IProjectUserService _projectUserService;
@@ -66,25 +70,21 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 
                 if (userCreateModel.ImageUrl != null)
                 {
-                    var imageRuleChecks = ImageUploadCheckHelper.Run
-                    (
-                        ImageUploadRuleHelper.CheckImageName(userCreateModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(userCreateModel.ImageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(userCreateModel.ImageUrl.Length)
-                    );
-                    if (imageRuleChecks.ResponseType == ResponseType.Success)
+                    var uploadResponse = UserImageUploadHelper.CreateInstance(_hostingEnvironment).RunUploadAsync(userCreateModel.ImageUrl);
+                    if (uploadResponse.Result.ResponseType == ResponseType.Success)
                     {
-                        //upload burada olacak çünkü ıformfile modelde verdim.
-                        var fileName = Guid.NewGuid().ToString();
-                        var extName = Path.GetExtension(userCreateModel.ImageUrl.FileName);
-                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
-                        var stream = new FileStream(path, FileMode.Create);
-                        await userCreateModel.ImageUrl.CopyToAsync(stream);
-                        dto.ImageUrl = fileName + extName;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        dto.ImageUrl = uploadResponse.Result.StringData;
                     }
                     else
                     {
-                        ModelState.AddModelError("", imageRuleChecks.Meessage);
+                        //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
+                        //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                        var errorMessages = uploadResponse.Result.Meessage.Split('^');
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            ModelState.AddModelError("", errorMessage);
+                        }
                         //checklerda hata var hata mesajı gitsin ama aynı azamanda genderlist kaybolmamalı
                         var response3 = await _genderService.GetAllAsync();
                         userCreateModel.Genders = new SelectList(response3.Data, "Id", "Definition", userCreateModel.GenderId);
@@ -177,28 +177,24 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
 
                 if (imageUrl != null)
                 {
-                    var imageRuleChecks = ImageUploadCheckHelper.Run
-                    (
-                        ImageUploadRuleHelper.CheckImageName(imageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageExtensionsAllow(imageUrl.FileName),
-                        ImageUploadRuleHelper.CheckIfImageSizeIsLessThanOneMb(imageUrl.Length)
-                    );
-                    if (imageRuleChecks.ResponseType == ResponseType.Success)
+                    var uploadResponse = await UserImageUploadHelper.CreateInstance(_hostingEnvironment).RunUploadAsync(imageUrl);
+                    if (uploadResponse.ResponseType == ResponseType.Success)
                     {
-                        //upload burada olacak çünkü ıformfile modelde verdim.
-                        var fileName = Guid.NewGuid().ToString();
-                        var extName = Path.GetExtension(imageUrl.FileName);
-                        string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
-                        var stream = new FileStream(path, FileMode.Create);
-                        await imageUrl.CopyToAsync(stream);
-                        updateProjectUserModel.ImageUrl = fileName + extName;
+                        //veriyi dataresponseuma stringdata tanımlayarak onunla taşıyorum. Bu data Entitiy olmadığı için. String bir veri taşıyorum..
+                        updateProjectUserModel.ImageUrl = uploadResponse.StringData;
                     }
                     else
                     {
-                        ModelState.AddModelError("", imageRuleChecks.Meessage);
-                        //checklerda hata var hata mesajı gitsin ama aynı azamanda genderlist kaybolmamalı
-                        var response3 = await _genderService.GetAllAsync();
-                        updateProjectUserModel.Genders = new SelectList(response3.Data, "Id", "Definition", updateProjectUserModel.GenderId);
+                        //hata mesajlarını birbirinden ayıralım ki alta alta gelsinler.
+                        //mesajların sonuna ünlemden sonra ^ yazdırdım ki ! gitmesin.
+                        var errorMessages = uploadResponse.Meessage.Split('^');
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            ModelState.AddModelError("", errorMessage);
+                        }
+                        //checklerda hata var hata mesajı gitsin ama aynı azamanda seleclist kaybolmamalı
+                        var genderList1 = await _genderService.GetAllAsync();
+                        updateProjectUserModel.Genders = new SelectList(genderList1.Data, "Id", "Definition");
                         return View(updateProjectUserModel);
                     }
                 }
@@ -238,12 +234,36 @@ namespace Project.AndroidIosApp.Core.Helpers.UploadImageHelper
         }
         public async Task<IActionResult> Delete(int id)
         {
+            var value = await _projectUserService.GetByIdAsync<GetProjectUserDto>(id);
+            if(value.ResponseType == ResponseType.NotFound)
+            {
+                return NotFound();
+            }
             var response = await _projectUserService.DeleteAsync(id);
             if (response.ResponseType == ResponseType.NotFound)
             {
                 return NotFound();
             }
+
+            //upload edilmiş dosyalarıda kayıt ile birlikte serverdan silmem lazım.
+            DeleteFileRun(value.Data.ImageUrl);
             return RedirectToAction("Index");
+        }
+        private void DeleteFileRun(string file)
+        {
+            try
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file);
+                var extName = Path.GetExtension(file);
+                string path = Path.Combine(_hostingEnvironment.WebRootPath, "userImage", fileName + extName);
+                if (path.Contains(fileName))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

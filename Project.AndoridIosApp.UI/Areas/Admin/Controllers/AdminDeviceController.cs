@@ -22,11 +22,14 @@ using Project.AndroidIosApp.Core.Helpers.UploadImageHelper;
 using Project.AndoridIosApp.UI.Helpers.DeviceHelper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Project.AndroidIosApp.Dtos.BlogDtos;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminDevice/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminDeviceController : Controller
     {
         private readonly IDeviceService _deviceService;
@@ -204,12 +207,36 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Delete(int id)
         {
+            var value = await _deviceService.GetByIdAsync<GetDeviceDto>(id);
+            if(value.ResponseType == ResponseType.NotFound)
+            {
+                return NotFound();
+            }
             var deleteResponse = await _deviceService.DeleteAsync(id);
             if (deleteResponse.ResponseType == ResponseType.NotFound)
             {
                 return NotFound();
             }
+
+            //upload edilmiş dosyalarıda kayıt ile birlikte serverdan silmem lazım.
+            DeleteFileRun(value.Data.ImageUrl);
             return RedirectToAction("Index");
+        }
+        private void DeleteFileRun(string file)
+        {
+            try
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file);
+                var extName = Path.GetExtension(file);
+                string path = Path.Combine(_hostingEnvironment.WebRootPath, "img", "device", fileName + extName);
+                if (path.Contains(fileName))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

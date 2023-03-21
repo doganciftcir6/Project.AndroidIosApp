@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
@@ -12,6 +13,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminBlogComment/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminBlogCommentController : Controller
     {
         private readonly IBlogCommentService _blogCommentService;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.AndoridIosApp.UI.Areas.Admin.Models;
@@ -7,6 +8,7 @@ using Project.AndoridIosApp.UI.Models;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Dtos.CommentDtos;
 using System;
+using System.Data;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ namespace Project.AndoridIosApp.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminDeviceComment/{action}/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class AdminDeviceCommentController : Controller
     {
         private readonly ICommentService _commentService;

@@ -45,7 +45,7 @@ namespace Project.AndoridIosApp.UI.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult> ReceiverMessage()
         {
             //login olmuş kişiyi bulmak
@@ -66,7 +66,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             }
             return View(messageList.Data);
         }
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult> SenderMessage()
         {
             //login olmuş kişiyi bulmak
@@ -87,7 +87,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             }
             return View(messageList.Data);
         }
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult> ReceiverMessageDetails(int id)
         {
             var result = await _supportService.GetByIdWithUserAsync(id);
@@ -98,7 +98,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             }
             return View(result.Data);
         }
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult>SenderMessageDetails(int id)
         {
             var result = await _supportService.GetByIdWithUserAsync(id);
@@ -110,7 +110,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             return View(result.Data);
         }
         [HttpGet]
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult> SendMessage()
         {
             var response = await _deviceService.GetAllAsync();
@@ -121,7 +121,7 @@ namespace Project.AndoridIosApp.UI.Controllers
             return View(model);
         }
         [HttpPost]
-        [Authorize(Roles = "Member, SupportUser")]
+        [Authorize(Roles = "Member, SupportUser, Admin")]
         public async Task<IActionResult> SendMessage(SendMessageModel sendMessageModel)
         {
             //login olmuş kişiyi bulmak

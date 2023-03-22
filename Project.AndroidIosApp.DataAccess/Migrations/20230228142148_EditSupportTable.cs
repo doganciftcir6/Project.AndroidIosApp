@@ -6,23 +6,6 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Supports_ProjectUsers_ProjectUserSenderId",
-                table: "Supports");
-
-            migrationBuilder.DropColumn(
-                name: "ProjectUserReceiverId",
-                table: "Supports");
-
-            migrationBuilder.RenameColumn(
-                name: "ProjectUserSenderId",
-                table: "Supports",
-                newName: "ProjectUserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Supports_ProjectUserSenderId",
-                table: "Supports",
-                newName: "IX_Supports_ProjectUserId");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Content",
@@ -66,20 +49,10 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Supports_ProjectUsers_ProjectUserId",
-                table: "Supports",
-                column: "ProjectUserId",
-                principalTable: "ProjectUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Supports_ProjectUsers_ProjectUserId",
-                table: "Supports");
 
             migrationBuilder.DropColumn(
                 name: "Receiver",
@@ -97,10 +70,6 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
                 name: "SenderName",
                 table: "Supports");
 
-            migrationBuilder.RenameColumn(
-                name: "ProjectUserId",
-                table: "Supports",
-                newName: "ProjectUserSenderId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Supports_ProjectUserId",
@@ -116,21 +85,6 @@ namespace Project.AndroidIosApp.DataAccess.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(2000)",
                 oldMaxLength: 2000);
-
-            migrationBuilder.AddColumn<int>(
-                name: "ProjectUserReceiverId",
-                table: "Supports",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Supports_ProjectUsers_ProjectUserSenderId",
-                table: "Supports",
-                column: "ProjectUserSenderId",
-                principalTable: "ProjectUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

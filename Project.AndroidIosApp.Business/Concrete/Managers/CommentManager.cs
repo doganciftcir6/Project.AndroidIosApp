@@ -154,6 +154,8 @@ namespace Project.AndroidIosApp.Business.Concrete.Managers
                         Id = updateCommentDto.Id,
                         Content = updateCommentDto.Content,
                         Status = updateCommentDto.Status,
+                        //admin yorumu göstermek için update yaptığında createdate tarihi değişmemeli
+                        CreateDate = unChangedData.CreateDate,
                         UpdateDate = updateCommentDto.UpdateDate, //BURAYI UNUTMA CONTROLLERDA DATETİME NOW ATILACAK DTO İÇİNE
                         ProjectUserId = updateCommentDto.ProjectUserId,
                         DeviceId = updateCommentDto.DeviceId,

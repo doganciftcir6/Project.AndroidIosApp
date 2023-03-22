@@ -4,6 +4,7 @@
     Layout = "_MemberLayout";
 }
 
+<link href="~/CustomStyle/AdminDeviceCommentStyleSheet.css" rel="stylesheet" />
 
 <!-- Normal Breadcrumb Begin -->
 <section class="normal-breadcrumb set-bg" data-setbg="/img/kullanıcı.jpg">
@@ -50,7 +51,7 @@
                         </div>
                         <h5>Gender</h5>
                         <div class="mb-3">
-                            <select class="form-select" asp-items="@Model.Genders" asp-for="@Model.GenderId">
+                            <select class="classic" asp-items="@Model.Genders" asp-for="@Model.GenderId">
                                 <option value="0">Select a gender.</option>
                             </select>
                         </div>

@@ -12,10 +12,10 @@ namespace Project.AndoridIosApp.UI.ValidationRules
             RuleFor(x => x.Username).MinimumLength(6).WithMessage("Kullanıcı adı alanı en az 6 karakter içermelidir!");
             RuleFor(x => x.Firstname).NotEmpty().WithMessage("İsim alanı boş olamaz!");
             RuleFor(x => x.Firstname).MaximumLength(50).WithMessage("İsim alanı en fazla 50 karakter içerebilir!");
-            RuleFor(x => x.Firstname).MinimumLength(6).WithMessage("İsim alanı en az 6 karakter içermelidir!");
+            RuleFor(x => x.Firstname).MinimumLength(3).WithMessage("İsim alanı en az 3 karakter içermelidir!");
             RuleFor(x => x.Lastname).NotEmpty().WithMessage("Soy isim alanı boş olamaz!");
             RuleFor(x => x.Lastname).MaximumLength(50).WithMessage("Soy isim alanı en fazla 50 karakter içerebilir!");
-            RuleFor(x => x.Lastname).MinimumLength(6).WithMessage("Soy isim alanı en az 6 karakter içermelidir!");
+            RuleFor(x => x.Lastname).MinimumLength(3).WithMessage("Soy isim alanı en az 3 karakter içermelidir!");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Şifre alanı boş olamaz!");
             RuleFor(x => x.Password).Matches(x => x.PasswordVerify).WithMessage("Şifre alanı Şifre tekrarı alanı ile eşleşmiyor!");
             RuleFor(x => x.PasswordVerify).NotEmpty().WithMessage("Şifre Tekrarı alanı boş olamaz!");

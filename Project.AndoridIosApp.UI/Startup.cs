@@ -34,7 +34,7 @@ namespace Project.AndoridIosApp.UI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //DependencyExtension unu kullanabilmek.
+            //DependencyExtension unu kullanabilmek. Bunu yapabilmek için businesse refeance eklemem lazým. Yoksa metot ismi gelmez.
             services.AddDependencies(Configuration);
 
             //modelin FluenValidationu

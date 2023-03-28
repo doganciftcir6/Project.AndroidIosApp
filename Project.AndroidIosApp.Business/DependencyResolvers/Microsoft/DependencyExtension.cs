@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Project.AndroidIosApp.Business.Abstract.Services;
 using Project.AndroidIosApp.Business.Concrete.Managers;
-using Project.AndroidIosApp.Business.Mapping.AutoMapper;
 using Project.AndroidIosApp.Business.ValidationRules.FluentValidation;
 using Project.AndroidIosApp.DataAccess.Abstract.Repositories;
 using Project.AndroidIosApp.DataAccess.Concrete.Repositories;
@@ -23,11 +21,6 @@ using Project.AndroidIosApp.Dtos.ProjectRole;
 using Project.AndroidIosApp.Dtos.ProjectUser;
 using Project.AndroidIosApp.Dtos.SocialMediaDtos;
 using Project.AndroidIosApp.Dtos.SupportDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.AndroidIosApp.Business.DependencyResolvers.Microsoft
 {
